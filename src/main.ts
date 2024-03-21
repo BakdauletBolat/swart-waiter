@@ -16,7 +16,7 @@ const router = createRouter({
 })
 
   
-router.beforeEach((to, from) => {
+router.beforeEach((to, _) => {
 
     if (to.meta.isCoordsRequired && localStorage.getItem('accessLocation') == null) {
         return {
