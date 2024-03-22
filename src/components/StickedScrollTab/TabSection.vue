@@ -6,7 +6,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="py-[14px] text-sm text-nowrap text-[#66666E] px-[19.2px] rounded-[16px] cursor-pointer" :class="{
+  <div class="unselectable py-[14px] text-sm text-nowrap text-[#66666E] px-[19.2px] rounded-[16px] cursor-pointer" :class="{
             'bg-[#202020] !text-white': isActive
         }">
     {{ name }}

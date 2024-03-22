@@ -38,7 +38,9 @@ const headerItem = {
             <Header :item="headerItem"></Header>
         </div>
         <div class="mb-[6px]">
-            <SearchInput class="mb-4 px-4"></SearchInput>
+            <div class="px-4">
+              <SearchInput class="mb-4"></SearchInput>
+            </div>
             <div class="gap-3 flex pl-4 w-full overflow-scroll hide-scrollbar">
             <Image class="w-[154px] h-[88px] flex-shrink-0 rounded-2xl" :url="item.url" v-for="item in branches"></Image>
         </div>
