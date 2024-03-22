@@ -6,7 +6,7 @@
 <script setup lang="ts">
 import WelcomeForm from '../components/WelcomeForm.vue';
 const welcomeProps = {
-    image: 'https://s3-alpha-sig.figma.com/img/dc8d/d16f/eba03ca4cfd8b8e2ad89a8ae1e92a6dd?Expires=1710720000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=h0dkLBcS8Nar47a0sesb0LRIjbiaVqjBkUR2Ii8yVwhGQ3aqFTsaRmefamGwdQ4WBBHOwn99BDkDHMibzWn6br8v-EDFyJCUIWrb1Okv21fro7mHzx9B3tyvLU-94H4sICyjHSvrEamHDn1-pVg0~8aikYjeAlWR~6IaVeowffKsgKx7-bWpeMueVIlqg24mL3mGxQrA7z~BA4k~HPLZHl1CkNwx5dANPBhK78QtflcrrwP-N8VO9LOmVJe6ScO4MArr2JLLCPEgDAiub35CBuKUxmsreiZdVb7Sl50LaVrJWWU6H4XLWp2eM08LPMQcnrCrpwONgRKEZZKVfoM-2A__',
+    image: 'https://s3-alpha-sig.figma.com/img/dc8d/d16f/eba03ca4cfd8b8e2ad89a8ae1e92a6dd?Expires=1711929600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=UkAQN1mAyivLLi7-2eKGnWW3RW31EQWdC0vcnhwtb~1RRuKYWOxmrA~dVFShNYQxj2cKPtE9xgERplQ9ELfFhhtJpTkuiwErt3phD-RXa6YLu5djCdcXqnSmDf82Qmh-FkNWKwHdCQ9c71zZssq5hZ5lLwIHTsERXYhnk9~VoSYj8Quhnp5rbN99s~R6bamYX9diEQP3k8jhSmbdGyfecLVLJKgAfy1gWiNaRynbs5vOuzkfZm9AiVvE7sqrJ6nFa2O0P6SYwW0PDKrr-0W5p5cgAr6dUIGaI-CWjYBN7c7ocdsORpGDKApHA2ZrOJ4IRDauSUlzaOMgP7dstbSYtg__',
     title: 'Villa Pasta!',
     description: 'Для дальнейшей работы c сервисом введите ваше имя'
 }
