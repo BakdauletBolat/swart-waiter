@@ -2,7 +2,8 @@ import { createApp } from 'vue'
 import './style.css'
 import App from './App.vue'
 import { createRouter, createWebHistory } from 'vue-router';
-import { routes } from './routers';
+import { routes } from './routes';
+import userInformationStore from "./stores/userInformationStore.ts";
 
 
 
@@ -17,8 +18,7 @@ const router = createRouter({
 
   
 router.beforeEach((to, _) => {
-
-    if (to.meta.isCoordsRequired && localStorage.getItem('accessLocation') == null) {
+    if (to.meta.isCoordsRequired && userInformationStore.store.value?.location == undefined) {
         return {
             name: 'access-location',
             query: {

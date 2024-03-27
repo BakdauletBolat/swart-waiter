@@ -23,7 +23,7 @@
                 </Transition>
             </div>
             <div>
-                <Button :loading="isLoading" @click="next">
+                <Button @click="next">
                         <div class="relative" v-if="activeIndex < 4">
                             Далее
                         </div>
@@ -51,15 +51,11 @@ import { useRouter } from 'vue-router';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/24/outline';
 import { ref } from 'vue';
 import { SwiperContainer, register } from 'swiper/element/bundle';
-// register Swiper custom elements
 register();
-
-
 
 const activeIndex = ref(1);
 const swiperRef = ref<SwiperContainer | null>(null);
 const router = useRouter();
-const isLoading = ref<boolean>(false);
 const onSlideChange = (e: any) => {
     const index = e.detail[0].activeIndex;
     activeIndex.value = index + 1;
@@ -74,31 +70,14 @@ const next = () => {
 }
 
 const navigateToMenu = () => {
-    isLoading.value = true;
-    navigator.geolocation.getCurrentPosition((position)=>{
-        localStorage.setItem('accessLocation', JSON.stringify({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude
-        }));
-        router.push({name: 'menu'});
-        console.log(position);
-        isLoading.value = false;
-    }, (error)=>{
-        localStorage.removeItem('accessLocation');
-        localStorage.setItem('accessLocationError', error.message);
-        isLoading.value = false;
-        router.push({name: 'access-location', query: {
-            redirect: 'menu'
-        }});
-    });
+    router.push({name: 'access-location', query: {
+        redirect: 'menu'
+      }});
 }
 
 const prev = () => {
     swiperRef.value?.swiper.slidePrev();
 }
-
-
-
 
 const options: GuideItem[] = [
     {
