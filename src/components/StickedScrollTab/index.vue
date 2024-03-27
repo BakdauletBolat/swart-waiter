@@ -1,6 +1,6 @@
 
 <script lang="ts" setup>
-import FoodCard, {Food} from "../FoodCard/index.ts";
+import FoodCard from "../FoodCard/index.ts";
 import {onBeforeUnmount, onMounted, ref} from "vue";
 import { useScroll } from '@vueuse/core'
 import TabSection from "./TabSection.vue";

@@ -42,7 +42,7 @@ const next = () => {
       return;
   }
   isLoading.value = true;
-  navigator.geolocation.getCurrentPosition((position)=>{
+  navigator.geolocation.getCurrentPosition((_)=>{
     userInformationStore.setName(name.value);
     userInformationStore.setLocation({
       lat: '42.328106749904',

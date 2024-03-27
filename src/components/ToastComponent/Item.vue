@@ -20,7 +20,7 @@ defineProps<{
 
 const timeout = ref(5000);
 const show = ref(true);
-const interval = ref<number | null>(null);
+const interval = ref<any | null>(null);
 
 const percent = computed(()=>{
   return 100 * timeout.value / 5000;

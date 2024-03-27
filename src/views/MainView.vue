@@ -6,7 +6,7 @@ import Header from '../components/Header.vue';
 import StickedScrollTab from "../components/StickedScrollTab";
 import BasketIcon from "../assets/svg/BasketIcon.vue";
 import {ChevronRightIcon} from "@heroicons/vue/24/outline";
-import {basket, categories, isNotEmpty} from "../stores";
+import {basket, isNotEmpty} from "../stores";
 import {useRouter} from "vue-router";
 import {computed, onMounted, ref} from "vue";
 import userInformationStore from "../stores/userInformationStore.ts";
@@ -47,7 +47,7 @@ onMounted(()=>{
       description: res.data.attributes.description,
       address: res.data.attributes.address
     }
-    headerItem.value.url = getFirstElemOrUndefined<string>(res.data.attributes.attachments);
+    headerItem.value.url = getFirstElemOrUndefined<string>(res.data.attributes.attachments)!;
   }).catch(e=>{
     console.log(e);
   });
@@ -69,8 +69,8 @@ function  addTo(categories: Category[], toReturn: any[]) {
       const products = menuStore.products!.data.filter(product=>product.attributes.category_id == category.id);
       if (products.length > 0) {
         toReturn.push({
-          'category': category,
-          'products': products
+          category: category,
+          products: products
         });
       }
 
@@ -79,13 +79,13 @@ function  addTo(categories: Category[], toReturn: any[]) {
       }
     });
 }
-const productsGroupedByCategry = computed<{
-  categories: Category,
+const productsGroupedByCategory = computed<{
+  category: Category,
   products: Product[]
 }[]>(()=>{
   if (menuStore.categories != undefined && menuStore.products != undefined) {
       const toReturn: {
-        categories: Category,
+        category: Category,
         products: Product[]
       }[] = []
       addTo(menuStore.categories.data, toReturn);
@@ -109,7 +109,7 @@ const productsGroupedByCategry = computed<{
             <Image class="w-[154px] h-[88px] flex-shrink-0 rounded-2xl" :url="item.url" v-for="item in branches"></Image>
         </div>
         </div>
-        <StickedScrollTab :categories="productsGroupedByCategry"></StickedScrollTab>
+        <StickedScrollTab :categories="productsGroupedByCategory"></StickedScrollTab>
         <transition name="fade"><div v-if="isNotEmpty" class="px-4 w-full bottom-[40px] fixed z-[999]">
           <div @click="navigateToBasket" class="p-4 cursor-pointer text-center flex justify-between items-center text-white w-full bg-black-100 rounded-2xl ">
             <div class="flex gap-2 items-center">

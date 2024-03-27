@@ -1,32 +1,5 @@
-import {instance} from "../api";
+import {instance, Product} from "../api";
 import {reactive} from "vue";
-
-export interface Product {
-    type: string;
-    id: number;
-    attributes: {
-        category_id: number;
-        name: {
-            kk: string;
-            ru: string;
-        };
-        description: {
-            kk: string;
-            ru: string;
-        };
-        images: string[];
-        tag: string;
-        measurement: string;
-        type: string;
-        essence: string;
-        max: number;
-        min: number;
-        quantity: number;
-        price: number;
-        old_price: number;
-    };
-    included: null;
-}
 
 export interface Category {
     id: number;
