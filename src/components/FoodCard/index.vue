@@ -1,13 +1,23 @@
 <template>
     <article class="bg-[#F4F4F6] p-4 gap-4 rounded-3xl flex">
-        <div>
+        <RouterLink :to="{
+      name: 'food-detail',
+      params: {
+        id: food.id
+      }
+    }">
             <Image class="w-[160px] rounded-2xl h-[160px]" :url="getFirstElemOrUndefined<string>(food.attributes.images)"></Image>
-        </div>
+        </RouterLink>
         <div class="flex flex-col justify-between">
-            <section>
+            <RouterLink :to="{
+      name: 'food-detail',
+      params: {
+        id: food.id
+      }
+    }">
                 <h3 class="text-sm">{{ food.attributes.name.ru }}</h3>
                 <p class="text-[#66666E] text-xs mt-2">{{ food.attributes.description.ru }}</p>
-            </section>
+            </RouterLink>
           <section v-if="checkInBasket(food.id.toString())">
               <div class="w-full flex items-center justify-between text-center py-2 ">
                 <div @click="changeQuantity({
