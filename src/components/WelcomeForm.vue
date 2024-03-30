@@ -42,16 +42,12 @@ const next = () => {
       return;
   }
   isLoading.value = true;
-  navigator.geolocation.getCurrentPosition((_)=>{
+  navigator.geolocation.getCurrentPosition((position)=>{
     userInformationStore.setName(name.value);
     userInformationStore.setLocation({
-      lat: '42.328106749904',
-      lng: '69.585396075874'
-    });
-    // userInformationStore.setLocation({
-    //   lat: position.coords.latitude.toString(),
-    //   lng: position.coords.longitude.toString()
-    // })
+      lat: position.coords.latitude.toString(),
+      lng: position.coords.longitude.toString()
+    })
     createCustomer({
       uuid:userInformationStore.store.value!.uuid,
       data: {

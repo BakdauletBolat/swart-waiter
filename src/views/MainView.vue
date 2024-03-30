@@ -4,9 +4,10 @@ import Image from '../components/Image';
 import SearchInput from '../components/SearchInput';
 import Header from '../components/Header.vue';
 import StickedScrollTab from "../components/StickedScrollTab";
+import History from '../components/History';
 import BasketIcon from "../assets/svg/BasketIcon.vue";
 import {ChevronRightIcon} from "@heroicons/vue/24/outline";
-import {basket, isNotEmpty} from "../stores";
+import {basket} from "../stores";
 import {useRouter} from "vue-router";
 import {computed, onMounted, ref} from "vue";
 import userInformationStore from "../stores/userInformationStore.ts";
@@ -94,9 +95,12 @@ const productsGroupedByCategory = computed<{
   return [];
 });
 
+const showHistory = ref<boolean>(false);
+
 </script>
 
 <template>
+  <History v-model:show="showHistory"></History>
     <div>
         <div class="mb-4">
             <Header :item="headerItem"></Header>
@@ -110,16 +114,16 @@ const productsGroupedByCategory = computed<{
         </div>
         </div>
         <StickedScrollTab :categories="productsGroupedByCategory"></StickedScrollTab>
-        <transition name="fade"><div v-if="isNotEmpty" class="px-4 w-full bottom-[40px] fixed z-[999]">
+        <transition name="fade"><div v-if="false" class="px-4 w-full bottom-[40px] fixed z-[999]">
           <div @click="navigateToBasket" class="p-4 cursor-pointer text-center flex justify-between items-center text-white w-full bg-black-100 rounded-2xl ">
             <div class="flex gap-2 items-center">
               <BasketIcon color="white" width="24" height="24"></BasketIcon>
               <div>
-                {{basket.goods.length}}
+                {{basket.data}}
               </div>
               <div class="h-6 w-[1px] bg-white"></div>
               <div>
-                {{basket.total_price}}
+                {{basket.data}}
               </div>
             </div>
             <ChevronRightIcon class="w-6 h-6"></ChevronRightIcon>

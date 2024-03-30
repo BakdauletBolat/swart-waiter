@@ -1,69 +1,54 @@
-import {computed, reactive} from "vue";
+import {reactive} from "vue";
+import {instance} from "../api";
 
-export interface IGood {
-    product_id: string;
-    name: string;
+
+type AddToCardType = {
     quantity: number;
-    price: number;
-    url: string;
-}
-export interface IBasket {
-    table_id: string;
-    goods: IGood[];
-    total_price: number;
+    product_id: number;
+    uuid: string;
 }
 
-type ChangeQuantityType = {
+
+
+interface Customer {
+    id: number;
+    table_id: number;
+    customer_id: number;
+    waiter_id: number | null;
+    product_id: number;
     quantity: number;
-    product_id: string;
+    created_at: string;
+    updated_at: string;
+    customer: {
+        id: number;
+        uuid: string;
+    };
+    waiter: any | null; // You can specify the type of waiter data if needed
 }
 
-export const basket = reactive<IBasket>({
-    table_id: '',
-    goods: [],
-    total_price: 0
+export interface Cart {
+    customers: {
+        [key: number]: Customer[];
+    };
+    waiter: any[]; // You can specify the type of waiter data if needed
+}
+
+
+interface ICartData {
+    data?: Cart;
+    isLoading: boolean;
+}
+
+export const basket = reactive<ICartData>({
+    isLoading: false,
+    data: undefined
 });
 
-export const isNotEmpty = computed(()=>basket.goods.length > 0);
 
-function _calculate_total_price(goods: IGood[]): number {
-    let total_price = 0
-    goods.forEach((good)=>{
-        total_price += good.price * good.quantity;
-    });
-    return total_price;
-}
-
-export function checkInBasket(product_id: string) {
-    return basket.goods.filter(item=>item.product_id == product_id).length > 0;
-}
-
-export function getFromBasket(product_id: string) {
-    return basket.goods.filter(item=>item.product_id == product_id)[0];
-}
-
-export function addGood(good: IGood) {
-    basket.goods.push(good);
-    basket.total_price = _calculate_total_price(basket.goods);
-}
-
-export function removeGood(product_id: string) {
-    const index = basket.goods.findIndex((good)=>good.product_id == product_id);
-    if (index != -1) {
-        basket.goods.splice(index, 1);
-        basket.total_price = _calculate_total_price(basket.goods);
-    }
-}
-
-export function changeQuantity(body: ChangeQuantityType) {
-    const index = basket.goods.findIndex((good)=>good.product_id == body.product_id);
-    if (index != -1) {
-        if (basket.goods[index].quantity <= basket.goods[index].quantity - body.quantity) {
-            removeGood(body.product_id);
-            return;
-        }
-        basket.goods[index].quantity = body.quantity;
-        basket.total_price = _calculate_total_price(basket.goods);
-        return basket.goods[index];
-    }
+export function addOrCreate(data: AddToCardType) {
+    instance.post('/api/v1/carts/customer', data).then((_)=>{
+        instance.get('/api/v1/carts/customer').then(res=>{
+            basket.data = res.data;
+        }).catch(e=>console.log(e,  'asdas'));
+    }).catch((e)=>console.log(e));
 }
