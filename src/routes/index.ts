@@ -5,6 +5,8 @@ import MainView from '../views/MainView.vue';
 import BasketView from "../views/BasketView.vue";
 import FoodDetailView from "../views/FoodDetailView.vue"
 import OrderView from "../views/OrderView.vue";
+import PaymentView from "../views/PaymentView.vue";
+import ReviewView from "../views/ReviewView.vue";
 export const routes = [
 
     {
@@ -50,5 +52,15 @@ export const routes = [
         path: '/access-location',
         name: 'access-location',
         component: AccessLocationView
+    },
+    {
+        path: '/payment/:pay/:orderId',
+        name: 'payment-view',
+        component: PaymentView
+    },
+    {
+        path: '/review/:orderId',
+        name: 'review-view',
+        component: ReviewView
     }
 ];
