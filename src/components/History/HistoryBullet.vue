@@ -48,8 +48,13 @@ import {computed, onMounted, ref, watch} from "vue";
   }
   onMounted(()=>{
     startTimer(props.activeIndex);
+    if (props.activeIndex > props.index) {
+      timeout.value = 5000;
+    }
+    else {
+      timeout.value = 0;
+    }
   });
-
 </script>
 
 <template>

@@ -1,5 +1,7 @@
-import {reactive} from "vue";
+import {computed, ref} from "vue";
 import {instance} from "../api";
+import userInformationStore from "./userInformationStore.ts";
+import {isLoading} from "./index.ts";
 
 
 type AddToCardType = {
@@ -8,47 +10,147 @@ type AddToCardType = {
     uuid: string;
 }
 
-
-
-interface Customer {
-    id: number;
-    table_id: number;
-    customer_id: number;
-    waiter_id: number | null;
-    product_id: number;
+type ChangeQuantityType = {
     quantity: number;
-    created_at: string;
-    updated_at: string;
-    customer: {
-        id: number;
-        uuid: string;
-    };
-    waiter: any | null; // You can specify the type of waiter data if needed
+    cart_id: number;
 }
 
-export interface Cart {
-    customers: {
-        [key: number]: Customer[];
+export interface ICardItem {
+    id: number;
+    attributes: {
+        table_id: number;
+        customer_id: number;
+        waiter_id: number | null;
+        product_id: number;
+        quantity: number;
+        price: number;
     };
-    waiter: any[]; // You can specify the type of waiter data if needed
+    included: {
+        customer?: {
+            id: number
+            attributes: {
+                full_name: string,
+                uuid: string
+            }
+        }
+        product?: {
+            id: number;
+            attributes: {
+                name: {
+                    kk: string;
+                    ru: string;
+                },
+                price: number;
+
+            }
+        }
+    }
 }
+
 
 
 interface ICartData {
-    data?: Cart;
+    data?: ICardItem[];
+    addCardLoading: boolean;
+    removeCardLoading: boolean;
     isLoading: boolean;
 }
 
-export const basket = reactive<ICartData>({
+export const basket = ref<ICartData>({
     isLoading: false,
-    data: undefined
+    addCardLoading: false,
+    removeCardLoading: false,
+    data: []
 });
 
 
+
+export const customerBasket = computed<ICardItem[] | undefined>(()=>{
+    if (basket.value.data == undefined || basket.value.data!.length <= 0) {
+        return undefined;
+    }
+    else {
+        let customersCart: ICardItem[] = [];
+        basket.value.data.forEach((item) => {
+            if (item.included.customer?.attributes.uuid == userInformationStore.store.value?.uuid) {
+                customersCart.push(item);
+            }
+        });
+        return customersCart;
+    }
+});
+
+export const isHaveCart = computed(()=>customerBasket.value != undefined && customerBasket.value?.length > 0);
+
+export const totalAmount = computed(()=>{
+    const returnValue = {
+        totalAmont: 0,
+        totalLength: 0
+    };
+    customerBasket.value?.forEach((item)=>{
+        returnValue.totalLength += item.attributes.quantity;
+        returnValue.totalAmont += item.attributes.quantity * item.attributes.price;
+    })
+    return returnValue;
+});
+
+export const checkInBasket = (id: number) => {
+    if (customerBasket.value != undefined) {
+        const index = customerBasket.value?.findIndex(item=>item.included.product?.id == id);
+        if (index != -1) {
+            return customerBasket.value![index!];
+        }
+    }
+    return false;
+}
+
+export const getFromBasket = (id: number) => {
+    const index = customerBasket.value?.findIndex(item=>item.included.product?.id == id);
+    return customerBasket.value![index!];
+}
+
+
 export function addOrCreate(data: AddToCardType) {
+    basket.value.addCardLoading = true;
     instance.post('/api/v1/carts/customer', data).then((_)=>{
-        instance.get('/api/v1/carts/customer').then(res=>{
-            basket.data = res.data;
+        instance.get('/api/v1/carts/customer?include=customer,product').then(res=>{
+            basket.value.data = res.data.data;
         }).catch(e=>console.log(e,  'asdas'));
-    }).catch((e)=>console.log(e));
+    }).catch((e)=>console.log(e)).finally(()=>
+    basket.value.addCardLoading=false);
+}
+
+export function removeFromBasket(pk: number) {
+    basket.value.removeCardLoading = true;
+    isLoading.value = true;
+    instance.delete(`/api/v1/carts/${pk}/customer`).then((_)=>{
+        instance.get('/api/v1/carts/customer?include=customer,product').then(res=>{
+            basket.value.data = res.data.data;
+        }).catch(e=>console.log(e,  'asdas'));
+    }).catch((e)=>console.log(e)).finally(()=>
+    {
+        basket.value.removeCardLoading=false
+        isLoading.value = false
+    });
+}
+
+
+export function changeQuantityFromBasket(data: ChangeQuantityType) {
+    isLoading.value = true;
+    instance.put('/api/v1/carts/quantity/customer', data).then((_)=>{
+        instance.get('/api/v1/carts/customer?include=customer,product').then(res=>{
+            basket.value.data = res.data.data;
+        }).catch(e=>console.log(e,  'asdas'));
+    }).catch((e)=>console.log(e)).finally(()=>
+    {
+        isLoading.value = false
+    });
+}
+
+
+
+export function loadBasket() {
+    instance.get('/api/v1/carts/customer?include=customer,product').then(res=>{
+        basket.value.data = res.data.data;
+    }).catch(e=>console.log(e,  'asdas'));
 }

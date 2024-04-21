@@ -7,13 +7,14 @@ import StickedScrollTab from "../components/StickedScrollTab";
 import History from '../components/History';
 import BasketIcon from "../assets/svg/BasketIcon.vue";
 import {ChevronRightIcon} from "@heroicons/vue/24/outline";
-import {basket} from "../stores";
 import {useRouter} from "vue-router";
 import {computed, onMounted, ref} from "vue";
 import userInformationStore from "../stores/userInformationStore.ts";
 import {getRestoran, Product} from "../api";
 import {getFirstElemOrUndefined} from "../utils";
 import {Category, loadCategories, loadProducts, menuStore} from "../stores/productStore.ts";
+import {isHaveCart, loadBasket, totalAmount} from "../stores/basketStore.ts";
+import {discountStore, loadDiscounts} from "../stores/discountStore.ts";
 
 
 const router = useRouter();
@@ -53,7 +54,9 @@ onMounted(()=>{
     console.log(e);
   });
   loadProducts();
+  loadBasket();
   loadCategories();
+  loadDiscounts();
 });
 
 function navigateToBasket() {
@@ -95,12 +98,14 @@ const productsGroupedByCategory = computed<{
   return [];
 });
 
+const activeItem = ref<number>(0);
+
 const showHistory = ref<boolean>(false);
 
 </script>
 
 <template>
-  <History v-model:show="showHistory"></History>
+    <History v-model="activeItem" :histories="discountStore.data" v-model:show="showHistory"></History>
     <div>
         <div class="mb-4">
             <Header :item="headerItem"></Header>
@@ -110,25 +115,26 @@ const showHistory = ref<boolean>(false);
               <SearchInput class="mb-4"></SearchInput>
             </div>
             <div class="gap-3 flex pl-4 w-full overflow-scroll hide-scrollbar">
-            <Image class="w-[154px] h-[88px] flex-shrink-0 rounded-2xl" :url="item.url" v-for="item in branches"></Image>
+            <Image @click="showHistory=true; activeItem=index" class="w-[154px] h-[88px] flex-shrink-0 rounded-2xl" :url="item.url" v-for="(item, index) in discountStore.data"></Image>
         </div>
         </div>
         <StickedScrollTab :categories="productsGroupedByCategory"></StickedScrollTab>
-        <transition name="fade"><div v-if="false" class="px-4 w-full bottom-[40px] fixed z-[999]">
+        <transition name="fade"><div v-if="isHaveCart" class="px-4 w-full bottom-[40px] fixed z-[999]">
           <div @click="navigateToBasket" class="p-4 cursor-pointer text-center flex justify-between items-center text-white w-full bg-black-100 rounded-2xl ">
             <div class="flex gap-2 items-center">
               <BasketIcon color="white" width="24" height="24"></BasketIcon>
               <div>
-                {{basket.data}}
+                {{totalAmount.totalLength}}
               </div>
               <div class="h-6 w-[1px] bg-white"></div>
               <div>
-                {{basket.data}}
+                {{totalAmount.totalAmont}} ₸
               </div>
             </div>
             <ChevronRightIcon class="w-6 h-6"></ChevronRightIcon>
           </div>
-        </div></transition>
+        </div>
+        </transition>
       <div class="mt-[300px]"></div>
     </div>
 </template>

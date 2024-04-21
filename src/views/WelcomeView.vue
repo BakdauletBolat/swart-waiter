@@ -19,10 +19,6 @@ const welcomeProps = ref<{
 }>();
 
 onMounted(async ()=>{
-  if (localStorage.getItem('uuid') == undefined) {
-    localStorage.setItem('uuid', crypto.randomUUID());
-  }
-
   if (route.query.host != null ) {
     localStorage.setItem('multi_tenant_domain_name', route.query.host!.toString()!);
   }
@@ -31,7 +27,6 @@ onMounted(async ()=>{
   }
 
   getRestoran().then(res=>{
-    console.log(res);
     welcomeProps.value = {
       title: res.data.attributes.name,
       image: getFirstElemOrUndefined<string>(res.data.attributes.attachments),

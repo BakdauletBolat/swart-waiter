@@ -15,7 +15,7 @@
                 </div>
             </div>
 
-          <Button :loading="isLoading" @click="next" class="mt-8 w-full text-center" >Сохранить</Button>
+          <Button container-classes="!justify-center" :loading="isLoading" @click="next" class="mt-8 w-full text-center" >Сохранить</Button>
         </div>
     </div>
 </template>

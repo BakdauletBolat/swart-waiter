@@ -1,37 +1,48 @@
 <template>
-    <article class="bg-[#F4F4F6] p-3 gap-4 rounded-2xl flex">
-        <div>
-            <Image class="w-[82px] rounded-2xl h-[82px]" :url="good.url"></Image>
-        </div>
-        <div class="flex flex-col justify-between w-full">
-            <section>
-                <h3 class="text-sm">{{ good }}</h3>
-            </section>
-<!--          <section class="flex items-center justify-between">-->
-<!--              <div class="w-full flex items-center gap-4 text-center py-2 ">-->
-<!--                <div @click="changeQuantity({-->
-<!--                product_id: good.product_id,-->
-<!--                quantity: good.quantity - 1-->
-<!--                })" class="bg-white cursor-pointer p-1 rounded-2xl"><MinusIcon  class="w-5 h-5"></MinusIcon></div>-->
-<!--                <div>{{good.quantity}}</div>-->
-<!--                <div @click="changeQty(good)" class="bg-white cursor-pointer p-1 rounded-2xl"><PlusIcon class="w-5 h-5"></PlusIcon></div>-->
-<!--              </div>-->
-<!--            <div class="font-medium text-nowrap">-->
-<!--              {{good.price * good.quantity}} ₸-->
-<!--            </div>-->
-<!--          </section>-->
-        </div>
-    </article>
+   <div class="flex relative">
+     <article ref="el"
+              :class="{
+                '-translate-x-[82px]': isSwiped
+              }"
+              class="bg-[#F4F4F6] z-50 w-full h-full border-2 border-[#F4F4F6]  p-3 gap-4 rounded-2xl flex">
+       <div>
+         <Image class="w-[82px] rounded-2xl h-[82px]" :url="undefined"></Image>
+       </div>
+       <div class="flex flex-col justify-between w-full">
+         <section>
+           <h3 class="text-sm">{{good.included.product?.attributes.name.ru}}</h3>
+         </section>
+         <ChangeBasketCardComponent :show-price="true" :good="good"></ChangeBasketCardComponent>
+       </div>
+     </article>
+     <div @click="remove(good.id)" class="absolute flex justify-end pr-[29px] items-center w-full rounded-2xl bg-[#FF1F00] h-full">
+       <RemoveIcon color="white" width="24" height="24"></RemoveIcon>
+     </div>
+   </div>
 </template>
 <script lang="ts" setup>
 import Image from '../Image';
-import {PlusIcon, MinusIcon} from "@heroicons/vue/24/outline";
-import {changeQuantity, IGood} from "../../stores";
-defineProps<{good: IGood}>();
+import {ICardItem, removeFromBasket} from "../../stores/basketStore.ts";
+import {useSwipe} from "@vueuse/core";
+import {ref, watchEffect} from "vue";
+import RemoveIcon from "../../assets/svg/RemoveIcon.vue";
+import ChangeBasketCardComponent from "./ChangeBasketCardComponent.vue";
 
-const emit = defineEmits(['changedQuantity']);
+defineProps<{good: ICardItem}>();
+const el = ref(null);
+const isSwiped = ref(0);
+const {  lengthX  } = useSwipe(el);
+watchEffect(()=>{
+  if (lengthX.value + lengthX.value > 80) {
+    isSwiped.value = lengthX.value;
+  }
+  else {
+    isSwiped.value = 0;
+  }
+})
 
-function changeQty(good: IGood) {
-  console.log(good);
+function remove(pk: number) {
+  removeFromBasket(pk)
 }
+
 </script>

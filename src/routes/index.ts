@@ -4,12 +4,18 @@ import AccessLocationView from '../views/AccessLocationView.vue';
 import MainView from '../views/MainView.vue';
 import BasketView from "../views/BasketView.vue";
 import FoodDetailView from "../views/FoodDetailView.vue"
+import OrderView from "../views/OrderView.vue";
 export const routes = [
 
     {
         path: '',
         name:  'welcome-page',
         component: WelcomeView,
+    },
+    {
+        path: '/order',
+        name: 'order-view',
+        component: OrderView
     },
     {
         path: '/basket',

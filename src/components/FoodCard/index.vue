@@ -16,13 +16,22 @@
                         }}">
                 <h3 class="text-sm">{{ food.attributes.name.ru }}</h3>
                 <p class="text-[#66666E] text-xs mt-2">{{ food.attributes.description.ru }}</p>
+                <div class="text-xs text-[#9999A1] mt-2" v-if="checkInBasket(food.id)">{{ getFromBasket(food.id).attributes.price }} ₸</div>
             </RouterLink>
-            <section class="mt-2" @click="addOrCreate({
-            product_id: food.id,
-            quantity: 1,
-            uuid: userInformationStore.store.value!.uuid,
+            <div v-if="checkInBasket(food.id)">
+              <ChangeBasketCardComponent :show-price="false" :good="getFromBasket(food.id)"></ChangeBasketCardComponent>
+            </div>
+            <section v-else class="mt-2" @click="addOrCreate({
+              product_id: food.id,
+              quantity: 1,
+              uuid: userInformationStore.store.value!.uuid,
             })">
-                <div class="cursor-pointer w-full bg-white text-center py-2 rounded-2xl">{{ food.attributes.price }} ₸</div>
+                <div class="cursor-pointer w-full bg-white text-center flex justify-center items-center py-2 rounded-2xl">
+                  <div v-if="basket.addCardLoading">
+                    <Spinner class="w-6 h-6"></Spinner>
+                  </div>
+                  <div v-else>{{ food.attributes.price }} ₸</div>
+                </div>
             </section>
         </div>
     </article>
@@ -31,8 +40,10 @@
 import Image from '../Image';
 import {Product} from "../../api";
 import {getFirstElemOrUndefined} from "../../utils";
-import {addOrCreate} from "../../stores";
+import {addOrCreate, basket} from "../../stores";
 import userInformationStore from "../../stores/userInformationStore.ts";
-
+import Spinner from "../Spinner.vue";
+import {checkInBasket, getFromBasket} from "../../stores/basketStore.ts";
+import ChangeBasketCardComponent from "../BasketCard/ChangeBasketCardComponent.vue";
 defineProps<{food: Product}>();
 </script>

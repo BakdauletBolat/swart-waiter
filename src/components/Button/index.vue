@@ -5,9 +5,11 @@
         <div v-if="loading">
            <Spinner class="h-4 w-4"></Spinner>
         </div>
-        <div v-else class="flex justify-center  gap-[5px]">
-            <slot name="prepend"></slot>
-            <slot></slot>
+        <div v-else class="flex justify-between gap-2" :class="[containerClasses]">
+            <div class="flex gap-2">
+              <slot name="prepend"></slot>
+              <slot></slot>
+            </div>
             <slot name="append"></slot>
         </div>
     </button>
@@ -16,6 +18,7 @@
 import Spinner from '../Spinner.vue';
 defineProps<{
     loading?: boolean,
-  isDisabled?: boolean
+    isDisabled?: boolean,
+    containerClasses?: string
 }>();
 </script>
