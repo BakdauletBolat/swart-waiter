@@ -3,6 +3,7 @@ import {menuNavigation} from "../../navigations";
 import {showModal, closeModal, showWaiterCall} from "./index.ts";
 import {RouteLocationRaw, useRoute, useRouter} from "vue-router";
 import Modal from "../Modal/index.ts";
+//@ts-ignore
 import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
 import WaiterCallComponent from "../WaiterCallComponent.vue";
 const route = useRoute();

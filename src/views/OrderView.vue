@@ -9,6 +9,7 @@ import {ChevronRightIcon} from "@heroicons/vue/24/outline";
 import Button from "../components/Button/index.ts";
 import {onMounted} from "vue";
 import {loadOrder, loadOrderProducts, orderStore} from "../stores/orderStore.ts";
+//@ts-ignore
 import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
 import Image from '../components/Image';
 import  "@webzlodimir/vue-bottom-sheet/dist/style.css";
@@ -20,10 +21,13 @@ import WaiterCard from "../assets/svg/WaiterCard.vue";
 const myBottomSheet = ref(null)
 
 const open = () => {
+  //@ts-ignore
   myBottomSheet!.value!.open();
 }
 
+//@ts-ignore
 const close = () => {
+  //@ts-ignore
   myBottomSheet!.value!.close();
 }
 
@@ -32,9 +36,6 @@ onMounted(()=>{
   loadOrder()
 })
 
-const createOrder = () => {
-  console.log('')
-}
 
 </script>
 

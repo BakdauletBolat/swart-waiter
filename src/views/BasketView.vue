@@ -4,7 +4,6 @@ import BasketCard from "../components/BasketCard/index.ts";
 import {customerBasket, loadBasket, totalAmount} from "../stores/basketStore.ts";
 import {onMounted, ref} from "vue";
 import {ChevronRightIcon} from "@heroicons/vue/24/outline";
-import BasketIcon from "../assets/svg/BasketIcon.vue";
 import Button from '../components/Button';
 import OrderIcon from "../assets/svg/OrderIcon.vue";
 import {instance} from "../api";

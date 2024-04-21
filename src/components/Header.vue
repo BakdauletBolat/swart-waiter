@@ -4,7 +4,7 @@ import Image from '../components/Image';
 import {Bars3Icon} from "@heroicons/vue/24/outline";
 import UserIcon from "../assets/svg/UserIcon.vue";
 import LocationIcon from "../assets/svg/LocationIcon.vue";
-import SidebarModal, {openModal} from "./SidebarModal";
+import {openModal} from "./SidebarModal";
 defineProps<{
   item: {
     store: {

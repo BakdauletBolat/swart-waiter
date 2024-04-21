@@ -6,10 +6,15 @@ export const showModal = ref<boolean>(false);
 export const showWaiterCall = ref(null)
 
 export const openWaiterCall = () => {
+    //@ts-ignore
     showWaiterCall!.value!.open();
 }
 
+
+
+//@ts-ignore
 export const closeWaiterCall = () => {
+    //@ts-ignore
     showWaiterCall!.value!.close();
 }
 

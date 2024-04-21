@@ -19,18 +19,6 @@ import {discountStore, loadDiscounts} from "../stores/discountStore.ts";
 
 const router = useRouter();
 
-const branches = [
-  {
-    url: 'https://s3-alpha-sig.figma.com/img/759a/ee76/e6cc3331129cb98625552d07b3db5f12?Expires=1711324800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=jHJjAGrNR5SyfU1xf6nnFED0KhN8bS5ngEuWco5OpD~zfYW66cgcQ-OJP9MZqoLmT4nu9yrTNMHe2XDgo48l76SMWtIuatmElohmr3xxFp2XtRTtVYT-Dv8aKBT7NL8O4mYHIBGTkktSGI9d4gtrMYUlyYf86JaIPdj~gtf379Bv83kzC1pfKxYyiC1sk0ayXzEPFXjDWI5dKVXJzOGSvy1FW8LWZGsmXuaaZNbcdV-Q5nJgRfBmyAV0JTLris5YGSQmhNDeSkny4Ft3Uw-bl6-O67Uy8M28mFspQIWXRHVTuoVxWcezwb8WBDXbkT2pNsxcHsr4WuaeOb7pY5MuIw__'
-  },
-  {
-    url: 'https://s3-alpha-sig.figma.com/img/26e0/aed9/de47154fa5c404233e6957e034de6e59?Expires=1711324800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=iIRSVlHA4rfNw9bEap51EqoaNKvJQvEV1ewXr2zKJxvY2IN1lrFfSTEWBNBORIvDAAojXDoKAnkE1i3ZE4jUCX6C2aw9omkwC5RDGpJaLUGmHFacNyiJQyGuS9Hda1S7XjL2h1j6VxXe0mLJhiH-j0O6ntwFNkTuoBv~Cer25MQRpoLMybHvySbLgmgIRk4~ihQhHZI2lytHPliihPD5vg5dLN-rxEaVsLzlRbVaj6bZjTYb8uY9tMBT61bwiXl9RcARZOC-npFXxkxuUqeiEt2jt0OfqEIG4s4iYIv8u~G3U4VcXUPQDeq8Jdf4UKs~zPWrt0xTxJWYpbBGvR5MnQ__'
-  },
-  {
-    url: 'https://s3-alpha-sig.figma.com/img/4cfe/6397/a2ed72f9096093229cd940b57a3323df?Expires=1711324800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=aR06x5js0qsIHgtRkSOvA~ctAsgN8symfzsaysXfubeFHMwjirpytd8OY9LnTBbtVAhDMT-hGQD4HBVcRls15Wc0NY2RvsBRKajOQpqwxhJYAUAX1PCCJFr-mWo8zkQm-gUMhv0kJnjmSwzl4X41rZP6FYIeFyP~RVJvAc20F4oxs1dd6QNTnZHBWYm92xH8AkRn5ZOqwrDRlPHeXouYjTnn19e5F3HzWevOervUPCMJKPDDLw3rQN~ZEJE9fMaj1ncYLntwIsik1CC5VqMCn8KXkJA1QcDL1iL9U3h4NRwPEA1F3cSK~PJgdOn87hNCnuobm8dNOOhtv6re4rsKfw__'
-  }
-];
-
 
 const headerItem = ref({
   title: `Привет, ${userInformationStore.store.value?.name}!`,
@@ -115,7 +103,7 @@ const showHistory = ref<boolean>(false);
               <SearchInput class="mb-4"></SearchInput>
             </div>
             <div class="gap-3 flex pl-4 w-full overflow-scroll hide-scrollbar">
-            <Image @click="showHistory=true; activeItem=index" class="w-[154px] h-[88px] flex-shrink-0 rounded-2xl" :url="item.url" v-for="(item, index) in discountStore.data"></Image>
+            <Image @click="showHistory=true; activeItem=index" class="w-[154px] h-[88px] flex-shrink-0 rounded-2xl" :url="index.toString()" v-for="(_, index) in discountStore.data"></Image>
         </div>
         </div>
         <StickedScrollTab :categories="productsGroupedByCategory"></StickedScrollTab>

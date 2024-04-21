@@ -17,7 +17,7 @@ defineProps(['histories']);
     activeItem.value -= 1;
   }
   function next() {
-    if (activeItem.value == histories.length - 1) {
+    if (activeItem.value == 1) {
       return;
     }
     activeItem.value += 1;
