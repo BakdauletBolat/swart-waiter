@@ -29,7 +29,7 @@ defineProps<{
       <StarIcon @click="review=index" class="cursor-pointer" v-for="index in count"
                 width="34"
                 height="34"
-                :color="index <= review ? '#FFB800' : '#E6E6E9'"></StarIcon>
+                :color="index <= review! ? '#FFB800' : '#E6E6E9'"></StarIcon>
     </div>
   </article>
 

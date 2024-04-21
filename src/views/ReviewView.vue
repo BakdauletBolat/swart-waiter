@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import {useRoute} from "vue-router";
 import {onMounted, ref} from "vue";
 import {loadOrder, orderStore} from "../stores/orderStore.ts";
 import ReviewComponent from "../ReviewComponent.vue";
 import {loadRestaurant, restorantStore} from "../stores/restorantStore.ts";
 import {getFirstElemOrUndefined} from "../utils";
 
-const route = useRoute();
 
 onMounted(()=>{
   loadOrder();
