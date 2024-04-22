@@ -104,7 +104,7 @@ export const otherProducts = computed<any | undefined>(()=>{
         return orderStore.products.reduce((groups, item) => ({
             ...groups,
             //@ts-ignore
-            [item.included.customer.attributes.uuid]: [...(groups[item.included.customer.attributes.uuid!] || []), item]
+            [item.included.customer?.attributes.uuid]: [...(groups[item.included.customer?.attributes.uuid!] || []), item]
         }), {});
     }
 });
