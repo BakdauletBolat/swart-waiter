@@ -8,7 +8,7 @@ import RunningIcon from "../assets/svg/RunningIcon.vue";
 import {ChevronRightIcon} from "@heroicons/vue/24/outline";
 import Button from "../components/Button/index.ts";
 import {onMounted} from "vue";
-import {loadOrder, loadOrderProducts, orderStore} from "../stores/orderStore.ts";
+import {customerProducts, loadOrder, loadOrderProducts, orderStore, otherProducts} from "../stores/orderStore.ts";
 //@ts-ignore
 import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
 import Image from '../components/Image';
@@ -20,6 +20,7 @@ import WaiterCard from "../assets/svg/WaiterCard.vue";
 import {instance} from "../api";
 import {useRouter} from "vue-router";
 import SVGBasketIcon from "../assets/svg/SVGBasketIcon.vue";
+import userInformationStore from "../stores/userInformationStore.ts";
 
 const myBottomSheet = ref(null);
 const router = useRouter();
@@ -64,6 +65,17 @@ function navigateMenu() {
   router.push({
     name: 'menu'
   });
+}
+
+
+function getNameByUUID(uuid: string) {
+    let name = '';
+    orderStore.products.forEach((item)=>{
+      if (item.included.customer.attributes.uuid == uuid) {
+        name = item.included.customer.attributes.full_name;
+      }
+    });
+    return name;
 }
 
 
@@ -142,8 +154,9 @@ function navigateMenu() {
       <div><span class="text-[#9999A1]">Официант </span>Мария</div>
     </section>
     <h2 class="font-medium my-4">Ваш заказ</h2>
+
     <section class="flex flex-col gap-2">
-      <article v-for="orderItem in orderStore.products" class="bg-black-10 rounded-2xl p-3 flex gap-4">
+      <article v-for="orderItem in customerProducts" class="bg-black-10 rounded-2xl p-3 flex gap-4">
         <div class="w-[82px] h-[82px] object-cover flex-shrink-0 rounded-lg overflow-hidden">
         <Image :url="getFirstElemOrUndefined(orderItem.included.product.attributes.images)"></Image>
         </div>
@@ -171,10 +184,46 @@ function navigateMenu() {
         </div>
       </article>
     </section>
+
     <section class="mt-4">
       <h2 class="font-medium">Комментарий к заказу</h2>
       <p class="text-sm text-[#9999A1]">Принесите пожалуйста салфетки и какие нибудь дополнительные приборы</p>
     </section>
+    <div class="w-full bg-[#E6E6E9] h-[1px] my-4"></div>
+    <div v-for="(item,key) in otherProducts" class="opacity-50">
+      <div v-if="key.toString()!=userInformationStore.store.value!.uuid">
+        <h2 class="font-medium my-4">{{getNameByUUID(key.toString())}}</h2>
+        <section class="flex flex-col gap-2">
+          <article v-for="orderItem in item" class="bg-black-10 rounded-2xl p-3 flex gap-4">
+            <div class="w-[82px] h-[82px] object-cover flex-shrink-0 rounded-lg overflow-hidden">
+              <Image :url="getFirstElemOrUndefined(orderItem.included.product.attributes.images)"></Image>
+            </div>
+            <div class="w-full">
+              <header class="text-sm flex justify-between">
+                <h3>{{ orderItem.included!.product.attributes.name.ru }}</h3>
+                <p class="text-xs">х{{orderItem.attributes.quantity}}</p>
+              </header>
+              <div class="flex justify-between items-center mt-2">
+                <div class="flex gap-1">
+                  <OrderStatus :time="'18:55'" :status="1" :active-status="orderItem.attributes.status.value">
+                    <OrderIcon color="black" width="16" height="16"></OrderIcon>
+                  </OrderStatus>
+                  <div class="h-[2px] mt-4 rounded min-w-[22px] bg-black"></div>
+                  <OrderStatus :time="'19:00'"  :status="2" :active-status="orderItem.attributes.status.value">
+                    <CookingIcon color="black" width="16" height="16"></CookingIcon>
+                  </OrderStatus>
+                  <div class="h-[2px] mt-4 rounded min-w-[22px] bg-black"></div>
+                  <OrderStatus :status="3" :active-status="orderItem.attributes.status.value">
+                    <RunningIcon color="black"  width="16" height="16"></RunningIcon>
+                  </OrderStatus>
+                </div>
+                <div>{{orderItem.attributes.price}} ₸</div>
+              </div>
+            </div>
+          </article>
+        </section>
+      </div>
+    </div>
     <section class="mt-4">
       <h2 class="font-medium pt-4">Ваш заказ</h2>
       <div class="flex justify-between mt-4 text-sm">

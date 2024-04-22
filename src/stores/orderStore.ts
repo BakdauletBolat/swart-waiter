@@ -1,6 +1,7 @@
-import {reactive} from "vue";
+import {computed, reactive} from "vue";
 import {instance} from "../api/axios.ts";
 import {Product} from "../api";
+import userInformationStore from "./userInformationStore.ts";
 
 interface IOrder {
     type: string;
@@ -21,6 +22,22 @@ interface IOrder {
         include: any[];
         custom: any[];
     };
+}
+
+interface Customer {
+    type: string;
+    id: number;
+    attributes: {
+        full_name: string;
+        phone: string | null;
+        uuid: string;
+        data: {
+            ip: string;
+            device: string;
+            browser: string;
+        };
+    };
+    included: any[] | null;
 }
 
 
@@ -45,6 +62,7 @@ interface IOrderProduct {
     attributes: IOrderProductAttributes;
     included: {
         product: Product;
+        customer: Customer
     };
 }
 
@@ -62,26 +80,42 @@ export const orderStore = reactive<IOrderStore>({
 
 
 
-// export const customerBasket = computed<ICardItem[] | undefined>(()=>{
-//     if (basket.value.data == undefined || basket.value.data!.length <= 0) {
-//         return undefined;
-//     }
-//     else {
-//         let customersCart: ICardItem[] = [];
-//         basket.value.data.forEach((item) => {
-//             if (item.included.customer?.attributes.uuid == userInformationStore.store.value?.uuid) {
-//                 customersCart.push(item);
-//             }
-//         });
-//         return customersCart;
-//     }
-// });
+export const customerProducts = computed<IOrderProduct[] | undefined>(()=>{
+    if (orderStore.products == undefined || orderStore.products!.length <= 0) {
+        return [];
+    }
+    else {
+        let customersCart: IOrderProduct[] = [];
+        orderStore.products.forEach((item) => {
+            if (item.included.customer?.attributes.uuid == userInformationStore.store.value?.uuid) {
+                customersCart.push(item);
+            }
+        });
+        return customersCart;
+    }
+});
+
+
+export const otherProducts = computed<any | undefined>(()=>{
+    if (orderStore.products == undefined || orderStore.products!.length <= 0) {
+        return [];
+    }
+    else {
+        return orderStore.products.reduce((groups, item) => ({
+            ...groups,
+            //@ts-ignore
+            [item.included.customer.attributes.uuid]: [...(groups[item.included.customer.attributes.uuid!] || []), item]
+        }), {});
+    }
+});
+
+
 
 
 
 export function loadOrderProducts() {
     orderStore.isLoadingOrderProducts = true;
-    instance.get('/api/v1/order/products/customer?include=product')
+    instance.get('/api/v1/order/products/customer?include=product,customer')
         .then(res=>orderStore.products=res.data.data)
         .finally(()=>orderStore.isLoadingOrderProducts=false);
 }
