@@ -1,5 +1,7 @@
 import {reactive} from "vue";
-import {instance, Product} from "../api";
+import {instance} from "../api/axios.ts";
+import {Product} from "../api";
+
 interface IOrder {
     type: string;
     id: number;

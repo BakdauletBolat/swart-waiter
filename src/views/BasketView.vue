@@ -9,6 +9,7 @@ import OrderIcon from "../assets/svg/OrderIcon.vue";
 import {instance} from "../api";
 import userInformationStore from "../stores/userInformationStore.ts";
 import {useRouter} from "vue-router";
+import SVGBasketIcon from "../assets/svg/SVGBasketIcon.vue";
 
 onMounted(()=>{
   loadBasket();
@@ -16,6 +17,12 @@ onMounted(()=>{
 
 const comment = ref('Test Comment');
 const router = useRouter();
+
+function navigateMenu() {
+  router.push({
+    name: 'menu'
+  });
+}
 
 function createOrder() {
   instance.post('/api/v1/order/customer', {
@@ -35,15 +42,24 @@ function createOrder() {
 <template>
   <AppHeader :show-menu="false" :back-route="{name: 'menu'}" title="Корзина"></AppHeader>
   <div class="px-4">
-    <h2 class="font-medium">Ваш заказ</h2>
-    <div class="mt-4 flex flex-col gap-2">
-      <BasketCard :good="good" v-for="good in customerBasket"></BasketCard>
+    <div v-if="customerBasket.length > 0">
+      <h2 class="font-medium">Ваш заказ</h2>
+      <div class="mt-4 flex flex-col gap-2">
+        <BasketCard :good="good" v-for="good in customerBasket"></BasketCard>
+      </div>
+    </div>
+    <div class="min-h-screen absolute left-0 top-0 flex w-full justify-center items-center" v-else>
+      <div class="flex justify-center flex-col items-center">
+          <SVGBasketIcon width="202" height="202"></SVGBasketIcon>
+          <h2 class="font-medium text-2xl mt-[60px] text-center">Корзина пустая</h2>
+          <p class="text-sm text-[#9999A1] mt-[24px] text-center max-w-[220px]">Выберите блюда из меню и они появятся в корзине</p>
+      </div>
     </div>
   </div>
   <div>
     <transition name="fade">
       <div class="px-4 w-full bottom-[40px] fixed  z-[999]">
-        <Button classes="items-center" @click="createOrder" class="w-full !rounded-2xl !p-4">
+        <Button v-if="customerBasket.length>0" classes="items-center" @click="createOrder" class="w-full !rounded-2xl !p-4">
           <template #prepend>
             <OrderIcon color="white" width="24" height="24"></OrderIcon>
           </template>
@@ -59,6 +75,9 @@ function createOrder() {
           <template #append>
             <ChevronRightIcon class="w-6 h-6 text-white"></ChevronRightIcon>
           </template>
+        </Button>
+        <Button v-else classes="items-center" @click="navigateMenu" class="w-full flex justify-center !rounded-2xl !p-4">
+          В меню
         </Button>
       </div>
     </transition>

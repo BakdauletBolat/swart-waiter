@@ -4,3 +4,7 @@ export function getFirstElemOrUndefined<T>(array: any[]): T | undefined {
     }
     return undefined;
 }
+
+export function checkTTL(datetime: string) {
+    return new Date().getTime() <= Date.parse(datetime);
+}

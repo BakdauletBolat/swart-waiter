@@ -1,4 +1,4 @@
-import {instance} from "./index.ts";
+import {GetCasingData} from "../utils/getCasingData.ts";
 
 export interface  IRestoranAttributes {
     name:  string;
@@ -13,6 +13,6 @@ export interface IRestoran {
     attributes:IRestoranAttributes
 }
 
-export const getRestoran = () => {
-    return instance.get<IRestoran>('/api/v1/restaurants/me')
+export const  getRestoran = async () => {
+    return await new GetCasingData().getData('/api/v1/restaurants/me', 'restoran_key');
 }

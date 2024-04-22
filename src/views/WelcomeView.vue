@@ -28,9 +28,9 @@ onMounted(async ()=>{
 
   getRestoran().then(res=>{
     welcomeProps.value = {
-      title: res.data.attributes.name,
-      image: getFirstElemOrUndefined<string>(res.data.attributes.attachments),
-      description: res.data.attributes.description
+      title: res.attributes.name,
+      image: getFirstElemOrUndefined<string>(res.attributes.attachments),
+      description: res.attributes.description
     }
   });
 });

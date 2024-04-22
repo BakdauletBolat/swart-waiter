@@ -6,6 +6,7 @@ import Modal from "../Modal/index.ts";
 //@ts-ignore
 import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
 import WaiterCallComponent from "../WaiterCallComponent.vue";
+import userInformationStore from "../../stores/userInformationStore.ts";
 const route = useRoute();
 const router = useRouter();
 
@@ -16,12 +17,12 @@ const navigateTo = (to: RouteLocationRaw) => {
 
 </script>
 <template>
-  <vue-bottom-sheet ref="showWaiterCall">
+  <vue-bottom-sheet  ref="showWaiterCall">
       <WaiterCallComponent></WaiterCallComponent>
   </vue-bottom-sheet>
   <Modal v-model="showModal">
     <div class="p-3">
-      <div class="p-4">Привет, Мария!</div>
+      <div class="p-4">Привет, {{userInformationStore.store.value!.name}}</div>
       <div
           :class="{
             'bg-black-100 text-white': route.name == navigation.name

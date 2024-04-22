@@ -1,7 +1,7 @@
 import {computed, ref} from "vue";
-import {instance} from "../api";
 import userInformationStore from "./userInformationStore.ts";
 import {isLoading} from "./index.ts";
+import {instance} from "../api";
 
 
 type AddToCardType = {
@@ -65,9 +65,9 @@ export const basket = ref<ICartData>({
 
 
 
-export const customerBasket = computed<ICardItem[] | undefined>(()=>{
+export const customerBasket = computed<ICardItem[]>(()=>{
     if (basket.value.data == undefined || basket.value.data!.length <= 0) {
-        return undefined;
+        return [];
     }
     else {
         let customersCart: ICardItem[] = [];
@@ -95,6 +95,7 @@ export const totalAmount = computed(()=>{
 });
 
 export const checkInBasket = (id: number) => {
+    console.log(id);
     if (customerBasket.value != undefined) {
         const index = customerBasket.value?.findIndex(item=>item.included.product?.id == id);
         if (index != -1) {
@@ -112,12 +113,15 @@ export const getFromBasket = (id: number) => {
 
 export function addOrCreate(data: AddToCardType) {
     basket.value.addCardLoading = true;
+    isLoading.value = true;
     instance.post('/api/v1/carts/customer', data).then((_)=>{
         instance.get('/api/v1/carts/customer?include=customer,product').then(res=>{
             basket.value.data = res.data.data;
         }).catch(e=>console.log(e,  'asdas'));
-    }).catch((e)=>console.log(e)).finally(()=>
-    basket.value.addCardLoading=false);
+    }).catch((e)=>console.log(e)).finally(()=>{
+        basket.value.addCardLoading=false;
+        isLoading.value = false;
+    });
 }
 
 export function removeFromBasket(pk: number) {

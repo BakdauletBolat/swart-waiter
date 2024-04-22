@@ -27,10 +27,7 @@
               uuid: userInformationStore.store.value!.uuid,
             })">
                 <div class="cursor-pointer w-full bg-white text-center flex justify-center items-center py-2 rounded-2xl">
-                  <div v-if="basket.addCardLoading">
-                    <Spinner class="w-6 h-6"></Spinner>
-                  </div>
-                  <div v-else>{{ food.attributes.price }} ₸</div>
+                  <div>{{ food.attributes.price }} ₸</div>
                 </div>
             </section>
         </div>
@@ -40,9 +37,8 @@
 import Image from '../Image';
 import {Product} from "../../api";
 import {getFirstElemOrUndefined} from "../../utils";
-import {addOrCreate, basket} from "../../stores";
+import {addOrCreate} from "../../stores";
 import userInformationStore from "../../stores/userInformationStore.ts";
-import Spinner from "../Spinner.vue";
 import {checkInBasket, getFromBasket} from "../../stores/basketStore.ts";
 import ChangeBasketCardComponent from "../BasketCard/ChangeBasketCardComponent.vue";
 defineProps<{food: Product}>();

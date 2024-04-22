@@ -33,11 +33,11 @@ const headerItem = ref({
 onMounted(()=>{
   getRestoran().then((res)=>{
     headerItem.value.store = {
-      name: res.data.attributes.name,
-      description: res.data.attributes.description,
-      address: res.data.attributes.address
+      name: res.attributes.name,
+      description: res.attributes.description,
+      address: res.attributes.address
     }
-    headerItem.value.url = getFirstElemOrUndefined<string>(res.data.attributes.attachments)!;
+    headerItem.value.url = getFirstElemOrUndefined<string>(res.attributes.attachments)!;
   }).catch(e=>{
     console.log(e);
   });

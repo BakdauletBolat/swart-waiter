@@ -7,6 +7,7 @@ import FoodDetailView from "../views/FoodDetailView.vue"
 import OrderView from "../views/OrderView.vue";
 import PaymentView from "../views/PaymentView.vue";
 import ReviewView from "../views/ReviewView.vue";
+import ReceiptView from "../views/ReceiptView.vue";
 export const routes = [
 
     {
@@ -62,5 +63,10 @@ export const routes = [
         path: '/review/:orderId',
         name: 'review-view',
         component: ReviewView
+    },
+    {
+        path: '/receipt',
+        name: 'receipt-view',
+        component: ReceiptView
     }
 ];

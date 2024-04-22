@@ -10,6 +10,14 @@ import ClockIcon from "../assets/svg/ClockIcon.vue";
 import Button from '../components/Button';
 import FoodCard from "../components/FoodCard";
 import {MinusIcon, PlusIcon} from "@heroicons/vue/24/outline";
+import {
+  addOrCreate,
+  changeQuantityFromBasket,
+  checkInBasket,
+  getFromBasket,
+  removeFromBasket
+} from "../stores/basketStore.ts";
+import userInformationStore from "../stores/userInformationStore.ts";
 
 const product = ref<Product>();
 const isLoading = ref<boolean>(false);
@@ -26,12 +34,22 @@ onMounted(()=>{
 
 });
 
+function changeQuantity(quantity: number) {
+  if (quantity <= 0) {
+    removeFromBasket(product.value!.id);
+  }
+  changeQuantityFromBasket({
+    cart_id: getFromBasket(product.value!.id).id,
+    quantity: quantity
+  })
+}
+
 </script>
 
 <template>
   <main v-if="product">
     <section class="h-[280px] w-full relative overflow-hidden rounded-bl-2xl rounded-br-2xl">
-      <img class="w-full h-full object-cover" :src="getFirstElemOrUndefined<string>(product!.attributes.images)">
+      <img alt="Photo" class="w-full h-full object-cover" :src="getFirstElemOrUndefined<string>(product!.attributes.images)">
       <RouterLink :to="{
         name: 'menu'
       }" class="cursor-pointer bg-black-100 p-2 absolute rounded-2xl overflow-hidden top-3 right-2">
@@ -91,12 +109,16 @@ onMounted(()=>{
     <div class="h-[140px]"></div>
     <div class="fixed w-full rounded-tl-2xl rounded-tr-2xl overflow-hidden top-shadow bottom-0 tr-bg pb-[40px] pt-[10px] px-4">
       <div class="w-full flex">
-        <div class="flex gap-[18px] items-center w-full">
-          <div class="p-2 bg-black-100 rounded-2xl"><MinusIcon class="w-6 h-6 text-white"></MinusIcon></div>
-          <span>1</span>
-          <div class="p-2 bg-black-100 rounded-2xl"><PlusIcon class="w-6 h-6 text-white"></PlusIcon></div>
+        <div v-if="checkInBasket(product.id)" class="flex gap-[18px] items-center w-full">
+          <div @click="changeQuantity(getFromBasket(product.id).attributes.quantity - 1)" class="cursor-pointer p-2 bg-black-100 rounded-2xl"><MinusIcon class="w-6 h-6 text-white"></MinusIcon></div>
+          <span>{{getFromBasket(product.id).attributes.quantity}}</span>
+          <div @click="changeQuantity(getFromBasket(product.id).attributes.quantity + 1)" class="cursor-pointer p-2 bg-black-100 rounded-2xl"><PlusIcon class="w-6 h-6 text-white"></PlusIcon></div>
         </div>
-        <Button>
+        <Button class="w-full" @click="addOrCreate({
+              product_id: product.id,
+              quantity: 1,
+              uuid: userInformationStore.store.value!.uuid,
+            })">
           <div class="flex gap-2 flex-nowrap">
             <span class="text-nowrap">{{product.attributes.price}} ₸</span>
             <span class="h-6 w-[1px] bg-white"></span>

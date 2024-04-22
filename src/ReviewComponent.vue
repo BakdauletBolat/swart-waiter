@@ -24,11 +24,13 @@ defineProps<{
         }"
           class="w-[60px] h-[60px] rounded-full" :url="imageUrl"></Image>
     </div>
-    <h2>{{title}}</h2>
+    <h2 :class="{
+      'text-[10px]': !isActive
+    }">{{title}}</h2>
     <div class="flex gap-2">
       <StarIcon @click="review=index" class="cursor-pointer" v-for="index in count"
-                width="34"
-                height="34"
+                :width="isActive ? 34 : 24"
+                :height="isActive ? 34 : 24"
                 :color="index <= review! ? '#FFB800' : '#E6E6E9'"></StarIcon>
     </div>
   </article>

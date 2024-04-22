@@ -7,6 +7,6 @@ export const restorantStore = ref<IRestoran | null>(null);
 
 export function loadRestaurant() {
     getRestoran().then((res)=>{
-        restorantStore.value = res.data;
+        restorantStore.value = res;
     }).catch((e)=>console.log(e));
 }

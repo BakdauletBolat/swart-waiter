@@ -17,7 +17,7 @@
 
           <Button :class="{
                 'justify-center': isLoading
-                }" container-classes="!justify-center" :loading="isLoading" @click="next" class="mt-8 w-full flex text-center" >Сохранить</Button>
+                }" container-classes="!justify-center" :loading="isLoading" @click="next" class="mt-8 w-full flex justify-center text-center" >Сохранить</Button>
         </div>
     </div>
 </template>

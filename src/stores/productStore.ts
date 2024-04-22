@@ -1,5 +1,6 @@
 import {instance, Product} from "../api";
 import {reactive} from "vue";
+import {GetCasingData} from "../utils/getCasingData.ts";
 
 export interface Category {
     id: number;
@@ -25,7 +26,7 @@ export function getProducts() {
 }
 
 export function getCategories() {
-    return instance.get<CategoryData>('/api/v1/categories/tree');
+    return new GetCasingData().getData('/api/v1/categories/tree', 'categories');
 }
 
 export interface IProductStore {
@@ -52,6 +53,6 @@ export function loadProducts() {
 
 export function loadCategories() {
     getCategories().then((res=>{
-        menuStore.categories = res.data;
+        menuStore.categories = res;
     }));
 }

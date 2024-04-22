@@ -1,5 +1,5 @@
 import {reactive} from "vue";
-import {instance} from "../api";
+import {GetCasingData} from "../utils/getCasingData.ts";
 
 interface IDiscount {
     type: string;
@@ -23,9 +23,7 @@ export const discountStore = reactive<IDiscountStore>({
 
 
 export function loadDiscounts() {
-    instance.get<{
-        data: IDiscount[]
-    }>('/api/v1/discounts').then((response)=>{
-        discountStore.data = response.data.data
-    })
+    new GetCasingData().getData('/api/v1/discounts', 'discounts').then((response)=>{
+        discountStore.data = response.data
+    });
 }

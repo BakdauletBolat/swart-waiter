@@ -19,6 +19,7 @@ import CashIcon from "../assets/svg/CashIcon.vue";
 import WaiterCard from "../assets/svg/WaiterCard.vue";
 import {instance} from "../api";
 import {useRouter} from "vue-router";
+import SVGBasketIcon from "../assets/svg/SVGBasketIcon.vue";
 
 const myBottomSheet = ref(null);
 const router = useRouter();
@@ -56,6 +57,12 @@ function putPaymentType() {
   }).catch(e=>console.log(e))
       .finally(()=>{
     isLoading.value = false;
+  });
+}
+
+function navigateMenu() {
+  router.push({
+    name: 'menu'
   });
 }
 
@@ -129,7 +136,7 @@ function putPaymentType() {
       </div>
     </div>
   </vue-bottom-sheet>
-  <main class="px-4">
+  <main class="px-4" v-if="orderStore.products.length > 0">
     <section class="text-xs bg-black-10 p-3 flex flex-col items-center justify-center rounded-2xl">
       <div><span class="text-[#9999A1]">Номер заказа</span> ТН2353 </div>
       <div><span class="text-[#9999A1]">Официант </span>Мария</div>
@@ -182,7 +189,7 @@ function putPaymentType() {
         <div>Сумма вашего заказа</div>
         <p>{{orderStore.order?.attributes.computation.summa}} ₸</p>
       </div>
-      <div class="dashed-box h-[1px] mt-4"></div>
+      <div class="dashed-border-gray"></div>
       <div class="flex text-[20px] mt-4 font-medium justify-between">
         <div>Всего за стол</div>
         <div>{{orderStore.order?.attributes.computation.total}} ₸</div>
@@ -192,10 +199,19 @@ function putPaymentType() {
       </div>
     </section>
   </main>
+  <div v-else>
+    <div class="min-h-screen absolute left-0 top-0 flex w-full justify-center items-center">
+      <div class="flex justify-center flex-col items-center">
+        <SVGBasketIcon width="202" height="202"></SVGBasketIcon>
+        <h2 class="font-medium text-2xl mt-[60px] text-center">Корзина пустая</h2>
+        <p class="text-sm text-[#9999A1] mt-[24px] text-center max-w-[220px]">Выберите блюда из меню и они появятся в корзине</p>
+      </div>
+    </div>
+  </div>
   <div>
     <transition name="fade">
       <div class="px-4 w-full bottom-[40px] fixed  z-[999]">
-        <Button @click="open" class="w-full !rounded-2xl !p-4">
+        <Button v-if="orderStore.products.length > 0" @click="open" class="w-full !rounded-2xl !p-4">
           <template #prepend>
             <OrderIcon color="white" width="24" height="24"></OrderIcon>
           </template>
@@ -211,6 +227,9 @@ function putPaymentType() {
           <template #append>
             <ChevronRightIcon class="w-6 h-6 text-white"></ChevronRightIcon>
           </template>
+        </Button>
+        <Button v-else @click="navigateMenu">
+          В меню
         </Button>
       </div>
     </transition>

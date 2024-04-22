@@ -9,7 +9,7 @@
         <input @input="onInput" :class="{
           'border-red-100': error,
           'border-black': isFocus
-        }" @focus="toggleFocus(true)" @blur="toggleFocus(false)" :id="placeholder" v-model="model" class="border focus:outline-none w-full px-4 py-3 rounded-lg" />
+        }" @focus="toggleFocus(true)" @blur="toggleFocus(false)" :id="placeholder" v-model="model" class="border focus:outline-none w-full px-4 py-3 rounded-2xl" />
     </div>
 </template>
 <script lang="ts" setup>
