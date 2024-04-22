@@ -71,7 +71,11 @@ function navigateMenu() {
 function getNameByUUID(uuid: string) {
     let name = '';
     orderStore.products.forEach((item)=>{
-      if (item.included.customer.attributes.uuid == uuid) {
+      if (item.attributes.waiter_id != null && item.attributes.waiter_id == parseInt(uuid)) {
+        //@ts-ignore
+        name = item.included.waiter.attributes.first_name;
+      }
+      else if (item.included.customer?.attributes.uuid == uuid) {
         name = item.included.customer.attributes.full_name;
       }
     });

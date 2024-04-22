@@ -52,6 +52,8 @@ interface IOrderProductAttributes {
     product_id: number;
     price: number;
     quantity: number;
+    waiter_id: number;
+    customer_id: number;
     comment: string | null;
     status: Status;
 }
@@ -101,11 +103,19 @@ export const otherProducts = computed<any | undefined>(()=>{
         return [];
     }
     else {
-        return orderStore.products.reduce((groups, item) => ({
+        const waiterProducts = orderStore.products.filter((item)=>item.attributes.waiter_id != null);
+        const customerProducts = orderStore.products.filter((item)=>item.attributes.customer_id != null);
+        const cP = customerProducts.reduce((groups, item) => ({
             ...groups,
             //@ts-ignore
-            [item.included.customer?.attributes.uuid]: [...(groups[item.included.customer?.attributes.uuid!] || []), item]
+            [item.included.customer.attributes.uuid]: [...(groups[item.included.customer.attributes.uuid!] || []), item]
         }), {});
+        const wP = waiterProducts.reduce((groups, item) => ({
+            ...groups,
+            //@ts-ignore
+            [item.included.waiter.id]: [...(groups[item.included.waiter.id] || []), item]
+        }), {});
+        return {...cP, ...wP};
     }
 });
 
@@ -115,7 +125,7 @@ export const otherProducts = computed<any | undefined>(()=>{
 
 export function loadOrderProducts() {
     orderStore.isLoadingOrderProducts = true;
-    instance.get('/api/v1/order/products/customer?include=product,customer')
+    instance.get('/api/v1/order/products/customer?include=product,customer,waiter')
         .then(res=>orderStore.products=res.data.data)
         .finally(()=>orderStore.isLoadingOrderProducts=false);
 }
