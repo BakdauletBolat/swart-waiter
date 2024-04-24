@@ -1,7 +1,7 @@
 import axios, {InternalAxiosRequestConfig} from 'axios';
 
 export const instance = axios.create({
-    baseURL: 'https://smartwaiter-backend.kz',
+    baseURL: 'https://5second.kz',
     headers: {
         "content-type": "application/json",
         "accept": "application/json"
