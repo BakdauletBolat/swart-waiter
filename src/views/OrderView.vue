@@ -30,6 +30,11 @@ const open = () => {
   myBottomSheet!.value!.open();
 }
 
+const close = () => {
+  //@ts-ignore
+  myBottomSheet!.value!.close();
+}
+
 
 const activeIndex = ref<number>(1);
 const isLoading = ref<boolean>(false);
@@ -48,6 +53,7 @@ function putPaymentType() {
   instance.put('/api/v1/order/pay/customer', {
     pay: activeIndex.value
   }).then(_=>{
+    close();
     router.push({
       name: 'payment-view',
       params: {

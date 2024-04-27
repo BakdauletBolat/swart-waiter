@@ -9,6 +9,7 @@ import {getRestoran} from "../api";
 import {onMounted, ref} from "vue";
 import {useRoute} from "vue-router";
 import {getFirstElemOrUndefined} from "../utils";
+import {start} from "../api/pusher.ts";
 
 const route = useRoute();
 
@@ -23,7 +24,8 @@ onMounted(async ()=>{
     localStorage.setItem('multi_tenant_domain_name', route.query.host!.toString()!);
   }
   if (route.query.hash != null) {
-    localStorage.setItem('table', route.query.hash!.toString())
+    localStorage.setItem('table', route.query.hash!.toString().replace(' ', '+'));
+    start();
   }
 
   getRestoran().then(res=>{

@@ -17,9 +17,9 @@ const navigateTo = (to: RouteLocationRaw) => {
 
 </script>
 <template>
-  <vue-bottom-sheet  ref="showWaiterCall">
+    <vue-bottom-sheet ref="showWaiterCall">
       <WaiterCallComponent></WaiterCallComponent>
-  </vue-bottom-sheet>
+    </vue-bottom-sheet>
   <Modal v-model="showModal">
     <div class="p-3">
       <div class="p-4">Привет, {{userInformationStore.store.value!.name}}</div>

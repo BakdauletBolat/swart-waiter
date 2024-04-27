@@ -60,7 +60,7 @@ function getNameByUUID(uuid: string) {
       </table>
     </div>
     <div class="dashed-border-gray"></div>
-    <div v-if="orderStore.order">
+    <div v-if="orderStore?.order">
       <div class="flex text-sm justify-between mt-4">
         <span>Обслуживание 10%</span>
         <span>{{ orderStore?.order?.attributes.computation.service }} ₸</span>
@@ -81,6 +81,7 @@ function getNameByUUID(uuid: string) {
       Скачать чек
     </Button>
   </div>
+  <div class="h-[100px]"></div>
 </main>
 </template>
 

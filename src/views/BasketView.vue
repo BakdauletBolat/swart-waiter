@@ -10,6 +10,7 @@ import {instance} from "../api";
 import userInformationStore from "../stores/userInformationStore.ts";
 import {useRouter} from "vue-router";
 import SVGBasketIcon from "../assets/svg/SVGBasketIcon.vue";
+import OtherOrders from "../components/OtherOrders.vue";
 
 onMounted(()=>{
   loadBasket();
@@ -47,6 +48,7 @@ function createOrder() {
       <div class="mt-4 flex flex-col gap-2">
         <BasketCard :good="good" v-for="good in customerBasket"></BasketCard>
       </div>
+      <OtherOrders></OtherOrders>
     </div>
     <div class="min-h-screen absolute left-0 top-0 flex w-full justify-center items-center" v-else>
       <div class="flex justify-center flex-col items-center">

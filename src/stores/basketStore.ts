@@ -80,6 +80,28 @@ export const customerBasket = computed<ICardItem[]>(()=>{
     }
 });
 
+
+export const otherBaskets = computed<any | undefined>(()=>{
+    if (basket.value.data == undefined || basket.value.data.length <= 0) {
+        return [];
+    }
+    else {
+        const waiterProducts = basket.value.data.filter((item)=>item.attributes.waiter_id != null);
+        const customerProducts = basket.value.data.filter((item)=>item.attributes.customer_id != null);
+        const cP = customerProducts.reduce((groups, item) => ({
+            ...groups,
+            //@ts-ignore
+            [item.included.customer.attributes.uuid]: [...(groups[item.included.customer.attributes.uuid!] || []), item]
+        }), {});
+        const wP = waiterProducts.reduce((groups, item) => ({
+            ...groups,
+            //@ts-ignore
+            [item.included.waiter.id]: [...(groups[item.included.waiter.id] || []), item]
+        }), {});
+        return {...cP, ...wP};
+    }
+});
+
 export const isHaveCart = computed(()=>customerBasket.value != undefined && customerBasket.value?.length > 0);
 
 export const totalAmount = computed(()=>{
@@ -95,7 +117,6 @@ export const totalAmount = computed(()=>{
 });
 
 export const checkInBasket = (id: number) => {
-    console.log(id);
     if (customerBasket.value != undefined) {
         const index = customerBasket.value?.findIndex(item=>item.included.product?.id == id);
         if (index != -1) {

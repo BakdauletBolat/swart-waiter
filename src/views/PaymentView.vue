@@ -30,8 +30,8 @@ function navigateTo() {
 </script>
 
 <template>
-  <main class="bg-[#F4F4F6] min-h-screen p-4 flex flex-col justify-center items-center">
-    <div class="bg-white flex flex-col items-center p-4 w-full rounded-3xl">
+  <main class="bg-[#F4F4F6] p-4 min-h-screen flex flex-col justify-center items-center">
+    <div class="bg-white flex h-full flex-col items-center p-4 w-full rounded-3xl">
       <div class="flex items-center flex-col">
         <h2>Способ оплаты: </h2>
         <h2 class="text-[#FFB800]">{{paymentsTypes[parseInt(route.params.pay!.toString())-1].name}}</h2>

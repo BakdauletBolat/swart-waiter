@@ -4,9 +4,11 @@ import App from './App.vue'
 import { createRouter, createWebHistory } from 'vue-router';
 import { routes } from './routes';
 import userInformationStore from "./stores/userInformationStore.ts";
+import {start} from './api/pusher.ts';
 
-
-
+if (localStorage.getItem('multi_tenant_domain_name') != undefined) {
+    start();
+}
 const app = createApp(App);
 
 
