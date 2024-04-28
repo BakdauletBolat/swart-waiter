@@ -15,7 +15,7 @@ jobs:
         password: ${{ secrets.SERVER_PASSWORD }}
         port: ${{ secrets.SERVER_PORT }}
         script: |
-          cd /var/www/smart-waiter
+          cd /var/www/swart-waiter
           git pull 
           npm install
           npm run build
