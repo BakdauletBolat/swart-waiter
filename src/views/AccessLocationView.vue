@@ -1,34 +1,25 @@
 <template>
-    <div class=" flex justify-center items-center flex-col h-screen w-full">
+    <div class=" flex justify-center items-center flex-col h-screen w-full px-4">
         <div class="max-w-[276px]">
             <div v-if="isLoading" class="flex justify-center">
                 <Spinner class="w-[200px]  border-slate-700 h-[200px]"></Spinner>
             </div>
-            <div v-else>
-                <div v-if="permissionState == 'denied'" class="flex justify-center">
-                    <XCircleIcon class="w-[200px] text-red-400 h-[200px]"></XCircleIcon>
-                </div>
-                <div v-else-if="permissionState == 'granted'" class="flex justify-center">
-                    <CheckCircleIcon class="w-[200px] h-[200px] text-green-400"></CheckCircleIcon>
-                </div>
-                <div v-else class="flex justify-center">
-                    <img :src="BasketImage" />
-                </div>
+            <div v-else class="w-full flex justify-center">
+                <NotLocationAccessSVG></NotLocationAccessSVG>
             </div>
-            <h2 class="mt-[60px] text-[24px] font-medium text-center">Получить геолокацию</h2>
-            <p class="text-[#9999A1] text-center mt-[24px]">{{ errorValue }}</p>
-            <p class="text-[#9999A1] text-center mt-[24px]">Для работы сервиса Smart Waiter нужно геолокация</p>
+            <h2 class="mt-4 font-medium text-center">Разрешите сайту использовать вашу геопозицию</h2>
+            <p class="text-[#9999A1] text-sm text-center mt-2">Для начала работы необходимо предоставить доступ к вашей геопозиции</p>
         </div>
+      <Button @click="navigate" class="flex mt-[32px] justify-center w-full">Повторить попытку</Button>
     </div>
 </template>
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
-import BasketImage from '../assets/images/basket.png';
-import { XCircleIcon, CheckCircleIcon } from '@heroicons/vue/24/outline';
 import { useRoute, useRouter } from 'vue-router';
 import Spinner from '../components/Spinner.vue';
 import userInformationStore from "../stores/userInformationStore.ts";
-
+import NotLocationAccessSVG from "../assets/svg/NotLocationAccessSVG.vue";
+import Button from '../components/Button';
 const permissionState = ref('promt');
 const router = useRouter();
 const route = useRoute();
@@ -43,6 +34,12 @@ onMounted(() => {
     permissionListener();
 });
 
+function navigate() {
+  router.push({
+    path: route.query.redirect?.toString()
+  });
+}
+
 const onSucces = (pos: any) => {
     permissionState.value = 'granted';
     isLoading.value = false;
@@ -52,9 +49,7 @@ const onSucces = (pos: any) => {
     });
 
     if (route.query.redirect != undefined) {
-        router.push({
-            path: route.query.redirect?.toString()
-        });
+        navigate();
     }
 }
 

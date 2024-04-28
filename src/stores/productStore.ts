@@ -1,4 +1,4 @@
-import {instance, Product} from "../api";
+import {Product} from "../api";
 import {reactive} from "vue";
 import {GetCasingData} from "../utils/getCasingData.ts";
 
@@ -22,7 +22,7 @@ export interface ProductData {
 }
 
 export function getProducts() {
-    return instance.get<ProductData>('/api/v1/products')
+    return new GetCasingData().getData('/api/v1/products', 'products')
 }
 
 export function getCategories() {
@@ -47,7 +47,7 @@ export const menuStore = reactive<IProductStore>({
 export function loadProducts() {
     menuStore.isLoadingProduct = true;
     getProducts().then((res)=>{
-        menuStore.products = res.data;
+        menuStore.products = res;
     }).finally(()=>menuStore.isLoadingProduct = false);
 }
 

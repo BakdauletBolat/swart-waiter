@@ -18,12 +18,18 @@ export const routes = [
     {
         path: '/order',
         name: 'order-view',
-        component: OrderView
+        component: OrderView,
+        meta: {
+            isCoordsRequired: true
+        }
     },
     {
         path: '/basket',
         name: 'basket-view',
-        component: BasketView
+        component: BasketView,
+        meta: {
+            isCoordsRequired: true
+        }
     },
     {
         path: '/menu',

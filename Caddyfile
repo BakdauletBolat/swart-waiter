@@ -1,0 +1,4 @@
+94.131.2.42, smart-waiter.kz {
+    root * /srv
+    file_server
+}
