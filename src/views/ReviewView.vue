@@ -65,7 +65,7 @@ function createReview() {
     <Input @click="activeReview=2" class="mt-[28px]" v-model="comment" placeholder="Оставьте отзыв о ресторане" />
   </div>
   <div class="h-[200px]"></div>
-  <div class="fixed left-0 bottom-[40px] w-full">
+  <div class="fixed left-0 bottom-[20px] w-full">
     <div class="px-4"><Button :loading="isLoading" @click="createReview" class="w-full flex justify-center !rounded-2xl">Отправить</Button></div>
   </div>
 </main>

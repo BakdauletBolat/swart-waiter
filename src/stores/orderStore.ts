@@ -58,13 +58,16 @@ interface IOrderProductAttributes {
     status: Status;
 }
 
-interface IOrderProduct {
+export interface IOrderProduct {
     type: string;
     id: number;
     attributes: IOrderProductAttributes;
     included: {
         product: Product;
-        customer: Customer
+        customer: Customer;
+        statuses: {
+            data: any[]
+        }
     };
 }
 
@@ -82,7 +85,7 @@ export const orderStore = reactive<IOrderStore>({
 
 
 
-export const customerProducts = computed<IOrderProduct[] | undefined>(()=>{
+export const customerProducts = computed<IOrderProduct[]>(()=>{
     if (orderStore.products == undefined || orderStore.products!.length <= 0) {
         return [];
     }
@@ -127,7 +130,7 @@ export const otherProducts = computed<any | undefined>(()=>{
 
 export function loadOrderProducts() {
     orderStore.isLoadingOrderProducts = true;
-    instance.get('/api/v1/order/products/customer?include=product,customer,waiter')
+    instance.get('/api/v1/order/products/customer?include=product,customer,waiter,statuses')
         .then(res=>orderStore.products=res.data.data)
         .finally(()=>orderStore.isLoadingOrderProducts=false);
 }

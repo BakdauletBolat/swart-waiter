@@ -1,6 +1,23 @@
 <script setup lang="ts">
 import Image from './Image';
 import Button from './Button';
+import {onMounted, ref} from "vue";
+import {instance} from "../api";
+import userInformationStore from "../stores/userInformationStore.ts";
+
+const waiter = ref(null);
+
+onMounted(()=>{
+  instance.post('/api/v1/user/notifications/call_waiter', {
+    customer_uuid: userInformationStore.store.value?.uuid
+  }).then(res=>{
+    waiter.value = res.data;
+  })
+});
+
+
+
+
 </script>
 <template>
   <div class="flex justify-center items-center flex-col p-4">

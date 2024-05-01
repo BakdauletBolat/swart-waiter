@@ -76,7 +76,7 @@ function getNameByUUID(uuid: string) {
       </div>
     </div>
   </div>
-  <div class="fixed w-full left-0 bottom-[40px] px-4">
+  <div class="fixed w-full left-0 bottom-[20px] px-4">
     <Button class="w-full flex justify-center">
       Скачать чек
     </Button>

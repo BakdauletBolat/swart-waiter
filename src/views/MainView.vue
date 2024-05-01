@@ -104,7 +104,7 @@ const showHistory = ref<boolean>(false);
         </div>
         </div>
         <StickedScrollTab :categories="productsGroupedByCategory"></StickedScrollTab>
-        <transition name="fade"><div v-if="isHaveCart" class="px-4 w-full bottom-[40px] fixed z-[999]">
+        <transition name="fade"><div v-if="isHaveCart" class="px-4 w-full bottom-[20px] fixed z-[999]">
           <div @click="navigateToBasket" class="p-4 cursor-pointer text-center flex justify-between items-center text-white w-full bg-black-100 rounded-2xl ">
             <div class="flex gap-2 items-center">
               <BasketIcon color="white" width="24" height="24"></BasketIcon>

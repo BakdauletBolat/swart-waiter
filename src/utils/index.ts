@@ -8,3 +8,10 @@ export function getFirstElemOrUndefined<T>(array: any[]): T | undefined {
 export function checkTTL(datetime: string) {
     return new Date().getTime() <= Date.parse(datetime);
 }
+
+export function getNumberWithZero(n: number): string {
+    if (n > 9) {
+        return n.toString()
+    }
+    return `0${n}`
+}

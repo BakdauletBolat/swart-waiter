@@ -11,6 +11,7 @@ import userInformationStore from "../stores/userInformationStore.ts";
 import {useRouter} from "vue-router";
 import SVGBasketIcon from "../assets/svg/SVGBasketIcon.vue";
 import OtherOrders from "../components/OtherOrders.vue";
+import OrderComment from "../components/OrderView/OrderComment.vue";
 
 onMounted(()=>{
   loadBasket();
@@ -49,6 +50,7 @@ function createOrder() {
         <BasketCard :good="good" v-for="good in customerBasket"></BasketCard>
       </div>
       <OtherOrders></OtherOrders>
+      <OrderComment v-model="comment" class="mt-4"></OrderComment>
     </div>
     <div class="min-h-screen absolute left-0 top-0 flex w-full justify-center items-center" v-else>
       <div class="flex justify-center flex-col items-center">
@@ -60,7 +62,7 @@ function createOrder() {
   </div>
   <div>
     <transition name="fade">
-      <div class="px-4 w-full bottom-[40px] fixed  z-[999]">
+      <div class="px-4 w-full bottom-[20px] fixed  z-[999]">
         <Button v-if="customerBasket.length>0" classes="items-center" @click="createOrder" class="w-full !rounded-2xl !p-4">
           <template #prepend>
             <OrderIcon color="white" width="24" height="24"></OrderIcon>

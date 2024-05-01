@@ -70,3 +70,7 @@ input:-webkit-autofill:active{
   background-size: 10px 1px;
   background-repeat: repeat-x;
 }
+
+.bottom-sheet__draggable-thumb {
+  background: #9999A1!important;
+}
