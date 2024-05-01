@@ -1,11 +1,11 @@
 version: '3'
+
 services:
-  caddy:
-    image: caddy:latest
+  nginx:
+    image: nginx:latest
     ports:
       - "80:80"
-      - "443:443"
     volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile
-      - ./dist:/srv
+      - ./dist:/usr/share/nginx/html
     restart: always
+
