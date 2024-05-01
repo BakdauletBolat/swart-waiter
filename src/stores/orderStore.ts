@@ -1,5 +1,5 @@
 import {computed, reactive} from "vue";
-import {instance} from "../api/axios.ts";
+import {instance} from "../api";
 import {Product} from "../api";
 import userInformationStore from "./userInformationStore.ts";
 
@@ -133,6 +133,6 @@ export function loadOrderProducts() {
 }
 
 export function loadOrder() {
-    instance.get('/api/v1/order/customer')
+    instance.get('/api/v1/order/customer?include=status')
         .then(res=>orderStore.order=res.data)
 }

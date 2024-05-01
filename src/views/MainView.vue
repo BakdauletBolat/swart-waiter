@@ -49,10 +49,7 @@ onMounted(()=>{
 
 function navigateToBasket() {
   router.push({
-    name: 'basket-view',
-    query: {
-      table_id: 'hello-world'
-    }
+    name: 'basket-view'
   })
 }
 

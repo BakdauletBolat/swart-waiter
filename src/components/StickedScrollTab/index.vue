@@ -4,8 +4,9 @@ import FoodCard from "../FoodCard/index.ts";
 import {onBeforeUnmount, onMounted, ref} from "vue";
 import { useScroll } from '@vueuse/core'
 import TabSection from "./TabSection.vue";
-import {Category} from "../../stores/productStore.ts";
+import {Category, menuStore} from "../../stores/productStore.ts";
 import {Product} from "../../api";
+import LoadingMainMenuComponent from "../LoadingMainMenuComponent.vue";
 
 
 const {categories} = defineProps<{
@@ -90,15 +91,17 @@ const scrollHeaderSection = (id: number) => {
 
 </script>
 <template>
-  <header ref="headerTab" class="hide-scrollbar flex sticky-header pl-4 py-[10px] -top-[1px] overflow-scroll sticky w-full z-10" :class="{
+  <LoadingMainMenuComponent v-if="menuStore.isLoadingCategory || menuStore.isLoadingProduct"></LoadingMainMenuComponent>
+  <div>
+    <header ref="headerTab" class="hide-scrollbar flex sticky-header pl-4 py-[10px] -top-[1px] overflow-scroll sticky w-full z-10" :class="{
             'shadow-lg tr-bg rounded-b-[16px]': isPinned
         }">
-    <TabSection :id="'category'+index" @click="() => scrollToSection(index)"
-                :name="item.category.name"
-                :is-active="activeSectionIndex == index" v-for="(item, index) in categories">
-    </TabSection>
-  </header>
-  <section class="px-4 category-section" v-for="(item, index) in categories" :key="item.category.id">
+      <TabSection :id="'category'+index" @click="() => scrollToSection(index)"
+                  :name="item.category.name"
+                  :is-active="activeSectionIndex == index" v-for="(item, index) in categories">
+      </TabSection>
+    </header>
+    <section class="px-4 category-section" v-for="(item, index) in categories" :key="item.category.id">
       <h2 :id="index.toString()" :class="{
         'pt-[6px]': index == 0
       }" class="section font-medium py-4">{{ item.category.name }}</h2>
@@ -106,7 +109,8 @@ const scrollHeaderSection = (id: number) => {
         <FoodCard :food="product" v-for="product in item.products">
         </FoodCard>
       </section>
-  </section>
+    </section>
+  </div>
 </template>
 
 <style scoped>

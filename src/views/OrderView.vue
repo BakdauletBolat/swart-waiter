@@ -51,7 +51,8 @@ function changeActiveIndex(index: number) {
 function putPaymentType() {
   isLoading.value = true;
   instance.put('/api/v1/order/pay/customer', {
-    pay: activeIndex.value
+    pay: activeIndex.value,
+    customer_uuid: userInformationStore.store.value?.uuid
   }).then(_=>{
     close();
     router.push({

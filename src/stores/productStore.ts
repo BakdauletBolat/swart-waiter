@@ -31,6 +31,7 @@ export function getCategories() {
 
 export interface IProductStore {
     isLoadingProduct: boolean;
+    isLoadingCategory: boolean;
     products?: ProductData,
     categories?: CategoryData
 }
@@ -38,6 +39,7 @@ export interface IProductStore {
 export const menuStore = reactive<IProductStore>({
     products: undefined,
     categories: undefined,
+    isLoadingCategory: false,
     isLoadingProduct: false
 });
 
@@ -52,7 +54,8 @@ export function loadProducts() {
 }
 
 export function loadCategories() {
+    menuStore.isLoadingCategory = true;
     getCategories().then((res=>{
         menuStore.categories = res;
-    }));
+    })).finally(()=>menuStore.isLoadingCategory = false);
 }
