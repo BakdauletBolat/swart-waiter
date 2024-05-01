@@ -1,5 +1,5 @@
 import {ref} from "vue";
-
+import {v4} from 'uuid';
 interface ILocation {
     lat: string;
     lng: string;
@@ -19,7 +19,7 @@ class UserInformationStore {
         }
         else {
             this.store.value = {
-                uuid: crypto.randomUUID(),
+                uuid: v4(),
                 location: undefined,
                 name: '',
                 errorLocation: undefined
