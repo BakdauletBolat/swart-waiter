@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {customerProducts, IOrderProduct} from "../../stores/orderStore.ts";
+import {IOrderProduct} from "../../stores/orderStore.ts";
 import {getFirstElemOrUndefined, getNumberWithZero} from "../../utils";
 import OrderStatus from "../OrderStatus.vue";
 import Image from '../Image';
