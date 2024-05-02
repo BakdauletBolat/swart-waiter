@@ -8,11 +8,11 @@ import History from '../components/History';
 import BasketIcon from "../assets/svg/BasketIcon.vue";
 import {ChevronRightIcon} from "@heroicons/vue/24/outline";
 import {useRouter} from "vue-router";
-import {computed, onMounted, ref} from "vue";
+import { onMounted, ref} from "vue";
 import userInformationStore from "../stores/userInformationStore.ts";
-import {getRestoran, Product} from "../api";
+import {getRestoran} from "../api";
 import {getFirstElemOrUndefined} from "../utils";
-import {Category, loadCategories, loadProducts, menuStore} from "../stores/productStore.ts";
+import {loadCategories, loadProducts, productsGroupedByCategory} from "../stores/productStore.ts";
 import {isHaveCart, loadBasket, totalAmount} from "../stores/basketStore.ts";
 import {discountStore, loadDiscounts} from "../stores/discountStore.ts";
 
@@ -53,36 +53,6 @@ function navigateToBasket() {
   })
 }
 
-function  addTo(categories: Category[], toReturn: any[]) {
-    categories.forEach(category=>{
-      const products = menuStore.products!.data.filter(product=>product.attributes.category_id == category.id);
-      if (products.length > 0) {
-        toReturn.push({
-          category: category,
-          products: products
-        });
-      }
-
-      if (category.children.length > 0) {
-        addTo(category.children, toReturn);
-      }
-    });
-}
-const productsGroupedByCategory = computed<{
-  category: Category,
-  products: Product[]
-}[]>(()=>{
-  if (menuStore.categories != undefined && menuStore.products != undefined) {
-      const toReturn: {
-        category: Category,
-        products: Product[]
-      }[] = []
-      addTo(menuStore.categories.data, toReturn);
-      return toReturn;
-  }
-  return [];
-});
-
 const activeItem = ref<number>(0);
 
 const showHistory = ref<boolean>(false);
@@ -96,9 +66,11 @@ const showHistory = ref<boolean>(false);
             <Header :item="headerItem"></Header>
         </div>
         <div class="mb-[6px]">
-            <div class="px-4">
-              <SearchInput class="mb-4"></SearchInput>
-            </div>
+            <RouterLink :to="{
+              name: 'search-view'
+            }" class="px-4">
+              <SearchInput class="cursor-pointer mb-4"></SearchInput>
+            </RouterLink>
             <div class="gap-3 flex pl-4 w-full overflow-scroll hide-scrollbar">
             <Image @click="showHistory=true; activeItem=index" class="w-[154px] h-[88px] flex-shrink-0 rounded-2xl" :url="index.toString()" v-for="(_, index) in discountStore.data"></Image>
         </div>

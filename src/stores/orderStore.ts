@@ -74,12 +74,14 @@ export interface IOrderProduct {
 export interface IOrderStore {
     isLoadingOrderProducts: boolean;
     products: IOrderProduct[],
-    order?: IOrder
+    order?: IOrder,
+    isLoadingOrder: boolean;
 }
 
 export const orderStore = reactive<IOrderStore>({
     isLoadingOrderProducts: false,
     products: [],
+    isLoadingOrder: false,
     order: undefined
 });
 
@@ -136,6 +138,8 @@ export function loadOrderProducts() {
 }
 
 export function loadOrder() {
+    orderStore.isLoadingOrder = true;
     instance.get('/api/v1/order/customer?include=status')
         .then(res=>orderStore.order=res.data)
+        .finally(()=>orderStore.isLoadingOrder=false);
 }

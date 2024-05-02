@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import {menuNavigation} from "../../navigations";
-import {showModal, closeModal, showWaiterCall} from "./index.ts";
+import  {menuNavigation} from "../../navigations";
+import {showModal, closeModal, waiterCallBottomSheet} from "./index.ts";
 import {RouteLocationRaw, useRoute, useRouter} from "vue-router";
 import Modal from "../Modal/index.ts";
 //@ts-ignore
@@ -17,7 +17,7 @@ const navigateTo = (to: RouteLocationRaw) => {
 
 </script>
 <template>
-    <vue-bottom-sheet ref="showWaiterCall">
+    <vue-bottom-sheet ref="waiterCallBottomSheet">
       <WaiterCallComponent></WaiterCallComponent>
     </vue-bottom-sheet>
   <Modal v-model="showModal">

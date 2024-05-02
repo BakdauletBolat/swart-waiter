@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AppHeader from "../components/AppHeader.vue";
 import BasketCard from "../components/BasketCard/index.ts";
-import {customerBasket, loadBasket, totalAmount} from "../stores/basketStore.ts";
+import {basket, customerBasket, loadBasket, totalAmount} from "../stores/basketStore.ts";
 import {onMounted, ref} from "vue";
 import {ChevronRightIcon} from "@heroicons/vue/24/outline";
 import Button from '../components/Button';
@@ -12,6 +12,7 @@ import {useRouter} from "vue-router";
 import SVGBasketIcon from "../assets/svg/SVGBasketIcon.vue";
 import OtherOrders from "../components/OtherOrders.vue";
 import OrderComment from "../components/OrderView/OrderComment.vue";
+import LoadingModal from "../components/LoadingModal.vue";
 
 onMounted(()=>{
   loadBasket();
@@ -42,6 +43,7 @@ function createOrder() {
 </script>
 
 <template>
+  <LoadingModal v-if="basket.isLoading"></LoadingModal>
   <AppHeader :show-menu="false" :back-route="{name: 'menu'}" title="Корзина"></AppHeader>
   <div class="px-4">
     <div v-if="customerBasket.length > 0">

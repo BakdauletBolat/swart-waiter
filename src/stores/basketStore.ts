@@ -175,7 +175,10 @@ export function changeQuantityFromBasket(data: ChangeQuantityType) {
 
 
 export function loadBasket() {
+    basket.value.isLoading = true;
     instance.get('/api/v1/carts/customer?include=customer,product').then(res=>{
         basket.value.data = res.data.data;
-    }).catch(e=>console.log(e,  'asdas'));
+    }).catch(e=>console.log(e,  'asdas')).finally(()=>{
+        basket.value.isLoading = false;
+    });
 }

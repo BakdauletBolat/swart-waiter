@@ -8,12 +8,18 @@ import OrderView from "../views/OrderView.vue";
 import PaymentView from "../views/PaymentView.vue";
 import ReviewView from "../views/ReviewView.vue";
 import ReceiptView from "../views/ReceiptView.vue";
+import SearchView from "../views/SearchView.vue";
 export const routes = [
 
     {
         path: '',
         name:  'welcome-page',
         component: WelcomeView,
+    },
+    {
+        path: '/search',
+        name: 'search-view',
+        component: SearchView
     },
     {
         path: '/order',

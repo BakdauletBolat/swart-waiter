@@ -5,6 +5,7 @@ import OrderIcon from "../assets/svg/OrderIcon.vue";
 import {ChevronRightIcon} from "@heroicons/vue/24/outline";
 import Button from "../components/Button/index.ts";
 import {onMounted} from "vue";
+import LoadingModal from "../components/LoadingModal.vue";
 import {loadOrder, loadOrderProducts, orderStore} from "../stores/orderStore.ts";
 //@ts-ignore
 import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
@@ -16,6 +17,7 @@ import OtherOrderProducts from "../components/OrderView/OtherOrderProducts.vue";
 import OrderProducts from "../components/OrderView/OrderProducts.vue";
 import OrderNotFound from "../components/OrderView/OrderNotFound.vue";
 import SelectPaymentMethod from "../components/OrderView/SelectPaymentMethod.vue";
+import {loadWaiter, waiter} from "../components/SidebarModal/index.ts";
 
 const myBottomSheet = ref(null);
 const router = useRouter();
@@ -33,7 +35,8 @@ const close = () => {
 
 onMounted(()=>{
   loadOrderProducts()
-  loadOrder()
+  loadOrder();
+  loadWaiter();
 })
 
 function navigateMenu() {
@@ -43,6 +46,7 @@ function navigateMenu() {
 }
 </script>
 <template>
+  <LoadingModal v-if="orderStore.isLoadingOrder"></LoadingModal>
   <AppHeader :show-menu="true" title="Заказ"></AppHeader>
   <vue-bottom-sheet ref="myBottomSheet">
     <SelectPaymentMethod @close="close"></SelectPaymentMethod>
@@ -50,7 +54,7 @@ function navigateMenu() {
   <main class="px-4" v-if="orderStore.products.length > 0">
     <section class="text-xs bg-black-10 p-3 flex flex-col items-center justify-center rounded-2xl">
       <div><span class="text-[#9999A1]">Номер заказа</span> ТН2353 </div>
-      <div><span class="text-[#9999A1]">Официант </span>Мария</div>
+      <div v-if="waiter"><span class="text-[#9999A1]">Официант </span>{{waiter.attributes.first_name}}</div>
     </section>
     <h2 class="font-medium my-4">Ваш заказ</h2>
     <OrderProducts></OrderProducts>

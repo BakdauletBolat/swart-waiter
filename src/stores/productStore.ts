@@ -1,5 +1,5 @@
 import {Product} from "../api";
-import {reactive} from "vue";
+import {computed, reactive, ref} from "vue";
 import {GetCasingData} from "../utils/getCasingData.ts";
 
 export interface Category {
@@ -59,3 +59,71 @@ export function loadCategories() {
         menuStore.categories = res;
     })).finally(()=>menuStore.isLoadingCategory = false);
 }
+
+
+function  addTo(categories: Category[], toReturn: any[]) {
+    categories.forEach(category=>{
+        const products = menuStore.products!.data.filter(product=>product.attributes.category_id == category.id);
+        if (products.length > 0) {
+            toReturn.push({
+                category: category,
+                products: products
+            });
+        }
+
+        if (category.children.length > 0) {
+            addTo(category.children, toReturn);
+        }
+    });
+}
+export const productsGroupedByCategory = computed<{
+    category: Category,
+    products: Product[]
+}[]>(()=>{
+    if (menuStore.categories != undefined && menuStore.products != undefined) {
+        const toReturn: {
+            category: Category,
+            products: Product[]
+        }[] = []
+        addTo(menuStore.categories.data, toReturn);
+        return toReturn;
+    }
+    return [];
+});
+
+
+export const searchText = ref('');
+
+export const searched = computed<{
+    category: Category,
+    products: Product[]
+}[]>(()=>{
+    if (searchText.value == '') {
+        return productsGroupedByCategory.value;
+    }
+    const toReturnList: {
+        category: Category,
+        products: Product[]
+    }[] = []
+
+    productsGroupedByCategory.value.forEach(item=>{
+        const toReturn: {
+            category: Category,
+            products: Product[]
+        } = {
+            products: [],
+            category: item.category
+        }
+        item.products.forEach((product)=>{
+            if (product.attributes.name.ru.startsWith(searchText.value)) {
+                toReturn.products.push(product)
+            }
+        })
+        if (toReturn.products.length > 0) {
+            toReturnList.push(toReturn);
+        }
+
+    });
+    console.log(searched);
+    return toReturnList;
+});
