@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {ChevronRightIcon} from "@heroicons/vue/24/outline";
-//@ts-ignore
+//@ts-ignore run
 import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
 import {ref} from 'vue';
 import Button from '../Button';

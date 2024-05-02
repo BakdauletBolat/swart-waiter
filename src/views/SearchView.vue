@@ -1,12 +1,18 @@
 <script setup lang="ts">
 import {loadCategories, loadProducts, searched, searchText} from "../stores/productStore.ts";
-import {onMounted} from "vue";
+import {nextTick, onMounted, ref} from "vue";
 import {getFirstElemOrUndefined} from "../utils";
 import Image from '../components/Image';
 import {ArrowLeftIcon, XMarkIcon} from "@heroicons/vue/24/outline";
 import SearchNotFound from "../assets/svg/SearchNotFound.vue";
 
+const searchTextRef = ref<any>(null);
+
 onMounted(()=>{
+  nextTick(()=>{
+    searchTextRef.value!.focus();
+  });
+
   loadCategories();
   loadProducts();
 })
@@ -21,7 +27,7 @@ onMounted(()=>{
   <div class="p-2 cursor-pointer z-20 absolute top-4 right-2" @click="searchText=''">
     <XMarkIcon  class="w-[24px] h-[24px]"></XMarkIcon>
   </div>
-<input class="h-[72px] outline-none relative z-10 w-full px-[56px] border-b" v-model="searchText" />
+<input ref="searchTextRef" class="h-[72px] outline-none relative z-10 w-full px-[56px] border-b" v-model="searchText" />
  <div class="px-4" v-if="searched.length > 0">
    <div v-for="grouped in searched">
      <h2 class="py-4 font-medium">{{grouped.category.name}}</h2>

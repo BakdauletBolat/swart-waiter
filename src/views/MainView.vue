@@ -65,7 +65,7 @@ const showHistory = ref<boolean>(false);
         <div class="mb-4">
             <Header :item="headerItem"></Header>
         </div>
-        <div class="mb-[6px]">
+        <div class="mb-[6px] mx-4">
             <RouterLink :to="{
               name: 'search-view'
             }" class="px-4">
