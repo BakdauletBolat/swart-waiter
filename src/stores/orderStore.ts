@@ -9,6 +9,11 @@ interface IOrder {
     attributes: {
         number: string;
         created_at: string;
+        status: {
+          value: number;
+          label: string;
+          name: string
+        },
         computation: {
             summa: number;
             prepayment: number;
@@ -17,7 +22,9 @@ interface IOrder {
             total: number;
         };
     };
-    included: any[] | null;
+    included: {
+        customer: any
+    };
     meta: {
         include: any[];
         custom: any[];
@@ -139,7 +146,7 @@ export function loadOrderProducts() {
 
 export function loadOrder() {
     orderStore.isLoadingOrder = true;
-    instance.get('/api/v1/order/customer?include=status')
+    instance.get('/api/v1/order/customer?include=status,customer')
         .then(res=>orderStore.order=res.data)
         .finally(()=>orderStore.isLoadingOrder=false);
 }

@@ -18,6 +18,7 @@ import OrderProducts from "../components/OrderView/OrderProducts.vue";
 import OrderNotFound from "../components/OrderView/OrderNotFound.vue";
 import SelectPaymentMethod from "../components/OrderView/SelectPaymentMethod.vue";
 import {loadWaiter, waiter} from "../components/SidebarModal/index.ts";
+import OrderAlreadyPayingIcon from "../assets/svg/OrderAlreadyPayingIcon.vue";
 
 const myBottomSheet = ref(null);
 const router = useRouter();
@@ -48,12 +49,21 @@ function navigateMenu() {
 <template>
   <LoadingModal v-if="orderStore.isLoadingOrder"></LoadingModal>
   <AppHeader :show-menu="true" title="Заказ"></AppHeader>
-  <vue-bottom-sheet ref="myBottomSheet">
-    <SelectPaymentMethod @close="close"></SelectPaymentMethod>
-  </vue-bottom-sheet>
-  <main class="px-4" v-if="orderStore.products.length > 0">
+  <div v-if="orderStore.order">
+    <vue-bottom-sheet ref="myBottomSheet">
+      <SelectPaymentMethod v-if="orderStore.order.attributes.status.value != 40" @close="close"></SelectPaymentMethod>
+      <div v-else class="flex px-4 pb-[40px] flex-col items-center justify-center">
+        <OrderAlreadyPayingIcon></OrderAlreadyPayingIcon>
+        <h2 class="text-2xl mt-4">Заказ уже в оплате</h2>
+        <p class="mt-4 text-sm text-[#9999A1]">{{orderStore.order!.included.customer.attributes.full_name}} оплачивает счет</p>
+        <Button @click="close" class="mt-6 w-full justify-center flex">Понятно</Button>
+      </div>
+    </vue-bottom-sheet>
+  </div>
+
+  <main class="px-4" v-if="orderStore.products.length > 0 && orderStore.order">
     <section class="text-xs bg-black-10 p-3 flex flex-col items-center justify-center rounded-2xl">
-      <div><span class="text-[#9999A1]">Номер заказа</span> ТН2353 </div>
+      <div><span class="text-[#9999A1]">Номер заказа</span> {{ orderStore.order!.attributes.number }} </div>
       <div v-if="waiter"><span class="text-[#9999A1]">Официант </span>{{waiter.attributes.first_name}}</div>
     </section>
     <h2 class="font-medium my-4">Ваш заказ</h2>
