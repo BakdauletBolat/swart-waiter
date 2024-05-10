@@ -73,7 +73,8 @@ function navigateMenu() {
     <div class="w-full bg-[#E6E6E9] h-[1px] my-4"></div>
     <section class="mt-4">
       <h2 class="font-medium">Комментарий к заказу</h2>
-      <p class="text-sm text-[#9999A1]">Test comment</p>
+
+      <p class="text-sm text-[#9999A1]">{{orderStore.order?.included?.comments.data.map((item)=>item.attributes.comment).join(', ')}}</p>
     </section>
     <OrderTotal class="mt-4"></OrderTotal>
   </main>

@@ -3,6 +3,13 @@ import {instance} from "../api";
 import {Product} from "../api";
 import userInformationStore from "./userInformationStore.ts";
 
+interface IComment {
+    attributes: {
+        customer_id: number;
+        waiter_id: number;
+        comment: number;
+    }
+}
 interface IOrder {
     type: string;
     id: number;
@@ -23,7 +30,10 @@ interface IOrder {
         };
     };
     included: {
-        customer: any
+        customer: any;
+        comments: {
+            data: IComment[]
+        }
     };
     meta: {
         include: any[];
@@ -146,7 +156,7 @@ export function loadOrderProducts() {
 
 export function loadOrder() {
     orderStore.isLoadingOrder = true;
-    instance.get('/api/v1/order/customer?include=status,customer')
+    instance.get('/api/v1/order/customer?include=status,customer,comments')
         .then(res=>orderStore.order=res.data)
         .finally(()=>orderStore.isLoadingOrder=false);
 }
