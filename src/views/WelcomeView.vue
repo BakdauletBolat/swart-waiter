@@ -22,10 +22,10 @@ const welcomeProps = ref<{
 onMounted(async ()=>{
   if (route.query.host != null ) {
     localStorage.setItem('multi_tenant_domain_name', route.query.host!.toString()!);
+    start();
   }
   if (route.query.hash != null) {
     localStorage.setItem('table', route.query.hash!.toString().replace(' ', '+'));
-    start();
   }
 
   getRestoran().then(res=>{
