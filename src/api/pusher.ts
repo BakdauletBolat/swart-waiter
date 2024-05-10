@@ -1,4 +1,4 @@
-import Pusher from "pusher-js";
+import Pusher, {Channel} from "pusher-js";
 import {basket} from "../stores";
 import {loadOrder, orderStore} from "../stores/orderStore.ts";
 
@@ -6,11 +6,11 @@ var pusher = new Pusher("9763cb0b172b1a9ee194", {
     cluster: 'eu'
 });
 
-
+let channel: Channel | undefined  = undefined;
 export function start() {
     const channel_name = localStorage.getItem('multi_tenant_domain_name');
-    const channel = pusher.subscribe(channel_name!);
-    console.log('started');
+    channel = pusher.subscribe(channel_name!);
+
     channel.bind('cart.customer.create', (event: any)=>{
         basket.value.data?.push(event);
     });
@@ -35,4 +35,11 @@ export function start() {
             }
         }
     });
+    channel.unsubscribe();
+}
+
+export function stop() {
+    if (channel != undefined) {
+        channel.unsubscribe();
+    }
 }

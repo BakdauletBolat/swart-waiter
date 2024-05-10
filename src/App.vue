@@ -7,6 +7,21 @@
   </div>
 </template>
 <script lang="ts" setup>
+import {onMounted, onUnmounted} from "vue";
+import {start, stop} from "./api/pusher.ts";
+
+onMounted(()=>{
+  if (localStorage.getItem('multi_tenant_domain_name') != undefined) {
+    start();
+  }
+});
+
+onUnmounted(()=>{
+  stop();
+})
+
+
+
 import Toast from "./components/ToastComponent/index.ts";
 import SidebarModal from "./components/SidebarModal/index.ts";
 import LoadingModal from "./components/LoadingModal.vue";
