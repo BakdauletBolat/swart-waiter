@@ -1,15 +1,14 @@
 
 <script lang="ts" setup>
 import FoodCard from "../FoodCard/index.ts";
-import {onBeforeUnmount, onMounted, ref} from "vue";
-import { useScroll } from '@vueuse/core'
+import {onBeforeUnmount, onMounted, ref, watch} from "vue";
 import TabSection from "./TabSection.vue";
 import {Category, menuStore} from "../../stores/productStore.ts";
 import {Product} from "../../api";
 import LoadingMainMenuComponent from "../LoadingMainMenuComponent.vue";
 
 
-const {categories} = defineProps<{
+const props = defineProps<{
       categories: {
         category: Category,
         products: Product[]
@@ -20,8 +19,6 @@ const headerTab = ref<HTMLElement>();
 const isPinned = ref(false);
 
 const activeSectionIndex = ref<number | null>(0);
-
-const { x } = useScroll(headerTab, { behavior: 'smooth' })
 
 const sectionObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -57,47 +54,52 @@ const unobserve = () => {
   document.querySelectorAll('.section').forEach((section) => {
     sectionObserver.unobserve(section);
   });
-  stickObserver.unobserve(document.querySelector(".sticky-header")!);
+  const stickyHeaderItems = document.querySelectorAll(".sticky-header");
+  stickyHeaderItems.forEach((item)=>{
+    stickObserver.unobserve(item);
+  })
 }
 
 const observe = () => {
-  document.querySelectorAll('.section').forEach((section) => {
-    sectionObserver.observe(section);
-  });
-
-  stickObserver.observe(document.querySelector(".sticky-header")!);
+  setTimeout(()=>{
+    document.querySelectorAll('.section').forEach((section) => {
+      sectionObserver.observe(section);
+    });
+    const stickyHeaderItems = document.querySelectorAll(".sticky-header");
+    stickyHeaderItems.forEach((item)=>{
+      stickObserver.observe(item);
+    })
+  }, 1)
 }
 
 
 const scrollToSection = (id: number) => {
-  const scroll = document.getElementById(id.toString());
+  const scrollElement = document.getElementById(id.toString());
   window.scrollTo({
-    top: Math.round(scroll!.getBoundingClientRect().top + document.documentElement.scrollTop) - 70
+    top: Math.round(scrollElement!.getBoundingClientRect().top + document.documentElement.scrollTop) - 70
   })
 }
 
 const scrollHeaderSection = (id: number) => {
-  let elemsWidth = 0;
-
-  if (id > activeSectionIndex.value!) {
-    elemsWidth = document.getElementById('category'+activeSectionIndex.value)!.offsetWidth;
-    x.value += elemsWidth;
-  }
-  else {
-    elemsWidth += document.getElementById('category'+activeSectionIndex.value)!.offsetWidth;
-    x.value -= elemsWidth;
-  }
+  const item = document.getElementById('category'+id);
+  item!.scrollIntoView();
 }
+
+watch(props, (_, __) => {
+  unobserve();
+  observe();
+})
 
 </script>
 <template>
   <LoadingMainMenuComponent v-if="menuStore.isLoadingCategory || menuStore.isLoadingProduct"></LoadingMainMenuComponent>
-  <div>
-    <header ref="headerTab" class="hide-scrollbar flex sticky-header pl-4 py-[10px] -top-[1px] overflow-scroll sticky w-full z-10" :class="{
+  <div v-if="categories.length > 0">
+    <header ref="headerTab" class="hide-scrollbar  flex sticky-header pl-4 pr-4 py-[10px] -top-[1px] overflow-scroll sticky w-full z-10" :class="{
             'shadow-lg tr-bg rounded-b-[16px]': isPinned
         }">
       <TabSection :id="'category'+index" @click="() => scrollToSection(index)"
                   :name="item.category.name"
+                  class="scroll-ml-3 scroll-mr-3"
                   :is-active="activeSectionIndex == index" v-for="(item, index) in categories">
       </TabSection>
     </header>
@@ -111,6 +113,7 @@ const scrollHeaderSection = (id: number) => {
       </section>
     </section>
   </div>
+
 </template>
 
 <style scoped>

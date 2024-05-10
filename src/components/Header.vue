@@ -30,10 +30,10 @@ defineProps<{
         <div class="absolute items-center justify-center bottom-4 flex-col z-10 px-4 flex w-full text-white">
           <div></div>
           <div class="text-2xl">{{item.store.name}}</div>
-          <div class="mt-2 text-xs">{{item.store.description}}</div>
+          <div class="mt-2 text-xs long-text">{{item.store.description}}</div>
           <div class="flex gap-2 mt-1 items-center">
             <LocationIcon color="white" width="16" height="16"></LocationIcon>
-            <div class="text-xs">{{item.store.address}}</div>
+            <div class="text-xs long-text">{{item.store.address}}</div>
           </div>
         </div>
         <div class="h-[210px] relative overflow-hidden rounded-bl-2xl rounded-br-2xl ">

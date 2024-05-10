@@ -12,7 +12,6 @@ onMounted(()=>{
   nextTick(()=>{
     searchTextRef.value!.focus();
   });
-
   loadCategories();
   loadProducts();
 })

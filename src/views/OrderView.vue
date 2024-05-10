@@ -64,7 +64,7 @@ function navigateMenu() {
   <main class="px-4" v-if="orderStore.products.length > 0 && orderStore.order">
     <section class="text-xs bg-black-10 p-3 flex flex-col items-center justify-center rounded-2xl">
       <div><span class="text-[#9999A1]">Номер заказа</span> {{ orderStore.order!.attributes.number }} </div>
-      <div v-if="waiter"><span class="text-[#9999A1]">Официант </span>{{waiter.attributes.first_name}}</div>
+      <div v-if="waiter?.attributes"><span class="text-[#9999A1]">Официант </span>{{waiter.attributes.first_name}}</div>
     </section>
     <h2 class="font-medium my-4">Ваш заказ</h2>
     <OrderProducts></OrderProducts>

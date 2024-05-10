@@ -1,12 +1,12 @@
 <template>
-    <div class="flex flex-col h-[90vh] justify-center">
+    <div class="flex flex-col h-[80vh] justify-center">
         <swiper-container class="w-full" ref="swiperRef" @swiperslidechange="onSlideChange">
             <swiper-slide :key="option.title" v-for="option in options">
                 <GuideItemComponent class="w-full h-full flex-col flex justify-center items-center" :item="option">
                 </GuideItemComponent>
             </swiper-slide>
         </swiper-container>
-        <div class="flex mt-[60px] items-center justify-center gap-[8px]">
+        <div class="flex mt-[20px] items-center justify-center gap-[8px]">
             <div class="w-[16px] h-[4px] bg-[#E6E6E9]  rounded-[1px]" :class="{
             'w-[38px] bg-[#FFB800]': index == activeIndex
         }" v-for="index in options.length"></div>

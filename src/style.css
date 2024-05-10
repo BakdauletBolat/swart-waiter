@@ -74,3 +74,10 @@ input:-webkit-autofill:active{
 .bottom-sheet__draggable-thumb {
   background: #9999A1!important;
 }
+
+.long-text {
+  width: 300px;
+  white-space: nowrap; /* Prevents text from wrapping */
+  overflow: hidden; /* Hides any content that overflows the container */
+  text-overflow: ellipsis;
+}

@@ -24,7 +24,7 @@ function getTimeFromProduct(value: number, statuses: any[]): string{
 <template>
   <article class="bg-black-10 rounded-2xl p-3 flex gap-4">
     <div class="w-[82px] h-[82px] object-cover flex-shrink-0 rounded-lg overflow-hidden">
-      <Image :url="getFirstElemOrUndefined(orderItem.included.product.attributes.images)"></Image>
+      <Image class="w-full h-full" :url="getFirstElemOrUndefined(orderItem.included.product.attributes.images)"></Image>
     </div>
     <div class="w-full">
       <header class="text-sm flex justify-between">

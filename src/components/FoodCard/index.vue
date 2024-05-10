@@ -8,7 +8,7 @@
     }">
             <Image class="w-[160px] rounded-2xl h-[160px]" :url="getFirstElemOrUndefined<string>(food.attributes.images)"></Image>
         </RouterLink>
-        <div class="flex flex-col justify-between">
+        <div class="flex flex-col justify-between w-full">
             <RouterLink :to="{
                         name: 'food-detail',
                         params: {
@@ -21,10 +21,10 @@
             <div v-if="checkInBasket(food.id)">
               <ChangeBasketCardComponent :show-price="false" :good="getFromBasket(food.id)"></ChangeBasketCardComponent>
             </div>
-            <section v-else class="mt-2" @click="addOrCreate({
+            <section v-else class="mt-2 w-full" @click="addOrCreate({
               product_id: food.id,
               quantity: 1,
-              uuid: userInformationStore.store.value!.uuid,
+              uuid: userInformationStore.store.value!.uuid
             })">
                 <div class="cursor-pointer w-full bg-white text-center flex justify-center items-center py-2 rounded-2xl">
                   <div>{{ food.attributes.price }} ₸</div>
@@ -37,9 +37,8 @@
 import Image from '../Image';
 import {Product} from "../../api";
 import {getFirstElemOrUndefined} from "../../utils";
-import {addOrCreate} from "../../stores";
-import userInformationStore from "../../stores/userInformationStore.ts";
-import {checkInBasket, getFromBasket} from "../../stores/basketStore.ts";
+import {addOrCreate, checkInBasket, getFromBasket} from "../../stores/basketStore.ts";
 import ChangeBasketCardComponent from "../BasketCard/ChangeBasketCardComponent.vue";
+import userInformationStore from "../../stores/userInformationStore.ts";
 defineProps<{food: Product}>();
 </script>

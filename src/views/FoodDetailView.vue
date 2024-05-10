@@ -14,7 +14,7 @@ import {
   addOrCreate,
   changeQuantityFromBasket,
   checkInBasket,
-  getFromBasket,
+  getFromBasket, loadBasket,
   removeFromBasket
 } from "../stores/basketStore.ts";
 import userInformationStore from "../stores/userInformationStore.ts";
@@ -25,6 +25,7 @@ const route = useRoute();
 
 onMounted(()=>{
   isLoading.value = true;
+  loadBasket();
   getProduct(parseInt(route.params.id.toString()))
       .then(res=>product.value = res.data)
       .catch(e=>{
@@ -35,13 +36,29 @@ onMounted(()=>{
 });
 
 function changeQuantity(quantity: number) {
+  console.log(quantity);
   if (quantity <= 0) {
-    removeFromBasket(product.value!.id);
+    removeFromBasket(getFromBasket(product.value!.id).id);
+    return;
   }
   changeQuantityFromBasket({
     cart_id: getFromBasket(product.value!.id).id,
     quantity: quantity
   })
+}
+
+function addOrChangeQuantity() {
+  if (checkInBasket(product.value?.id!)) {
+    changeQuantity(getFromBasket(product.value?.id!).attributes.quantity+1);
+  }
+  else {
+    addOrCreate({
+      product_id: product.value?.id!,
+      quantity: 1,
+      uuid: userInformationStore.store.value!.uuid,
+    });
+  }
+
 }
 
 </script>
@@ -102,7 +119,7 @@ function changeQuantity(quantity: number) {
     </Card>
     <div class="mx-4 mt-6">
       <h2>Вместе с этим берут</h2>
-      <div class="mt-4">
+      <div class="mt-4 flex flex-col gap-4">
         <FoodCard :food="food" v-for="food in product.included.recommendations.data"></FoodCard>
       </div>
     </div>
@@ -114,11 +131,7 @@ function changeQuantity(quantity: number) {
           <span>{{getFromBasket(product.id).attributes.quantity}}</span>
           <div @click="changeQuantity(getFromBasket(product.id).attributes.quantity + 1)" class="cursor-pointer p-2 bg-black-100 rounded-2xl"><PlusIcon class="w-6 h-6 text-white"></PlusIcon></div>
         </div>
-        <Button class="w-full" @click="addOrCreate({
-              product_id: product.id,
-              quantity: 1,
-              uuid: userInformationStore.store.value!.uuid,
-            })">
+        <Button class="w-full" @click="addOrChangeQuantity">
           <div class="flex gap-2 flex-nowrap">
             <span class="text-nowrap">{{product.attributes.price}} ₸</span>
             <span class="h-6 w-[1px] bg-white"></span>

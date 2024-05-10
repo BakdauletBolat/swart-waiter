@@ -36,6 +36,7 @@ export interface ICardItem {
         product?: {
             id: number;
             attributes: {
+                images: any[];
                 name: {
                     kk: string;
                     ru: string;

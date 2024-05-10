@@ -6,7 +6,7 @@
               }"
               class="bg-[#F4F4F6] z-50 w-full h-full border-2 border-[#F4F4F6]  p-3 gap-4 rounded-2xl flex">
        <div>
-         <Image class="w-[82px] rounded-2xl h-[82px]" :url="undefined"></Image>
+         <Image class="w-[82px] rounded-2xl h-[82px]" :url="getFirstElemOrUndefined(good.included.product?.attributes.images!)"></Image>
        </div>
        <div class="flex flex-col justify-between w-full">
          <section>
@@ -27,6 +27,7 @@ import {useSwipe} from "@vueuse/core";
 import {ref, watchEffect} from "vue";
 import RemoveIcon from "../../assets/svg/RemoveIcon.vue";
 import ChangeBasketCardComponent from "./ChangeBasketCardComponent.vue";
+import {getFirstElemOrUndefined} from "../../utils";
 
 defineProps<{good: ICardItem}>();
 const el = ref(null);
