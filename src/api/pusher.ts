@@ -45,6 +45,11 @@ export function start() {
                 }
             }
         });
+        channel.bind('order.update', (event: any) => {
+           if (orderStore.order != undefined && orderStore.order.attributes.table_id == event.attributes.table_id) {
+               orderStore.order = event;
+           }
+        });
         channel.bind('order.products.update', (event: any)=>{
             if (orderStore.products != undefined) {
                 const index = orderStore.products?.findIndex((item)=>event.id == item.id);

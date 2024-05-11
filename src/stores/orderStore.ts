@@ -14,6 +14,7 @@ interface IOrder {
     type: string;
     id: number;
     attributes: {
+        table_id: number;
         number: string;
         created_at: string;
         status: {
