@@ -8,6 +8,7 @@ var pusher = new Pusher("9763cb0b172b1a9ee194", {
 
 let channel: Channel | undefined  = undefined;
 export function start() {
+    stop();
     const channel_name = localStorage.getItem('multi_tenant_domain_name');
     channel = pusher.subscribe(channel_name!);
 
