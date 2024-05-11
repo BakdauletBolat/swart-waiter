@@ -16,6 +16,9 @@ export function getNumberWithZero(n: number): string {
     return `0${n}`
 }
 
-export function formattedPrice(price: number) {
-    return price.toLocaleString().replace(/,/g, ' ');
+export function formattedPrice(price?: number) {
+    if (price == undefined) {
+        return '0';
+    }
+    return price!.toLocaleString().replace(/,/g, ' ');
 }

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {useRoute, useRouter} from "vue-router";
-import {onMounted, ref} from "vue";
+import {onMounted, ref, watch} from "vue";
 import {getProduct, Product} from "../api/product.ts";
 import {formattedPrice, getFirstElemOrUndefined} from "../utils";
 import Card from "../components/Card.vue";
@@ -26,19 +26,27 @@ const route = useRoute();
 const router = useRouter();
 
 onMounted(()=>{
+  loadProduct(route.params.id.toString());
+});
+
+function loadProduct(id: string) {
   scrollTo({
     top: 0
   });
   isLoading.value = true;
   loadBasket();
 
-  getProduct(parseInt(route.params.id.toString()))
+  getProduct(parseInt(id))
       .then(res=>product.value = res)
       .catch(e=>{
         console.log(e);
       })
       .finally(()=>isLoading.value=false);
-});
+}
+
+watch(route, (newRoute, _)=>{
+  loadProduct(newRoute.params.id.toString())
+})
 
 function changeQuantity(quantity: number) {
   if (quantity <= 0) {

@@ -19,6 +19,7 @@ import OrderNotFound from "../components/OrderView/OrderNotFound.vue";
 import SelectPaymentMethod from "../components/OrderView/SelectPaymentMethod.vue";
 import {loadWaiter, waiter} from "../components/SidebarModal/index.ts";
 import OrderAlreadyPayingIcon from "../assets/svg/OrderAlreadyPayingIcon.vue";
+import {formattedPrice} from "../utils";
 
 const myBottomSheet = ref(null);
 const router = useRouter();
@@ -88,7 +89,7 @@ function navigateMenu() {
           </template>
           <div class="flex gap-2 items-center">
             <div>
-              {{orderStore.order?.attributes.computation.total}} ₸
+              {{formattedPrice(orderStore.order?.attributes.computation.total)}} ₸
             </div>
             <div class="h-6 w-[1px] bg-white"></div>
             <div>
