@@ -68,6 +68,7 @@ interface IOrderProductAttributes {
     order_id: number;
     product_id: number;
     price: number;
+    table_id: number;
     quantity: number;
     waiter_id: number;
     customer_id: number;
