@@ -11,7 +11,7 @@ defineProps<{
 </script>
 <template>
   <div class="h-[68px]"></div>
-  <header class="flex bg-white top-0 z-50 fixed justify-between items-center w-full p-5">
+  <header class="flex bg-white top-0 z-[999999] fixed justify-between items-center w-full p-5">
     <Bars3Icon @click="openModal()" v-if="showMenu" class="cursor-pointer h-6 w-6"></Bars3Icon>
     <RouterLink v-if="backRoute" :to="backRoute">
       <ChevronLeftIcon class="h-6 w-6"></ChevronLeftIcon>

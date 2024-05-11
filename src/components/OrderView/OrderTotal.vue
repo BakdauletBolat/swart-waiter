@@ -41,6 +41,6 @@ function getUserTotal(): number {
 
 <style scoped>
 .background-order {
-  background: url("./ordertotal.png");
+  //background: url("./assets/ordertotal.png");
 }
 </style>
