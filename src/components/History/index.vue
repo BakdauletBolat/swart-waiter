@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import HistoryBullet from "./HistoryBullet.vue";
 import {XMarkIcon} from "@heroicons/vue/24/outline";
+import {getFirstElemOrUndefined} from "../../utils";
 
 const show = defineModel('show');
 defineProps(['histories']);
@@ -36,10 +37,10 @@ defineProps(['histories']);
     <div @click="next" class="right-0 cursor-pointer z-20 w-[20%] h-screen absolute"></div>
       <div class="w-full h-full">
         <div class="top-[128px] absolute px-4 text-white">
-          <h1 class="leading-[38px] text-[32px] font-medium">{{histories[activeItem].title}}</h1>
-          <p class="text-[20px] leading-[24.2px] mt-6">{{histories[activeItem].description}}</p>
+          <h1 class="leading-[38px] text-[32px] font-medium">{{histories[activeItem].attributes.title}}</h1>
+          <p class="text-[20px] leading-[24.2px] mt-6">{{histories[activeItem].attributes.description}}</p>
         </div>
-        <img class="w-full h-full object-cover" :src="histories[activeItem].url" />
+        <img :alt="histories[activeItem].attributes.title" class="w-full h-full object-cover" :src="getFirstElemOrUndefined(histories[activeItem].attributes.attachments)" />
       </div>
   </div>
   </Transition>

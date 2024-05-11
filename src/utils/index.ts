@@ -15,3 +15,7 @@ export function getNumberWithZero(n: number): string {
     }
     return `0${n}`
 }
+
+export function formattedPrice(price: number) {
+    return price.toLocaleString().replace(/,/g, ' ');
+}

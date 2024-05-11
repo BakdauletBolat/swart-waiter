@@ -28,7 +28,9 @@ export function start() {
     });
     channel.bind('order.products.update', (event: any)=>{
         if (orderStore.products != undefined) {
-            const index = orderStore.products?.findIndex((id)=>event.id == id);
+            console.log(event);
+            const index = orderStore.products?.findIndex((item)=>event.id == item.id);
+            console.log(index);
             if (index != -1) {
                 orderStore.products[index] = event;
                 loadOrder();

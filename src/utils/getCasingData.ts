@@ -8,9 +8,11 @@ export class GetCasingData {
     private localKey: string = '';
     private password = 'bagu123F';
     private ttl: number = 0;
+    private cashing: boolean = true;
 
-    constructor(ttl: number = 12)  {
+    constructor(ttl: number = 12, cashing: boolean = true)  {
         this._update_ttl(ttl);
+        this.cashing = cashing;
     }
 
     _update_ttl(ttl: number) {
@@ -34,7 +36,7 @@ export class GetCasingData {
             this._update_ttl(ttl);
         }
 
-        if (localStorage.getItem(this.localKey) != undefined ) {
+        if (localStorage.getItem(this.localKey) != undefined && this.cashing) {
             const rest = JSON.parse(this.decode(localStorage.getItem(this.localKey)!));
             if (checkTTL(rest.ttl)) {
                 return rest.data;
@@ -43,10 +45,12 @@ export class GetCasingData {
 
         response = await instance.get(url);
         data = response.data;
-        localStorage.setItem(this.localKey, this.encode(JSON.stringify({
-            ttl: new Date(new Date().getTime()+this.ttl),
-            data: data
-        })));
+        if (this.cashing) {
+            localStorage.setItem(this.localKey, this.encode(JSON.stringify({
+                ttl: new Date(new Date().getTime()+this.ttl),
+                data: data
+            })));
+        }
         return data
     }
 }

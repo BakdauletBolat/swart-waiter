@@ -5,6 +5,7 @@ interface IDiscount {
     type: string;
     id: number;
     attributes: {
+        attachments: string[];
         title: string;
         start_at: string; // Consider using Date type if dates need to be manipulated
         end_at: string;   // Consider using Date type if dates need to be manipulated
@@ -23,7 +24,7 @@ export const discountStore = reactive<IDiscountStore>({
 
 
 export function loadDiscounts() {
-    new GetCasingData().getData('/api/v1/discounts', 'discounts').then((response)=>{
+    new GetCasingData(12,false).getData('/api/v1/discounts', 'discounts').then((response)=>{
         discountStore.data = response.data
     });
 }

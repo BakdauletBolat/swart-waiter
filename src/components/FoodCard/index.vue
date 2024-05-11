@@ -16,7 +16,7 @@
                         }}">
                 <h3 class="text-sm">{{ food.attributes.name.ru }}</h3>
                 <p class="text-[#66666E] text-xs mt-2">{{ food.attributes.description.ru }}</p>
-                <div class="text-xs text-[#9999A1] mt-2" v-if="checkInBasket(food.id)">{{ getFromBasket(food.id).attributes.price }} ₸</div>
+                <div class="text-xs text-[#9999A1] mt-2" v-if="checkInBasket(food.id)">{{  formattedPrice(getFromBasket(food.id).attributes.price) }} ₸</div>
             </RouterLink>
             <div v-if="checkInBasket(food.id)">
               <ChangeBasketCardComponent :show-price="false" :good="getFromBasket(food.id)"></ChangeBasketCardComponent>
@@ -27,7 +27,7 @@
               uuid: userInformationStore.store.value!.uuid
             })">
                 <div class="cursor-pointer w-full bg-white text-center flex justify-center items-center py-2 rounded-2xl">
-                  <div>{{ food.attributes.price }} ₸</div>
+                  <div>{{formattedPrice(food.attributes.price)}} ₸</div>
                 </div>
             </section>
         </div>
@@ -36,7 +36,7 @@
 <script lang="ts" setup>
 import Image from '../Image';
 import {Product} from "../../api";
-import {getFirstElemOrUndefined} from "../../utils";
+import {formattedPrice, getFirstElemOrUndefined} from "../../utils";
 import {addOrCreate, checkInBasket, getFromBasket} from "../../stores/basketStore.ts";
 import ChangeBasketCardComponent from "../BasketCard/ChangeBasketCardComponent.vue";
 import userInformationStore from "../../stores/userInformationStore.ts";

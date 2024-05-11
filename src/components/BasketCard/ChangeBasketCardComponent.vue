@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {MinusIcon, PlusIcon} from "@heroicons/vue/24/outline";
 import {changeQuantityFromBasket, ICardItem, removeFromBasket} from "../../stores/basketStore.ts";
+import {formattedPrice} from "../../utils";
 
 const props = defineProps<{good: ICardItem, showPrice: boolean}>();
 
@@ -23,8 +24,8 @@ function changeQuantity(quantity: number) {
       <div>{{good.attributes.quantity}}</div>
       <div @click="changeQuantity(good.attributes.quantity + 1)" class="bg-white cursor-pointer p-1 rounded-lg"><PlusIcon class="w-5 h-5"></PlusIcon></div>
     </div>
-    <div class="font-medium text-nowrap" v-if="showPrice">
-      {{good.attributes.price * good.attributes.quantity}} ₸
+    <div class="font-medium white-space-pre text-nowrap" v-if="showPrice">
+      {{formattedPrice(good.attributes.price * good.attributes.quantity)}} ₸
     </div>
   </section>
 </template>

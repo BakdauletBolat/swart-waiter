@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {IOrderProduct} from "../../stores/orderStore.ts";
-import {getFirstElemOrUndefined, getNumberWithZero} from "../../utils";
+import {formattedPrice, getFirstElemOrUndefined, getNumberWithZero} from "../../utils";
 import OrderStatus from "../OrderStatus.vue";
 import Image from '../Image';
 import OrderIcon from "../../assets/svg/OrderIcon.vue";
@@ -45,7 +45,7 @@ function getTimeFromProduct(value: number, statuses: any[]): string{
             <RunningIcon color="black"  width="16" height="16"></RunningIcon>
           </OrderStatus>
         </div>
-        <div>{{orderItem.attributes.price}} ₸</div>
+        <div>{{formattedPrice(orderItem.attributes.price)}} ₸</div>
       </div>
     </div>
   </article>

@@ -31,13 +31,18 @@ onMounted(()=>{
    <div v-for="grouped in searched">
      <h2 class="py-4 font-medium">{{grouped.category.name}}</h2>
      <div v-for="product in grouped.products">
-       <section class="flex gap-4 py-2 items-center">
-         <Image class="w-[56px] flex-shrink-0 h-[56px]" :url="getFirstElemOrUndefined(product.attributes.images)"></Image>
+       <RouterLink :to="{
+         name: 'food-detail',
+         params: {
+           id: product.id
+         }
+       }" class="flex gap-4 py-2 items-center">
+         <Image class="w-[56px] rounded flex-shrink-0 h-[56px]" :url="getFirstElemOrUndefined(product.attributes.images)"></Image>
          <div>
            <h3>{{product.attributes.name.ru}}</h3>
-           <p class="text-sm text-[#66666E]">{{product.attributes.description.ru}}</p>
+           <p class="text-sm text-[#66666E] max-w-[250px] long-text">{{product.attributes.description.ru}}</p>
          </div>
-       </section>
+       </RouterLink>
      </div>
    </div>
  </div>

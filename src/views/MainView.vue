@@ -11,7 +11,7 @@ import {useRouter} from "vue-router";
 import { onMounted, ref} from "vue";
 import userInformationStore from "../stores/userInformationStore.ts";
 import {getRestoran} from "../api";
-import {getFirstElemOrUndefined} from "../utils";
+import {formattedPrice, getFirstElemOrUndefined} from "../utils";
 import {loadCategories, loadProducts, productsGroupedByCategory} from "../stores/productStore.ts";
 import {isHaveCart, loadBasket, totalAmount} from "../stores/basketStore.ts";
 import {discountStore, loadDiscounts} from "../stores/discountStore.ts";
@@ -62,17 +62,17 @@ const showHistory = ref<boolean>(false);
 <template>
     <History v-model="activeItem" :histories="discountStore.data" v-model:show="showHistory"></History>
     <div>
-        <div class="mb-4">
+        <div>
             <Header :item="headerItem"></Header>
         </div>
-        <div class="mb-[6px] mx-4">
-            <RouterLink :to="{
+        <div class="mb-[8px] mx-4">
+            <RouterLink  :to="{
               name: 'search-view'
-            }" class="px-4">
-              <SearchInput class="cursor-pointer mb-4"></SearchInput>
+            }" class="px-4 mb-4">
+              <SearchInput class="cursor-pointer"></SearchInput>
             </RouterLink>
-            <div class="gap-3 flex pl-4 w-full overflow-scroll hide-scrollbar">
-            <Image @click="showHistory=true; activeItem=index" class="w-[154px] h-[88px] flex-shrink-0 rounded-2xl" :url="index.toString()" v-for="(_, index) in discountStore.data"></Image>
+            <div class="gap-3 flex w-full overflow-scroll hide-scrollbar">
+            <Image @click="showHistory=true; activeItem=index" class="w-[154px] h-[88px] flex-shrink-0 rounded-2xl" :url="getFirstElemOrUndefined(item.attributes.attachments)" v-for="(item, index) in discountStore.data"></Image>
         </div>
         </div>
         <StickedScrollTab :categories="productsGroupedByCategory"></StickedScrollTab>
@@ -85,7 +85,7 @@ const showHistory = ref<boolean>(false);
               </div>
               <div class="h-6 w-[1px] bg-white"></div>
               <div>
-                {{totalAmount.totalAmont}} ₸
+                 {{formattedPrice(totalAmount.totalAmont)}} ₸
               </div>
             </div>
             <ChevronRightIcon class="w-6 h-6"></ChevronRightIcon>

@@ -114,8 +114,9 @@ export const searched = computed<{
             products: [],
             category: item.category
         }
+        const lower = searchText.value.toLowerCase();
         item.products.forEach((product)=>{
-            if (product.attributes.name.ru.startsWith(searchText.value)) {
+            if (product.attributes.name.ru.toLowerCase().includes(lower)) {
                 toReturn.products.push(product)
             }
         })
@@ -124,6 +125,5 @@ export const searched = computed<{
         }
 
     });
-    console.log(searched);
     return toReturnList;
 });

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import {useRoute} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 import {onMounted, ref} from "vue";
 import {getProduct, Product} from "../api/product.ts";
-import {getFirstElemOrUndefined} from "../utils";
+import {formattedPrice, getFirstElemOrUndefined} from "../utils";
 import Card from "../components/Card.vue";
 import {XMarkIcon} from "@heroicons/vue/24/outline";
 import FireIcon from "../assets/svg/FireIcon.vue";
@@ -18,25 +18,29 @@ import {
   removeFromBasket
 } from "../stores/basketStore.ts";
 import userInformationStore from "../stores/userInformationStore.ts";
+import LoadingModal from "../components/LoadingModal.vue";
 
 const product = ref<Product>();
 const isLoading = ref<boolean>(false);
 const route = useRoute();
+const router = useRouter();
 
 onMounted(()=>{
+  scrollTo({
+    top: 0
+  });
   isLoading.value = true;
   loadBasket();
+
   getProduct(parseInt(route.params.id.toString()))
-      .then(res=>product.value = res.data)
+      .then(res=>product.value = res)
       .catch(e=>{
         console.log(e);
       })
       .finally(()=>isLoading.value=false);
-
 });
 
 function changeQuantity(quantity: number) {
-  console.log(quantity);
   if (quantity <= 0) {
     removeFromBasket(getFromBasket(product.value!.id).id);
     return;
@@ -64,14 +68,15 @@ function addOrChangeQuantity() {
 </script>
 
 <template>
+  <LoadingModal v-if="isLoading">
+
+  </LoadingModal>
   <main v-if="product">
     <section class="h-[280px] w-full relative overflow-hidden rounded-bl-2xl rounded-br-2xl">
       <img alt="Photo" class="w-full h-full object-cover" :src="getFirstElemOrUndefined<string>(product!.attributes.images)">
-      <RouterLink :to="{
-        name: 'menu'
-      }" class="cursor-pointer bg-black-100 p-2 absolute rounded-2xl overflow-hidden top-3 right-2">
+      <div @click="router.back" class="cursor-pointer bg-black-100 p-2 absolute rounded-2xl overflow-hidden top-3 right-2">
         <XMarkIcon class="h-6 text-white w-6"></XMarkIcon>
-      </RouterLink>
+      </div>
     </section>
     <Card class="mt-6 mx-4">
       <h2 class="font-medium text-[20px] leading-[24px]">{{product.attributes.name.ru}}</h2>
@@ -91,33 +96,33 @@ function addOrChangeQuantity() {
         </div>
         <div class="text-sm gap-2 rounded-lg text-white bg-[#FFB800] flex justify-center items-center px-[10px] py-2">
           <ClockIcon color="white" width="16" height="16"></ClockIcon>
-          <span>15-20 мин</span>
+          <span>{{product.attributes.time.start_at}}-{{product.attributes.time.end_at}} мин</span>
         </div>
       </div>
     </Card>
     <Card class="mt-4 mx-4">
       <h4 class="leading-[17px] text-sm">Пищевая ценность</h4>
-      <p class="text-[#9999A1] text-xs mt-2">на 100 г</p>
-      <div class="flex gap-2 mt-2">
-        <div class="bg-[#F4F4F6] p-2 rounded-lg">
-          <div class="text-sm ">165</div>
+      <p class="text-[#9999A1] text-xs mt-2">на {{product.attributes.value.weight}} г</p>
+      <div class="flex w-full gap-2 mt-2">
+        <div class="bg-[#F4F4F6] w-full p-2 rounded-lg">
+          <div class="text-sm ">{{ product.attributes.value.calories }}</div>
           <div class="text-xs leading-[14.3px] text-[#9999A1] mt-2">ккал</div>
         </div>
-        <div class="bg-[#F4F4F6] p-2 rounded-lg">
-          <div class="text-sm ">12,5 г</div>
+        <div class="bg-[#F4F4F6] w-full p-2 rounded-lg">
+          <div class="text-sm ">{{product.attributes.value.protein}} г</div>
           <div class="text-xs leading-[14.3px] text-[#9999A1] mt-2">белки</div>
         </div>
-        <div class="bg-[#F4F4F6] p-2 rounded-lg">
-          <div class="text-sm ">8,4 г</div>
+        <div class="bg-[#F4F4F6] w-full p-2 rounded-lg">
+          <div class="text-sm ">{{product.attributes.value.fat}} г</div>
           <div class="text-xs leading-[14.3px] text-[#9999A1] mt-2">жиры</div>
         </div>
-        <div class="bg-[#F4F4F6] p-2 rounded-lg">
-          <div class="text-sm ">9,1 г</div>
+        <div class="bg-[#F4F4F6] w-full p-2 rounded-lg">
+          <div class="text-sm ">{{product.attributes.value.carbohydrates}} г</div>
           <div class="text-xs leading-[14.3px] text-[#9999A1] mt-2">углеводы</div>
         </div>
       </div>
     </Card>
-    <div class="mx-4 mt-6">
+    <div class="mx-4 mt-6" v-if="product.included.recommendations.data.length > 0">
       <h2>Вместе с этим берут</h2>
       <div class="mt-4 flex flex-col gap-4">
         <FoodCard :food="food" v-for="food in product.included.recommendations.data"></FoodCard>
@@ -133,7 +138,7 @@ function addOrChangeQuantity() {
         </div>
         <Button class="w-full" @click="addOrChangeQuantity">
           <div class="flex gap-2 flex-nowrap">
-            <span class="text-nowrap">{{product.attributes.price}} ₸</span>
+            <span class="text-nowrap white-space-pre">{{formattedPrice(product.attributes.price)}} ₸</span>
             <span class="h-6 w-[1px] bg-white"></span>
             <span>Добавить</span>
           </div>

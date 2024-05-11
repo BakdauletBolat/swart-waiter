@@ -4,6 +4,7 @@ import BillIcon from "../assets/svg/BillIcon.vue";
 import {onMounted} from "vue";
 import {loadOrder, loadOrderProducts, orderStore, otherProducts} from "../stores/orderStore.ts";
 import {loadRestaurant, restorantStore} from "../stores/restorantStore.ts";
+import {formattedPrice} from "../utils";
 
 onMounted(()=>{
   loadOrder();
@@ -53,7 +54,7 @@ function getNameByUUID(uuid: string) {
           <tr v-for="product in products">
             <td class="py-2">{{product.included.product.attributes.name.ru}}</td>
             <td class="p-2 align-text-top">{{product.attributes.quantity}}x</td>
-            <td class="py-2 text-right align-text-top text-nowrap">{{product.attributes.price}} ₸</td>
+            <td class="py-2 text-right align-text-top white-space-pre text-nowrap">{{formattedPrice(product.attributes.price)}} ₸</td>
           </tr>
 
         </tbody>
