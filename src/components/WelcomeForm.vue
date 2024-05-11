@@ -29,6 +29,7 @@ import {useRouter} from "vue-router";
 import {createCustomer} from "../api/customer.ts";
 import userInformationStore from "../stores/userInformationStore.ts";
 import {addToast} from "./ToastComponent/index.ts";
+import {start} from "../api/pusher.ts";
 const router = useRouter();
 
 const isLoading = ref<boolean>(false);
@@ -60,6 +61,7 @@ const next = () => {
       full_name: userInformationStore.store.value!.name,
       location: userInformationStore.store.value?.location!
     }).then((_)=>{
+      start();
       router.push({
         name: 'user-guide'
       });

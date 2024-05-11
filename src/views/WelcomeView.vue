@@ -9,7 +9,6 @@ import {getRestoran} from "../api";
 import {onMounted, ref} from "vue";
 import {useRoute} from "vue-router";
 import {getFirstElemOrUndefined} from "../utils";
-import {start} from "../api/pusher.ts";
 
 const route = useRoute();
 
@@ -22,7 +21,6 @@ const welcomeProps = ref<{
 onMounted(async ()=>{
   if (route.query.host != null ) {
     localStorage.setItem('multi_tenant_domain_name', route.query.host!.toString()!);
-    start();
   }
   if (route.query.hash != null) {
     localStorage.setItem('table', route.query.hash!.toString().replace(' ', '+'));
@@ -36,6 +34,7 @@ onMounted(async ()=>{
     }
   });
 });
+
 
 
 </script>

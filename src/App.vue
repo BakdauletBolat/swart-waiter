@@ -16,6 +16,10 @@ onMounted(()=>{
   }
 });
 
+onUnmounted(()=>{
+  stop();
+})
+
 import Toast from "./components/ToastComponent/index.ts";
 import SidebarModal from "./components/SidebarModal/index.ts";
 import LoadingModal from "./components/LoadingModal.vue";
