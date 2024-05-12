@@ -3,6 +3,8 @@ import Button from '../components/Button';
 import WaiterCard from "../assets/svg/WaiterCard.vue";
 import {useRoute, useRouter} from "vue-router";
 import CashIcon from "../assets/svg/CashIcon.vue";
+import {orderStore} from "../stores/orderStore.ts";
+import {addToast} from "../components/ToastComponent/index.ts";
 const route = useRoute();
 const router = useRouter();
 const paymentsTypes = [
@@ -19,6 +21,13 @@ const paymentsTypes = [
 ]
 
 function navigateTo() {
+  if (orderStore.order?.attributes.status.value != 50) {
+    addToast({
+      message: "Пожалуйста оплатите столик",
+      timeout: 10
+    });
+    return;
+  }
   router.push({
     name: 'review-view',
     params: {

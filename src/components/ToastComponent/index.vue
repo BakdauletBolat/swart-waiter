@@ -1,7 +1,7 @@
 <template>
-    <div class="toast-group mx-3 gap-1 flex flex-col" >
-      <ToastItem :message="toast.message" v-for="toast in toasts"></ToastItem>
-    </div>
+      <div class="toast-group px-3 gap-1 w-full top-0 left-0 flex flex-col" >
+        <ToastItem :message="toast.message" v-for="toast in toasts"></ToastItem>
+      </div>
 </template>
 
 <script setup lang="ts">

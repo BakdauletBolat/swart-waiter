@@ -43,7 +43,7 @@ onMounted(()=>{
 
 watch(()=>orderStore.order?.attributes.status.value, (newD, old)=>{
   if (old != undefined && newD != old) {
-    if (newD == 40) {
+    if (newD == 50) {
       router.push({
         name: 'receipt-view',
         query: {

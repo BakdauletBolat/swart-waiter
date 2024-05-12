@@ -28,6 +28,19 @@ export function start() {
                 }
             }
         });
+        channel.bind('cart.customer.deletes', (event: {
+            ids: number[]
+        }) => {
+            if (basket.value.data != undefined) {
+                event.ids.forEach((item_id: number)=>{
+                    const index = basket.value.data?.findIndex((item)=>item.id == item_id);
+                    if (index != -1) {
+                        //@ts-ignore
+                        basket.value.data.splice(index, 1);
+                    }
+                })
+            }
+        });
         channel.bind('cart.customer.update', (event: any)=>{
             if (basket.value.data != undefined) {
                 const index = basket.value.data?.findIndex((item)=>event.id == item.id);
@@ -36,10 +49,18 @@ export function start() {
                 }
             }
         });
+        channel.bind('order.products.delete', (event: any)=>{
+            if (orderStore.products != undefined) {
+                const index = orderStore.products?.findIndex((item)=>event.id == item.id);
+                if (index != -1) {
+                    orderStore.products?.splice(index, 1);
+                    loadOrder();
+                }
+            }
+        });
         channel.bind('order.products.create', (event: any)=>{
             if (orderStore.products != undefined) {
                 const index = orderStore.products?.findIndex((item)=>event.attributes.table_id == item.attributes.table_id);
-
                 if (index != -1) {
                     orderStore.products?.push(event);
                     loadOrder();
