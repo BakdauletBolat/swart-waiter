@@ -14,6 +14,7 @@ onMounted(()=>{
   if (localStorage.getItem('multi_tenant_domain_name') != undefined) {
     start();
   }
+  loadRestaurant();
 });
 
 onUnmounted(()=>{
@@ -24,4 +25,5 @@ import Toast from "./components/ToastComponent/index.ts";
 import SidebarModal from "./components/SidebarModal/index.ts";
 import LoadingModal from "./components/LoadingModal.vue";
 import {isLoading} from "./stores";
+import {loadRestaurant} from "./stores/restorantStore.ts";
 </script>

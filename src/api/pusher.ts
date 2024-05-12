@@ -39,6 +39,7 @@ export function start() {
         channel.bind('order.products.create', (event: any)=>{
             if (orderStore.products != undefined) {
                 const index = orderStore.products?.findIndex((item)=>event.attributes.table_id == item.attributes.table_id);
+
                 if (index != -1) {
                     orderStore.products?.push(event);
                     loadOrder();
@@ -46,6 +47,7 @@ export function start() {
             }
         });
         channel.bind('order.update', (event: any) => {
+            console.log(event)
            if (orderStore.order != undefined && orderStore.order.attributes.table_id == event.attributes.table_id) {
                orderStore.order = event;
            }

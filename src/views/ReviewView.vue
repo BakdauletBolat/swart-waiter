@@ -41,7 +41,10 @@ function createReview() {
     }).then(_=>{
         comment.value = '';
         router.push({
-          name: 'receipt-view'
+          name: 'receipt-view',
+          query: {
+            token: orderStore.order?.attributes.token
+          }
         })
       })
       .catch((e)=>console.log(e))

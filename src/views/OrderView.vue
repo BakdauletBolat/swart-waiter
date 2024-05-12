@@ -4,7 +4,7 @@ import AppHeader from "../components/AppHeader.vue";
 import OrderIcon from "../assets/svg/OrderIcon.vue";
 import {ChevronRightIcon} from "@heroicons/vue/24/outline";
 import Button from "../components/Button/index.ts";
-import {onMounted} from "vue";
+import {onMounted, watch} from "vue";
 import LoadingModal from "../components/LoadingModal.vue";
 import {loadOrder, loadOrderProducts, orderStore} from "../stores/orderStore.ts";
 //@ts-ignore
@@ -41,6 +41,19 @@ onMounted(()=>{
   loadWaiter();
 })
 
+watch(orderStore, (newD, old)=>{
+  if (newD.order?.attributes.status.value != old.order?.attributes.status.value) {
+    if (newD.order?.attributes.status.value == 4) {
+      router.push({
+        name: 'receipt-view',
+        query: {
+          token: newD.order?.attributes.token
+        }
+      })
+    }
+  }
+})
+
 function navigateMenu() {
   router.push({
     name: 'menu'
@@ -75,7 +88,7 @@ function navigateMenu() {
     <section class="mt-4">
       <h2 class="font-medium">Комментарий к заказу</h2>
 
-      <p class="text-sm text-[#9999A1]">{{orderStore.order?.included?.comments.data.map((item)=>item.attributes.comment).join(', ')}}</p>
+      <p class="text-sm text-[#9999A1]">{{orderStore.order?.included?.comments?.data?.map((item)=>item.attributes.comment).join(', ')}}</p>
     </section>
     <OrderTotal class="mt-4"></OrderTotal>
   </main>

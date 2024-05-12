@@ -1,5 +1,5 @@
 import {computed, reactive} from "vue";
-import {instance} from "../api";
+import {instance, IRestoran} from "../api";
 import {Product} from "../api";
 import userInformationStore from "./userInformationStore.ts";
 
@@ -14,6 +14,7 @@ interface IOrder {
     type: string;
     id: number;
     attributes: {
+        token: string;
         table_id: number;
         number: string;
         created_at: string;
@@ -31,7 +32,13 @@ interface IOrder {
         };
     };
     included: {
-        customer: any;
+        customer: {
+            data: any[]
+        }
+        positions: {
+            data: IOrderProduct[]
+        }
+        restaurant: IRestoran,
         comments: {
             data: IComment[]
         }
@@ -94,6 +101,7 @@ export interface IOrderStore {
     isLoadingOrderProducts: boolean;
     products: IOrderProduct[],
     order?: IOrder,
+    receiptOrder?: IOrder,
     isLoadingOrder: boolean;
 }
 
@@ -160,5 +168,16 @@ export function loadOrder() {
     orderStore.isLoadingOrder = true;
     instance.get('/api/v1/order/customer?include=status,customer,comments')
         .then(res=>orderStore.order=res.data)
+        .finally(()=>orderStore.isLoadingOrder=false);
+}
+
+export function loadReceiptOrder(token: string) {
+    orderStore.isLoadingOrder = true;
+    instance.get('/api/v1/order/receipt?include=status,customer,comments,restaurant', {
+        headers: {
+            order: token
+        }
+    })
+        .then(res=>orderStore.receiptOrder=res.data)
         .finally(()=>orderStore.isLoadingOrder=false);
 }

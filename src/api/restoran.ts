@@ -5,14 +5,24 @@ export interface  IRestoranAttributes {
     address: string;
     description: string;
     attachments: any[];
+
 }
 
 export interface IRestoran {
     type: string;
     id: number;
+    included: {
+        setting: {
+            attributes: {
+                lang: string,
+                serv_percent_waiter: number,
+                serv_percent_pick_up: number
+            }
+        }
+    };
     attributes:IRestoranAttributes
 }
 
 export const  getRestoran = async () => {
-    return await new GetCasingData().getData('/api/v1/restaurants/me', 'restoran_key');
+    return await new GetCasingData().getData('/api/v1/restaurants/me?include=setting', 'restoran_key');
 }

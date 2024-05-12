@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import {orderStore, customerProducts} from "../../stores/orderStore.ts";
 import {formattedPrice} from "../../utils";
-
+import {restorantStore} from "../../stores";
+import image from '../../assets/images/ordertotal.png';
 
 function getUserTotal(): number {
   let total = 0;
   customerProducts.value.forEach((product)=>{
     total+=product.attributes.price * product.attributes.quantity;
   });
-  return total;
+  //@ts-ignore
+  const percent = total * restorantStore.value?.included?.setting.attributes.serv_percent_waiter / 100;
+  return total + percent;
 }
 </script>
 
@@ -33,14 +36,11 @@ function getUserTotal(): number {
     <div>{{formattedPrice(orderStore.order?.attributes.computation.total)}} ₸</div>
   </div>
   <div class="w-full h-[25px] mt-[32px]">
-    <div  class="w-full h-full background-order"></div>
+    <div  class="w-full h-full background-order" :style="{ backgroundImage: 'url(' + image + ')' }"></div>
   </div>
   <div class="mt-[150px]"></div>
 </section>
 </template>
 
 <style scoped>
-.background-order {
-  //background: url("./assets/ordertotal.png");
-}
 </style>
