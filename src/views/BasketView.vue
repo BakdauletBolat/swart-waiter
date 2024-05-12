@@ -18,7 +18,7 @@ onMounted(()=>{
   loadBasket();
 });
 
-const comment = ref('1');
+const comment = ref(null);
 const router = useRouter();
 
 function navigateMenu() {
