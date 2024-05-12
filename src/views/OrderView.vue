@@ -41,13 +41,13 @@ onMounted(()=>{
   loadWaiter();
 })
 
-watch(orderStore, (newD, old)=>{
-  if (newD.order?.attributes.status.value != old.order?.attributes.status.value) {
-    if (newD.order?.attributes.status.value == 40) {
+watch(()=>orderStore.order?.attributes.status.value, (newD, old)=>{
+  if (old != undefined && newD != old) {
+    if (newD == 40) {
       router.push({
         name: 'receipt-view',
         query: {
-          token: newD.order?.attributes.token
+          token: orderStore.order?.attributes.token
         }
       })
     }
