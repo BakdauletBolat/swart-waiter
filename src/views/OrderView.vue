@@ -69,7 +69,7 @@ function navigateMenu() {
       <div v-else class="flex px-4 pb-[40px] flex-col items-center justify-center">
         <OrderAlreadyPayingIcon></OrderAlreadyPayingIcon>
         <h2 class="text-2xl mt-4">Заказ уже в оплате</h2>
-        <p class="mt-4 text-sm text-[#9999A1]">{{orderStore.order!.included.customer.attributes.full_name}} оплачивает счет</p>
+        <p class="mt-4 text-sm text-[#9999A1]">{{orderStore.order!.included.customer!.attributes.full_name}} оплачивает счет</p>
         <Button @click="close" class="mt-6 w-full justify-center flex">Понятно</Button>
       </div>
     </vue-bottom-sheet>

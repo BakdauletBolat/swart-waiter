@@ -33,6 +33,7 @@ interface IOrder {
     };
     included: {
         customer: {
+            attributes: any
             data: any[]
         }
         positions: {

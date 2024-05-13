@@ -6,7 +6,7 @@ import {ref} from 'vue';
 import Button from '../Button';
 
 
-const model = defineModel<string>();
+const model = defineModel<string | null>();
 const bottomSheet = ref(null);
 
 const open = () => {
