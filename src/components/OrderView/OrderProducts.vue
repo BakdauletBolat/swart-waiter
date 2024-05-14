@@ -37,12 +37,15 @@ const orderStatuses = [
       <Button @click="closeOrderStatus" class="mt-6 w-full justify-center flex">Понятно</Button>
     </div>
   </vue-bottom-sheet>
-  <section class="flex flex-col gap-2">
-    <OrderItem v-for="orderItem in customerProducts"
-               :order-item="orderItem"
-               class="bg-black-10 rounded-2xl p-3 flex gap-4">
-    </OrderItem>
-  </section>
+  <div>
+    <div class="w-full bg-[#E6E6E9] h-[1px] my-4"></div>
+    <section class="flex flex-col gap-2">
+      <OrderItem v-for="orderItem in customerProducts"
+                 :order-item="orderItem"
+                 class="bg-black-10 rounded-2xl p-3 flex gap-4">
+      </OrderItem>
+    </section>
+  </div>
 </template>
 
 <style scoped>

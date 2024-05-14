@@ -34,15 +34,15 @@ function getTimeFromProduct(value: number, statuses: any[]): string{
       </header>
       <div class="flex justify-between items-center mt-2">
         <div class="flex gap-1">
-          <OrderStatus @click="openOrderStatus(0)" :time="getTimeFromProduct(1, orderItem.included.statuses.data)" :status="1" :active-status="orderItem.attributes.status.value">
+          <OrderStatus @click="openOrderStatus(orderItem.attributes.status.value)" :time="getTimeFromProduct(1, orderItem.included.statuses.data)" :status="1" :active-status="orderItem.attributes.status.value">
             <OrderIcon color="black" width="16" height="16"></OrderIcon>
           </OrderStatus>
           <div class="h-[2px] mt-4 rounded min-w-[22px] bg-black"></div>
-          <OrderStatus @click="openOrderStatus(1)" :time="getTimeFromProduct(2, orderItem.included.statuses.data)"  :status="2" :active-status="orderItem.attributes.status.value">
+          <OrderStatus @click="openOrderStatus(orderItem.attributes.status.value)" :time="getTimeFromProduct(2, orderItem.included.statuses.data)"  :status="2" :active-status="orderItem.attributes.status.value">
             <CookingIcon color="black" width="16" height="16"></CookingIcon>
           </OrderStatus>
           <div class="h-[2px] mt-4 rounded min-w-[22px] bg-black"></div>
-          <OrderStatus @click="openOrderStatus(2)" :time="getTimeFromProduct(3, orderItem.included.statuses.data)" :active-status="orderItem.attributes.status.value" :status="3">
+          <OrderStatus @click="openOrderStatus(orderItem.attributes.status.value)" :time="getTimeFromProduct(3, orderItem.included.statuses.data)" :active-status="orderItem.attributes.status.value" :status="3">
             <RunningIcon color="black"  width="16" height="16"></RunningIcon>
           </OrderStatus>
         </div>

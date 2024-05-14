@@ -82,7 +82,6 @@ function navigateMenu() {
     </section>
     <h2 class="font-medium my-4">Ваш заказ</h2>
     <OrderProducts></OrderProducts>
-    <div class="w-full bg-[#E6E6E9] h-[1px] my-4"></div>
     <OtherOrderProducts></OtherOrderProducts>
     <div class="w-full bg-[#E6E6E9] h-[1px] my-4"></div>
     <section class="mt-4">

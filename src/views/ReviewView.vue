@@ -60,12 +60,12 @@ function createReview() {
   <h1 class="text-center mt-[30px]">Заказ завершен и оплачен!</h1>
   <p class="text-[#66666E] mt-2 text-sm text-center">Спасибо что воспользовались нашим сервисом по автоматизации ресторанных процессов</p>
   <div class="p-4 bg-white rounded-2xl mt-4">
-    <ReviewComponent @click="activeReview=0" :is-active="activeReview == 0"
+    <ReviewComponent @updateMain="activeReview = 0" :is-active="activeReview == 0"
                      :image-url="getFirstElemOrUndefined(restorantStore?.attributes.attachments)"
-                     title="Оцените ресторан" :count="5" v-model="restorauntReview"></ReviewComponent>
-    <ReviewComponent @click="activeReview=1" :is-active="activeReview == 1"
-                     title="Оцените обслуживание" :count="5" v-model="waiterReview"></ReviewComponent>
-    <Input @click="activeReview=2" class="mt-[28px]" v-model="comment" placeholder="Оставьте отзыв о ресторане" />
+                     title="Оцените ресторан" :count="5" @update="activeReview+=1" v-model="restorauntReview"></ReviewComponent>
+    <ReviewComponent @updateMain="activeReview = 1" :is-active="activeReview == 1"
+                     title="Оцените обслуживание" @update="activeReview+=1" :count="5" v-model="waiterReview"></ReviewComponent>
+    <Input  @click="activeReview = 2" class="mt-[28px]" v-model="comment" placeholder="Оставьте отзыв о ресторане" />
   </div>
   <div class="h-[200px]"></div>
   <div class="fixed left-0 bottom-[20px] w-full">
