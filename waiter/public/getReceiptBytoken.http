@@ -1,0 +1,4 @@
+GET https://5second.kz/api/v1/order/receipt?include=customer,restaurant
+X-Tenant: tandyr
+Accept: application/json
+order: Z5CS2a+kyfiBn8sMVDLwwS9GZ2M2dENUaDRuYXZEN3dUK3dNbXc9PQ==
