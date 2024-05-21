@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc && vite build",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -24,6 +24,7 @@
     "swiper": "^11.0.7",
     "uuid": "^9.0.1",
     "vue": "^3.4.19",
+    "vue-imask": "^7.6.0",
     "vue-router": "^4.3.0"
   },
   "devDependencies": {

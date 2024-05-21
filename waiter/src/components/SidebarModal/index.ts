@@ -3,7 +3,7 @@ import {ref} from "vue";
 //@ts-ignore
 import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
 import {instance} from "../../api";
-import userInformationStore from "../../stores/userInformationStore.ts";
+import userInformationStore from "../../stores/userStore.ts";
 
 
 interface IWaiter {

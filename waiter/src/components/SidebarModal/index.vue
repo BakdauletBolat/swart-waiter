@@ -6,7 +6,7 @@ import Modal from "../Modal/index.ts";
 //@ts-ignore
 import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
 import WaiterCallComponent from "../WaiterCallComponent.vue";
-import userInformationStore from "../../stores/userInformationStore.ts";
+import userInformationStore from "../../stores/userStore.ts";
 const route = useRoute();
 const router = useRouter();
 

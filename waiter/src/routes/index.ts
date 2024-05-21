@@ -1,4 +1,4 @@
-import WelcomeView from "../views/WelcomeView.vue";
+import LoginView from "../views/LoginView.vue";
 import UserGuideView from '../views/UserGuideView.vue';
 import AccessLocationView from '../views/AccessLocationView.vue';
 import MainView from '../views/MainView.vue';
@@ -12,9 +12,9 @@ import SearchView from "../views/SearchView.vue";
 export const routes = [
 
     {
-        path: '',
-        name:  'welcome-page',
-        component: WelcomeView,
+        path: '/login',
+        name:  'login-view',
+        component: LoginView
     },
     {
         path: '/search',
@@ -38,11 +38,11 @@ export const routes = [
         }
     },
     {
-        path: '/menu',
-        name:  'menu',
+        path: '',
+        name:  'main-view',
         component: MainView,
         meta: {
-            isCoordsRequired: true
+            isLoginRequired: true
         }
     },
     {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {orderStore, otherProducts} from "../../stores/orderStore.ts";
-import userInformationStore from "../../stores/userInformationStore.ts";
+import userInformationStore from "../../stores/userStore.ts";
 import OrderItem from "./OrderItem.vue";
 
 function getNameByUUID(uuid: string) {

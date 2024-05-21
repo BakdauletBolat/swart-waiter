@@ -1,5 +1,5 @@
 import {computed, ref} from "vue";
-import userInformationStore from "./userInformationStore.ts";
+import userInformationStore from "./userStore.ts";
 import {isLoading} from "./index.ts";
 import {instance} from "../api";
 

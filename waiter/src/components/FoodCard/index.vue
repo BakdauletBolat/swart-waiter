@@ -39,6 +39,6 @@ import {Product} from "../../api";
 import {formattedPrice, getFirstElemOrUndefined} from "../../utils";
 import {addOrCreate, checkInBasket, getFromBasket} from "../../stores/basketStore.ts";
 import ChangeBasketCardComponent from "../BasketCard/ChangeBasketCardComponent.vue";
-import userInformationStore from "../../stores/userInformationStore.ts";
+import userInformationStore from "../../stores/userStore.ts";
 defineProps<{food: Product}>();
 </script>

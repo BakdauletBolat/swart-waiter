@@ -7,7 +7,7 @@ import {getFirstElemOrUndefined} from "../utils";
 import Input from '../components/Input';
 import Button from '../components/Button';
 import {instance} from "../api";
-import userInformationStore from "../stores/userInformationStore.ts";
+import userInformationStore from "../stores/userStore.ts";
 import {useRouter} from "vue-router";
 
 onMounted(()=>{

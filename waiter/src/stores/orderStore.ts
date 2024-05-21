@@ -1,7 +1,7 @@
 import {computed, reactive} from "vue";
 import {instance, IRestoran} from "../api";
 import {Product} from "../api";
-import userInformationStore from "./userInformationStore.ts";
+import userInformationStore from "./userStore.ts";
 
 interface IComment {
     attributes: {

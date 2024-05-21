@@ -17,7 +17,7 @@ import {
   getFromBasket, loadBasket,
   removeFromBasket
 } from "../stores/basketStore.ts";
-import userInformationStore from "../stores/userInformationStore.ts";
+import userInformationStore from "../stores/userStore.ts";
 import LoadingModal from "../components/LoadingModal.vue";
 
 const product = ref<Product>();

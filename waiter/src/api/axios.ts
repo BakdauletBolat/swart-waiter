@@ -15,5 +15,8 @@ instance.interceptors.request.use((config: InternalAxiosRequestConfig)=>{
     if (localStorage.getItem('multi_tenant_domain_name') != undefined) {
         config.headers['X-Tenant'] = localStorage.getItem('multi_tenant_domain_name');
     }
+    if (localStorage.getItem('access_token') != undefined) {
+        config.headers['Authorization'] = 'Bearer '+localStorage.getItem('access_token');
+    }
     return config;
 })

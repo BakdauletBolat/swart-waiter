@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {basket, otherBaskets} from "../stores/basketStore.ts";
-import userInformationStore from "../stores/userInformationStore.ts";
+import userInformationStore from "../stores/userStore.ts";
 import BasketCard from "./BasketCard/index.ts";
 
 function getNameByUUID(uuid: string) {

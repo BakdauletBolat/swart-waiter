@@ -17,7 +17,7 @@
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import Spinner from '../components/Spinner.vue';
-import userInformationStore from "../stores/userInformationStore.ts";
+import userInformationStore from "../stores/userStore.ts";
 import NotLocationAccessSVG from "../assets/svg/NotLocationAccessSVG.vue";
 import Button from '../components/Button';
 const permissionState = ref('promt');

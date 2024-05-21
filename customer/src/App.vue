@@ -21,7 +21,7 @@ onUnmounted(()=>{
   stop();
 })
 
-import Toast from "./components/ToastComponent/index.ts";
+import Toast from "./components/ToastComponent";
 import SidebarModal from "./components/SidebarModal/index.ts";
 import LoadingModal from "./components/LoadingModal.vue";
 import {isLoading} from "./stores";

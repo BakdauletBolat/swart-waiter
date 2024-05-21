@@ -7,7 +7,7 @@ import {ChevronRightIcon} from "@heroicons/vue/24/outline";
 import Button from '../components/Button';
 import OrderIcon from "../assets/svg/OrderIcon.vue";
 import {instance} from "../api";
-import userInformationStore from "../stores/userInformationStore.ts";
+import userInformationStore from "../stores/userStore.ts";
 import {useRouter} from "vue-router";
 import SVGBasketIcon from "../assets/svg/SVGBasketIcon.vue";
 import OtherOrders from "../components/OtherOrders.vue";
