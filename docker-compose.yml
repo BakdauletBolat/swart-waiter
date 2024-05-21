@@ -17,7 +17,7 @@ services:
       - ./customer_dist:/app/dist
     command: sh -c "npm install && npm run build"
     restart: "no"
-  waiter_caddy:
+  caddy:
     image: caddy:latest
     ports:
       - "80:80"
