@@ -5,8 +5,16 @@ services:
     image: node:latest
     working_dir: /app
     volumes:
-      - ./:/app
-      - ./dist:/app/dist
+      - ./customer:/app
+      - ./waiter_dist:/app/dist
+    command: sh -c "npm install && npm run build"
+    restart: "no"
+  waiter_customer:
+    image: node:latest
+    working_dir: /app
+    volumes:
+      - ./customer:/app
+      - ./customer_dist:/app/dist
     command: sh -c "npm install && npm run build"
     restart: "no"
   waiter_caddy:
@@ -16,7 +24,9 @@ services:
       - "443:443"
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
-      - ./dist:/srv
+      - ./waiter_dist:/srv/waiter
+      - ./customer_dist:/srv/customer
     depends_on:
       - waiter_node
+      - waiter_customer
     restart: always

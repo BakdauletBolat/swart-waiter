@@ -4,7 +4,7 @@ on:
     branches:
       - main
 jobs:
-  build_customer:
+  build:
     runs-on: ubuntu-latest
     steps:
     - name: Deploy to server
@@ -17,21 +17,6 @@ jobs:
         script: |
           cd /var/www/swart-waiter
           git pull 
-          cd customer
+          docker compose restart
           docker compose up -d
-  build_waiter:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to server
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          password: ${{ secrets.SERVER_PASSWORD }}
-          port: ${{ secrets.SERVER_PORT }}
-          script: |
-            cd /var/www/swart-waiter
-            git pull 
-            cd waiter
-            docker compose up -d
   
