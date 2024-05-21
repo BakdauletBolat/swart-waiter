@@ -18,5 +18,5 @@ services:
       - ./Caddyfile:/etc/caddy/Caddyfile
       - ./dist:/srv
     depends_on:
-      - node
+      - waiter_node
     restart: always
