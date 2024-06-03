@@ -9,7 +9,7 @@ smartwaiter.kz {
     file_server
     try_files {path} /index.html
 }
-waiter.smartwaiter.kz {
+smartwaiter-backend.kz {
     try_files {path} /
     header /img/* Cache-Control max-age=31536000
     header /js/* Cache-Control max-age=31536000
