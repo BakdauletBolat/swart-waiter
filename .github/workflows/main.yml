@@ -17,6 +17,7 @@ jobs:
         script: |
           cd /var/www/swart-waiter
           git pull 
+          docker compose build
           docker compose restart
           docker compose up -d
   
