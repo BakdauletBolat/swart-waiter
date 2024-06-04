@@ -10,7 +10,8 @@
                 </div>
                 <p class="text-[#9999A1] mt-[8px] text-[14px] leading-[20px] mx-auto max-w-[300px] text-center">Введите логин и пароль</p>
                 <div class="w-full mt-[24px]" >
-                    <PhoneInput @onCompleted="(rawValue: string)=>phone.rawValue = rawValue" v-model:error="phone.error" v-model="phone.value" placeholder="Номер телефона" />
+                    <Input v-model:error="phone.error" v-model="phone.rawValue" placeholder="Логин" ></Input>
+<!--                    <PhoneInput @onCompleted="(rawValue: string)=>phone.rawValue = rawValue" v-model:error="phone.error" v-model="phone.value" placeholder="Номер телефона" />-->
                     <Input class="mt-[24px]" type="password" v-model:error="password.error" v-model="password.value" placeholder="Пароль" ></Input>
                 </div>
             </div>
@@ -24,10 +25,10 @@
 import {reactive} from 'vue';
 import SVGBasketIcon from "../assets/svg/SVGBasketIcon.vue";
 import Button from '../components/Button';
-import PhoneInput from '../components/PhoneInput';
 import Input from '../components/Input';
 import userStore, {loadProfile, loginUser} from "../stores/userStore.ts";
 import {useRouter} from "vue-router";
+import {addToast} from "./ToastComponent/index.ts";
 
 
 const router = useRouter();
@@ -40,17 +41,21 @@ const login = async () => {
       login: phone.rawValue,
       password: password.value
     });
+    console.log(data)
     localStorage.setItem("access_token", data.token);
     localStorage.setItem("refresh_token", data.refresh_token);
     await loadProfile().then(()=>{
-      console.log(userStore.user)
       router.push({
         name: 'main-view'
       })
     });
   }
-  catch (e) {
+  catch (e: any) {
     console.log(e);
+    addToast({
+      message: e.response.data.message,
+      timeout: 5000
+    })
   }
 }
 

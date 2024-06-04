@@ -23,9 +23,7 @@ defineProps<{
         <div class="absolute items-center leading-7 text-[22px] z-10 justify-between py-[18px] px-4 flex w-full text-white">
           <Bars3Icon @click="openModal" class="cursor-pointer h-6 w-6"></Bars3Icon>
           <div>{{item.title}}</div>
-          <RouterLink :to="{
-            name: 'welcome-page'
-          }"><UserIcon color="white" width="24" height="24"></UserIcon></RouterLink>
+          <div><UserIcon color="white" width="24" height="24"></UserIcon></div>
         </div>
         <div class="absolute items-center justify-center bottom-4 flex-col z-10 px-4 flex w-full text-white">
           <div></div>

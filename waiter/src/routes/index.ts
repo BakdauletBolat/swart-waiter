@@ -9,6 +9,10 @@ import PaymentView from "../views/PaymentView.vue";
 import ReviewView from "../views/ReviewView.vue";
 import ReceiptView from "../views/ReceiptView.vue";
 import SearchView from "../views/SearchView.vue";
+import MenuView from "../views/MenuView.vue";
+import TableView from "../views/TableView.vue";
+import ToFillView from "../views/ToFillView.vue";
+import NotificationView from "../views/NotificationView.vue";
 export const routes = [
 
     {
@@ -41,6 +45,23 @@ export const routes = [
         path: '',
         name:  'main-view',
         component: MainView,
+        children: [{
+            name: 'menu-view',
+            component: MenuView,
+            path: ''
+        },{
+            name: 'table-view',
+            component: TableView,
+            path: '/tables'
+        },{
+            name: 'fill-view',
+            component: ToFillView,
+            path: '/to-fill'
+        },{
+            name: 'notification-view',
+            component: NotificationView,
+            path: '/notifications'
+        }],
         meta: {
             isLoginRequired: true
         }

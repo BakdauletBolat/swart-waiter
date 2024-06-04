@@ -21,7 +21,8 @@ router.beforeEach((to, _) => {
         return {
             name: 'login-view',
             query: {
-                redirect: to.fullPath
+                redirect: to.fullPath,
+                ...to.query
             }
         }
     }
