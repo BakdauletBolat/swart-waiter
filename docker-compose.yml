@@ -5,7 +5,7 @@ services:
     image: node:latest
     working_dir: /app
     volumes:
-      - ./customer:/app
+      - ./waiter:/app
       - ./waiter_dist:/app/dist
     command: sh -c "npm install && npm run build"
     restart: "no"
