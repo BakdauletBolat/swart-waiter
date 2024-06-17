@@ -6,7 +6,7 @@ import {ChevronRightIcon} from "@heroicons/vue/24/outline";
 import Button from "../components/Button/index.ts";
 import {onMounted, watch} from "vue";
 import LoadingModal from "../components/LoadingModal.vue";
-import {loadOrder, loadOrderProducts, orderStore} from "../stores/orderStore.ts";
+import {loadOrderProducts, orderStore} from "../stores/orderStore.ts";
 //@ts-ignore
 import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
 import  "@webzlodimir/vue-bottom-sheet/dist/style.css";
@@ -37,7 +37,6 @@ const close = () => {
 
 onMounted(()=>{
   loadOrderProducts()
-  loadOrder();
   loadWaiter();
 })
 

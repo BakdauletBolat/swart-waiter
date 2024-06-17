@@ -98,18 +98,36 @@ export interface IOrderProduct {
     };
 }
 
+interface TableAttributes {
+    cabin_id: number;
+    name: string;
+}
+
+export interface ITable {
+    type: string;
+    id: number;
+    attributes: TableAttributes;
+    included: {
+        order: IOrder
+    }
+}
+
 export interface IOrderStore {
     isLoadingOrderProducts: boolean;
     products: IOrderProduct[],
     order?: IOrder,
     receiptOrder?: IOrder,
+    tables: ITable[],
     isLoadingOrder: boolean;
+    isLoadingTables: boolean;
 }
 
 export const orderStore = reactive<IOrderStore>({
     isLoadingOrderProducts: false,
     products: [],
+    tables: [],
     isLoadingOrder: false,
+    isLoadingTables: false,
     order: undefined
 });
 
@@ -165,11 +183,29 @@ export function loadOrderProducts() {
         .finally(()=>orderStore.isLoadingOrderProducts=false);
 }
 
-export function loadOrder() {
-    orderStore.isLoadingOrder = true;
-    instance.get('/api/v1/order/customer?include=status,customer,comments')
-        .then(res=>orderStore.order=res.data)
-        .finally(()=>orderStore.isLoadingOrder=false);
+export function loadTables(status: number) {
+
+    switch (status) {
+        case 0:
+            orderStore.isLoadingTables = true;
+            instance.get('/api/v1/tables/list/active?include=order,cabin')
+                .then(res=>orderStore.tables=res.data.data)
+                .finally(()=>orderStore.isLoadingTables=false);
+            break;
+        case 1:
+            orderStore.isLoadingTables = true;
+            instance.get('/api/v1/tables/list/free?include=order,cabin')
+                .then(res=>orderStore.tables=res.data.data)
+                .finally(()=>orderStore.isLoadingTables=false);
+            break;
+        case 2:
+            orderStore.isLoadingTables = true;
+            instance.get('/api/v1/tables/list/reserve?include=order,cabin')
+                .then(res=>orderStore.tables=res.data.data)
+                .finally(()=>orderStore.isLoadingTables=false);
+            break;
+    }
+
 }
 
 export function loadReceiptOrder(token: string) {

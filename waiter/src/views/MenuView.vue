@@ -2,9 +2,7 @@
 
 import Image from '../components/Image';
 import SearchInput from '../components/SearchInput';
-import Header from '../components/Header.vue';
 import StickedScrollTab from "../components/StickedScrollTab";
-import History from '../components/History';
 import BasketIcon from "../assets/svg/BasketIcon.vue";
 import {ChevronRightIcon} from "@heroicons/vue/24/outline";
 import {useRouter} from "vue-router";
@@ -12,8 +10,11 @@ import { onMounted, ref} from "vue";
 import {getRestoran} from "../api";
 import {formattedPrice, getFirstElemOrUndefined} from "../utils";
 import {loadCategories, loadProducts, productsGroupedByCategory} from "../stores/productStore.ts";
-import {isHaveCart, loadBasket, totalAmount} from "../stores/basketStore.ts";
+import {isHaveCart, totalAmount} from "../stores/basketStore.ts";
 import {discountStore, loadDiscounts} from "../stores/discountStore.ts";
+import userStore, {loadProfile} from "../stores/userStore.ts";
+import ProfileTopHeader from "../components/Profile/ProfileTopHeader.vue";
+import Spinner from "../components/Spinner.vue";
 
 
 const router = useRouter();
@@ -41,7 +42,7 @@ onMounted(()=>{
     console.log(e);
   });
   loadProducts();
-  loadBasket();
+  loadProfile();
   loadCategories();
   loadDiscounts();
 });
@@ -58,17 +59,21 @@ const showHistory = ref<boolean>(false);
 </script>
 
 <template>
-  <History v-model="activeItem" :histories="discountStore.data" v-model:show="showHistory"></History>
+  <div class="justify-center items-center p-4 w-full flex h-[100px]" v-if="!userStore.user && userStore.isLoading">
+    <Spinner></Spinner>
+  </div>
+  <ProfileTopHeader v-if="userStore.user" :user="userStore.user"></ProfileTopHeader>
+<!--  <History v-model="activeItem" :histories="discountStore.data" v-model:show="showHistory"></History>-->
   <div>
-    <div class="mb-[8px] mx-4">
-      <RouterLink  :to="{
+    <div class="w-full py-4">
+      <RouterLink :to="{
               name: 'search-view'
-            }" class="px-4 mb-4">
-        <SearchInput class="cursor-pointer"></SearchInput>
+            }" class="px-4 left-0 flex w-full">
+        <SearchInput class="cursor-pointer w-full"></SearchInput>
       </RouterLink>
-      <div class="gap-3 flex w-full overflow-scroll hide-scrollbar">
-        <Image @click="showHistory=true; activeItem=index" class="w-[154px] h-[88px] flex-shrink-0 rounded-2xl" :url="getFirstElemOrUndefined(item.attributes.attachments)" v-for="(item, index) in discountStore.data"></Image>
-      </div>
+    </div>
+    <div v-if="discountStore.data.length > 0" class="gap-3 flex w-full overflow-scroll hide-scrollbar">
+      <Image @click="showHistory=true; activeItem=index" class="w-[154px] h-[88px] flex-shrink-0 rounded-2xl" :url="getFirstElemOrUndefined(item.attributes.attachments)" v-for="(item, index) in discountStore.data"></Image>
     </div>
     <StickedScrollTab :categories="productsGroupedByCategory"></StickedScrollTab>
     <transition name="fade"><div v-if="isHaveCart" class="px-4 w-full bottom-[20px] fixed z-[999]">

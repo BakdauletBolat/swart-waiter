@@ -3,7 +3,7 @@ import {instance} from "../api";
 
 
 interface IUserStore  {
-    user?: undefined;
+    user?: User;
     isLoading: boolean
 
 }
@@ -11,6 +11,28 @@ interface IUserStore  {
 type LoginData = {
     login: string;
     password: string;
+}
+
+interface UserAttributes {
+    logo: string;
+    first_name: string;
+    last_name: string;
+    login: string;
+    status: string;
+    gender: string;
+}
+
+interface UserMeta {
+    include: any[];
+    custom: any[];
+}
+
+export interface User {
+    type: string;
+    id: number;
+    attributes: UserAttributes;
+    included: any | null;
+    meta: UserMeta;
 }
 
 const userStore = reactive<IUserStore>({

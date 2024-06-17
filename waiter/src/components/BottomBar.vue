@@ -28,7 +28,7 @@ const isActive = (navigation_name: string) => {
     </div>
   </div>
   <div :class="{
-    'text-[#202020]': isActive(item.name)
+    '!text-[#202020]': isActive(item.name)
   }" class="mt-1 text-xs text-[#66666E] font-[600]">{{item.title}}</div>
 </RouterLink>
 </div>

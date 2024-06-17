@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {onMounted, ref} from "vue";
-import {loadOrder, orderStore} from "../stores/orderStore.ts";
+import {orderStore} from "../stores/orderStore.ts";
 import ReviewComponent from "../ReviewComponent.vue";
 import {loadRestaurant, restorantStore} from "../stores/restorantStore.ts";
 import {getFirstElemOrUndefined} from "../utils";
@@ -11,7 +11,6 @@ import userInformationStore from "../stores/userStore.ts";
 import {useRouter} from "vue-router";
 
 onMounted(()=>{
-  loadOrder();
   loadRestaurant();
 })
 

@@ -1,6 +1,6 @@
 import Pusher, {Channel} from "pusher-js";
 import {basket} from "../stores";
-import {loadOrder, orderStore} from "../stores/orderStore.ts";
+import {orderStore} from "../stores/orderStore.ts";
 
 var pusher = new Pusher("9763cb0b172b1a9ee194", {
     cluster: 'eu'
@@ -54,7 +54,7 @@ export function start() {
                 const index = orderStore.products?.findIndex((item)=>event.id == item.id);
                 if (index != -1) {
                     orderStore.products?.splice(index, 1);
-                    loadOrder();
+                    // loadOrder();
                 }
             }
         });
@@ -63,7 +63,7 @@ export function start() {
                 const index = orderStore.products?.findIndex((item)=>event.attributes.table_id == item.attributes.table_id);
                 if (index != -1) {
                     orderStore.products?.push(event);
-                    loadOrder();
+                    // loadOrder();
                 }
             }
         });
@@ -78,7 +78,7 @@ export function start() {
                 const index = orderStore.products?.findIndex((item)=>event.id == item.id);
                 if (index != -1) {
                     orderStore.products[index] = event;
-                    loadOrder();
+                    // loadOrder();
                 }
             }
         });

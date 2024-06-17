@@ -13,6 +13,8 @@ import MenuView from "../views/MenuView.vue";
 import TableView from "../views/TableView.vue";
 import ToFillView from "../views/ToFillView.vue";
 import NotificationView from "../views/NotificationView.vue";
+import ProfileIndexView from '../views/Profile/index.vue';
+
 export const routes = [
 
     {
@@ -40,6 +42,14 @@ export const routes = [
         meta: {
             isCoordsRequired: true
         }
+    },
+    {
+        path: "/profile",
+        children: [{
+            name: 'profile-view',
+            component: ProfileIndexView,
+            path: ''
+        }]
     },
     {
         path: '',
