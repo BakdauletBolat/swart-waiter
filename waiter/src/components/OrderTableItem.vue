@@ -5,11 +5,16 @@ import SmileCircleIcon from "../assets/svg/SmileCircleIcon.vue";
 import {ITable} from "../stores/orderStore.ts";
 import {formattedPrice, getNumberWithZero} from "../utils";
 import {PlusIcon} from "@heroicons/vue/24/outline";
+import {useRouter} from "vue-router";
+import {basket} from "../stores";
 
 defineProps<{
   item: ITable;
   status: number;
 }>();
+
+
+const router = useRouter();
 
 const getDate = (create_date: string) => {
   const date = new Date(create_date);
@@ -41,7 +46,12 @@ const getDate = (create_date: string) => {
         </div>
       </div>
     </div>
-    <div class="flex justify-between items-center" v-else>
+    <div @click="()=>{
+      basket.toCreateTableId = item.id
+      router.push({
+        name: 'create-order-view'
+      });
+    }" class="flex cursor-pointer justify-between items-center" v-else>
       <div
           class="rounded-xl h-[60px] w-[60px] flex justify-center items-center">
         {{item.attributes.cabin_id}}

@@ -6,8 +6,11 @@ import {loadTables, orderStore} from "../stores/orderStore.ts";
 import AppHeader from "../components/AppHeader.vue";
 import OrderTableItem from "../components/OrderTableItem.vue";
 import Spinner from "../components/Spinner.vue";
+import {useRoute} from "vue-router";
 
 const activeTabIndex = ref<number>(0);
+
+const route = useRoute();
 
 const tabsCollection = ref<ITabItem[]>([{
   indicatorCount: 0,
@@ -28,12 +31,15 @@ const onChangeTab = (index: number) => {
 
 
 onMounted(()=>{
+  if (route.query.is_free_table) {
+    activeTabIndex.value = 1;
+  }
   loadTables(activeTabIndex.value);
 })
 
 
-
 watch(activeTabIndex, () => {
+
   loadTables(activeTabIndex.value);
 });
 

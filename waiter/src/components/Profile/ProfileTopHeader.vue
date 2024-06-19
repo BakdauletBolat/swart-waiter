@@ -3,6 +3,10 @@ import {User} from "../../stores/userStore.ts";
 import Image from "../Image";
 import Button from '../Button';
 import SettingsIcon from "../../assets/svg/SettingsIcon.vue";
+import {useRouter} from "vue-router";
+
+const router = useRouter();
+
 defineProps<{
   user: User
 }>()
@@ -24,7 +28,12 @@ defineProps<{
         <SettingsIcon></SettingsIcon>
       </RouterLink>
     </div>
-    <Button class="w-full" container-classes="!justify-center">Создать заказ</Button>
+    <Button @click="router.push({
+      name: 'table-view',
+      query: {
+        is_free_table: 'true'
+      }
+    })" class="w-full" container-classes="!justify-center">Создать заказ</Button>
   </div>
 </template>
 

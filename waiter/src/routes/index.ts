@@ -14,6 +14,7 @@ import TableView from "../views/TableView.vue";
 import ToFillView from "../views/ToFillView.vue";
 import NotificationView from "../views/NotificationView.vue";
 import ProfileIndexView from '../views/Profile/index.vue';
+import CreateOrderView from "../views/CreateOrderView.vue";
 
 export const routes = [
 
@@ -31,6 +32,14 @@ export const routes = [
         path: '/order',
         name: 'order-view',
         component: OrderView,
+        meta: {
+            isCoordsRequired: true
+        }
+    },
+    {
+        path: '/create-order-view',
+        name: 'create-order-view',
+        component: CreateOrderView,
         meta: {
             isCoordsRequired: true
         }
