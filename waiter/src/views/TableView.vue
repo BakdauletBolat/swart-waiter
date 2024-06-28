@@ -38,9 +38,8 @@ onMounted(()=>{
 })
 
 
-watch(activeTabIndex, () => {
-
-  loadTables(activeTabIndex.value);
+watch(activeTabIndex, (newV, _) => {
+  loadTables(newV);
 });
 
 watch(orderStore, (newV)=>{

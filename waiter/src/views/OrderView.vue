@@ -6,23 +6,24 @@ import {ChevronRightIcon} from "@heroicons/vue/24/outline";
 import Button from "../components/Button/index.ts";
 import {onMounted, watch} from "vue";
 import LoadingModal from "../components/LoadingModal.vue";
-import {loadOrderProducts, orderStore} from "../stores/orderStore.ts";
+import {loadOrder, orderStore} from "../stores/orderStore.ts";
 //@ts-ignore
 import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
 import  "@webzlodimir/vue-bottom-sheet/dist/style.css";
 import { ref } from "vue";
-import {useRouter} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 import OrderTotal from "../components/OrderView/OrderTotal.vue";
 import OtherOrderProducts from "../components/OrderView/OtherOrderProducts.vue";
 import OrderProducts from "../components/OrderView/OrderProducts.vue";
 import OrderNotFound from "../components/OrderView/OrderNotFound.vue";
 import SelectPaymentMethod from "../components/OrderView/SelectPaymentMethod.vue";
-import {loadWaiter, waiter} from "../components/SidebarModal/index.ts";
 import OrderAlreadyPayingIcon from "../assets/svg/OrderAlreadyPayingIcon.vue";
 import {formattedPrice} from "../utils";
+import {addToast} from "../components/ToastComponent/index.ts";
 
 const myBottomSheet = ref(null);
 const router = useRouter();
+const route = useRoute();
 
 const open = () => {
   //@ts-ignore
@@ -36,8 +37,7 @@ const close = () => {
 }
 
 onMounted(()=>{
-  loadOrderProducts()
-  loadWaiter();
+  loadOrder(parseInt(route.params.id.toString()))
 })
 
 watch(()=>orderStore.order?.attributes.status.value, (newD, old)=>{
@@ -55,13 +55,19 @@ watch(()=>orderStore.order?.attributes.status.value, (newD, old)=>{
 
 function navigateMenu() {
   router.push({
-    name: 'menu'
+    name: 'menu-view'
   });
 }
 </script>
 <template>
   <LoadingModal v-if="orderStore.isLoadingOrder"></LoadingModal>
-  <AppHeader :show-menu="true" title="Заказ"></AppHeader>
+  <AppHeader :centered="true" :actions="true" :show-menu="false" :back-route="{
+    name: 'table-view'
+  }" title="Заказ">
+    <template v-slot:actions>
+      +
+    </template>
+  </AppHeader>
   <div v-if="orderStore.order">
     <vue-bottom-sheet ref="myBottomSheet">
       <SelectPaymentMethod v-if="orderStore.order.attributes.status.value != 40" @close="close"></SelectPaymentMethod>
@@ -75,17 +81,16 @@ function navigateMenu() {
   </div>
 
   <main class="px-4" v-if="orderStore.products.length > 0 && orderStore.order">
-    <section class="text-xs bg-black-10 p-3 flex flex-col items-center justify-center rounded-2xl">
-      <div><span class="text-[#9999A1]">Номер заказа</span> {{ orderStore.order!.attributes.number }} </div>
-      <div v-if="waiter?.attributes"><span class="text-[#9999A1]">Официант </span>{{waiter.attributes.first_name}}</div>
-    </section>
+<!--    <section class="text-xs bg-black-10 p-3 flex flex-col items-center justify-center rounded-2xl">-->
+<!--      <div><span class="text-[#9999A1]">Номер заказа</span> {{ orderStore.order!.attributes.number }} </div>-->
+<!--      <div v-if="s?.attributes"><span class="text-[#9999A1]">Официант </span>{{waiter.attributes.first_name}}</div>-->
+<!--    </section>-->
     <h2 class="font-medium my-4">Ваш заказ</h2>
     <OrderProducts></OrderProducts>
     <OtherOrderProducts></OtherOrderProducts>
     <div class="w-full bg-[#E6E6E9] h-[1px] my-4"></div>
     <section class="mt-4">
       <h2 class="font-medium">Комментарий к заказу</h2>
-
       <p class="text-sm text-[#9999A1]">{{orderStore.order?.included?.comments?.data?.map((item)=>item.attributes.comment).join(', ')}}</p>
     </section>
     <OrderTotal class="mt-4"></OrderTotal>

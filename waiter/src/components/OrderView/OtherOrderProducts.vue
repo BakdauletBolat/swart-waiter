@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import {orderStore, otherProducts} from "../../stores/orderStore.ts";
-import userInformationStore from "../../stores/userStore.ts";
 import OrderItem from "./OrderItem.vue";
 
 function getNameByUUID(uuid: string) {
@@ -20,7 +19,6 @@ function getNameByUUID(uuid: string) {
 </script>
 <template>
   <div v-for="(item,key) in otherProducts" class="opacity-50">
-    <div v-if="key.toString()!=userInformationStore.store.value!.uuid">
       <h2 class="font-medium my-4">{{getNameByUUID(key.toString())}}</h2>
       <section class="flex flex-col gap-2">
         <OrderItem v-for="orderItem in item"
@@ -29,5 +27,4 @@ function getNameByUUID(uuid: string) {
         </OrderItem>
       </section>
     </div>
-  </div>
 </template>

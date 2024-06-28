@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import AppHeader from "../components/AppHeader.vue";
-import {useRouter} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 import {formattedPrice} from "../utils";
 import {loadCategories, loadProducts, productsGroupedByCategory} from "../stores/productStore.ts";
-import {isHaveCart, totalAmount} from "../stores/basketStore.ts";
+import {basket, isHaveCart, totalAmount} from "../stores/basketStore.ts";
 import BasketIcon from "../assets/svg/BasketIcon.vue";
 import {onMounted} from "vue";
 import {loadProfile} from "../stores/userStore.ts";
@@ -11,15 +11,19 @@ import {loadDiscounts} from "../stores/discountStore.ts";
 import SearchInput from '../components/SearchInput';
 import StickedScrollTab from "../components/StickedScrollTab";
 import {ChevronRightIcon} from "@heroicons/vue/24/outline";
+import {loadBasket} from "../stores/basketStore.ts";
 
 const router = useRouter();
-
+const route = useRoute();
 
 onMounted(()=>{
+  basket.value.toCreateTableId = parseInt(route.params.tableId.toString());
+  console.log(parseInt(route.params.tableId.toString()));
   loadProducts();
   loadProfile();
   loadCategories();
   loadDiscounts();
+  loadBasket();
 });
 
 </script>
@@ -39,7 +43,14 @@ onMounted(()=>{
     </div>
     <StickedScrollTab :categories="productsGroupedByCategory"></StickedScrollTab>
     <transition name="fade"><div v-if="isHaveCart" class="px-4 w-full bottom-[20px] fixed z-[999]">
-      <div @click="()=>{}" class="p-4 cursor-pointer text-center flex justify-between items-center text-white w-full bg-black-100 rounded-2xl ">
+      <div @click="()=>{
+        router.push({
+          name: 'basket-view',
+          params: {
+            tableId: basket.toCreateTableId
+          }
+        })
+      }" class="p-4 cursor-pointer text-center flex justify-between items-center text-white w-full bg-black-100 rounded-2xl ">
         <div class="flex gap-2 items-center">
           <BasketIcon color="white" width="24" height="24"></BasketIcon>
           <div>

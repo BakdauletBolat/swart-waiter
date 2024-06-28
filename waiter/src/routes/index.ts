@@ -15,6 +15,8 @@ import ToFillView from "../views/ToFillView.vue";
 import NotificationView from "../views/NotificationView.vue";
 import ProfileIndexView from '../views/Profile/index.vue';
 import CreateOrderView from "../views/CreateOrderView.vue";
+import ChangePasswordView from "../views/Profile/ChangePasswordView.vue";
+import ProfileInfoView from "../views/Profile/ProfileInfoView.vue";
 
 export const routes = [
 
@@ -29,28 +31,19 @@ export const routes = [
         component: SearchView
     },
     {
-        path: '/order',
+        path: '/order/:id',
         name: 'order-view',
-        component: OrderView,
-        meta: {
-            isCoordsRequired: true
-        }
+        component: OrderView
     },
     {
-        path: '/create-order-view',
+        path: '/create-order-view/:tableId',
         name: 'create-order-view',
-        component: CreateOrderView,
-        meta: {
-            isCoordsRequired: true
-        }
+        component: CreateOrderView
     },
     {
-        path: '/basket',
+        path: '/basket/:tableId',
         name: 'basket-view',
-        component: BasketView,
-        meta: {
-            isCoordsRequired: true
-        }
+        component: BasketView
     },
     {
         path: "/profile",
@@ -58,6 +51,14 @@ export const routes = [
             name: 'profile-view',
             component: ProfileIndexView,
             path: ''
+        },{
+            name: 'change-password-view',
+            component: ChangePasswordView,
+            path: 'change-password'
+        },{
+            name: 'profile-info-view',
+            component: ProfileInfoView,
+            path: 'info'
         }]
     },
     {

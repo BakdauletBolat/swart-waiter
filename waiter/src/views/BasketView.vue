@@ -7,14 +7,17 @@ import {ChevronRightIcon} from "@heroicons/vue/24/outline";
 import Button from '../components/Button';
 import OrderIcon from "../assets/svg/OrderIcon.vue";
 import {instance} from "../api";
-import userInformationStore from "../stores/userStore.ts";
-import {useRouter} from "vue-router";
+import userInformationStore, {loadProfile} from "../stores/userStore.ts";
+import {useRoute, useRouter} from "vue-router";
 import SVGBasketIcon from "../assets/svg/SVGBasketIcon.vue";
 import OtherOrders from "../components/OtherOrders.vue";
 import OrderComment from "../components/OrderView/OrderComment.vue";
 import LoadingModal from "../components/LoadingModal.vue";
 
+const route = useRoute();
+
 onMounted(()=>{
+  basket.value.toCreateTableId = parseInt(route.params.tableId.toString());
   loadBasket();
 });
 
@@ -22,18 +25,19 @@ const comment = ref(null);
 const router = useRouter();
 
 function navigateMenu() {
-  router.push({
-    name: 'menu'
-  });
+
 }
 
 function createOrder() {
-  instance.post('/api/v1/order/customer', {
-    customer_uuid: userInformationStore.store.value?.uuid,
+  instance.post('/api/v1/order/waiter', {
+    table_id: basket.value.toCreateTableId,
     comment: comment.value
-  }).then(()=>{
+  }).then((res)=>{
       router.push({
-          name: 'order-view'
+          name: 'order-view',
+          params: {
+            id: res.data.id
+          }
       });
   }).catch((_)=>{
     console.log('asd');
@@ -44,9 +48,9 @@ function createOrder() {
 
 <template>
   <LoadingModal v-if="basket.isLoading"></LoadingModal>
-  <AppHeader :show-menu="false" :back-route="{name: 'menu'}" title="Корзина"></AppHeader>
+  <AppHeader :show-menu="false" :back-route="{name: 'create-order-view'}" title="Корзина"></AppHeader>
   <div class="px-4">
-    <div v-if="customerBasket.length > 0">
+    <div v-if="basket.data != undefined && basket?.data?.length > 0">
       <h2 class="font-medium">Ваш заказ</h2>
       <div class="mt-4 flex flex-col gap-2">
         <BasketCard :good="good" v-for="good in customerBasket"></BasketCard>
@@ -65,13 +69,13 @@ function createOrder() {
   <div>
     <transition name="fade">
       <div class="px-4 w-full bottom-[20px] fixed  z-[999]">
-        <Button v-if="customerBasket.length>0" classes="items-center" @click="createOrder" class="w-full !rounded-2xl !p-4">
+        <Button v-if="basket.data && basket.data?.length>0" classes="items-center" @click="createOrder" class="w-full !rounded-2xl !p-4">
           <template #prepend>
             <OrderIcon color="white" width="24" height="24"></OrderIcon>
           </template>
           <div class="flex gap-2 items-center">
             <div>
-              {{totalAmount.totalAmont}} ₸
+              {{totalAmount.totalAmount}} ₸
             </div>
             <div class="h-6 w-[1px] bg-white"></div>
             <div>

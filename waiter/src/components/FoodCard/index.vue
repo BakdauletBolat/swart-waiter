@@ -21,10 +21,7 @@
             <div v-if="checkInBasket(food.id)">
               <ChangeBasketCardComponent :show-price="false" :good="getFromBasket(food.id)"></ChangeBasketCardComponent>
             </div>
-            <section v-else class="mt-2 w-full" @click="addOrCreate({
-            product_id: food.id,
-            quantity: 1
-            })">
+            <section v-else class="mt-2 w-full" @click="addOrCreate({product_id: food.id,quantity: 1})">
                 <div class="cursor-pointer w-full bg-white text-center flex justify-center items-center py-2 rounded-2xl">
                   <div>{{formattedPrice(food.attributes.price)}} ₸</div>
                 </div>

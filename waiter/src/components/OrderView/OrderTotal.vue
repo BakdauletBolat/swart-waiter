@@ -4,15 +4,6 @@ import {formattedPrice} from "../../utils";
 import {restorantStore} from "../../stores";
 import image from '../../assets/images/ordertotal.png';
 
-function getUserTotal(): number {
-  let total = 0;
-  customerProducts.value.forEach((product)=>{
-    total+=product.attributes.price * product.attributes.quantity;
-  });
-  //@ts-ignore
-  const percent = total * restorantStore.value?.included?.setting.attributes.serv_percent_waiter / 100;
-  return total + percent;
-}
 </script>
 
 <template>
@@ -25,10 +16,6 @@ function getUserTotal(): number {
   <div class="flex text-[#FFB800] mt-4 justify-between text-sm">
     <div>Скидка</div>
     <p>- {{formattedPrice(orderStore.order?.attributes.computation.discount)}} ₸</p>
-  </div>
-  <div class="flex mt-4 font-medium justify-between ">
-    <div>Сумма вашего заказа</div>
-    <p>{{formattedPrice(getUserTotal())}} ₸</p>
   </div>
   <div class="dashed-border-gray"></div>
   <div class="flex text-[20px] mt-4 font-medium justify-between">

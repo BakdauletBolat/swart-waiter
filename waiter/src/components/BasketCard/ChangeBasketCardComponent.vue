@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {MinusIcon, PlusIcon} from "@heroicons/vue/24/outline";
-import {changeQuantityFromBasket, ICardItem, removeFromBasket} from "../../stores/basketStore.ts";
+import {basket, changeQuantityFromBasket, ICardItem, removeFromBasket} from "../../stores/basketStore.ts";
 import {formattedPrice} from "../../utils";
 
 const props = defineProps<{good: ICardItem, showPrice: boolean}>();
@@ -8,10 +8,12 @@ const props = defineProps<{good: ICardItem, showPrice: boolean}>();
 function changeQuantity(quantity: number) {
   if (quantity <= 0) {
     removeFromBasket(props.good.id);
+    return;
   }
   changeQuantityFromBasket({
     cart_id: props.good.id,
-    quantity: quantity
+    quantity: quantity,
+    table_id: basket.value.toCreateTableId
   })
 }
 

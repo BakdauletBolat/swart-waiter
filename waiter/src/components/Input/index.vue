@@ -6,11 +6,11 @@
                     '!text-red-100': error,
                     '!-translate-y-[40px] top-0 text-sm !text-black bg-white p-1': isFocus || model
                 }">{{ placeholder }}</label>
-        <input :type="statusType ? 'password' : 'text'" @input="onInput" :class="{
+        <input :type="type == 'password' ? 'password' : 'text'" @input="onInput" :class="{
           'border-red-100': error,
           'border-black': isFocus
         }" @focus="toggleFocus(true)" @blur="toggleFocus(false)" :id="placeholder" v-model="model" class="border focus:outline-none w-full px-4 py-3 rounded-2xl" />
-      <div v-if="type == 'password'" class="cursor-pointer" @click="statusType=!statusType">
+      <div v-if="type != undefined && type == 'password'" class="cursor-pointer" @click="statusType=!statusType">
         <PasswordHideSwitcher class="absolute top-[14px] right-3"></PasswordHideSwitcher>
       </div>
     </div>
@@ -26,7 +26,7 @@ defineProps<{
 const model = defineModel();
 const error = defineModel('error');
 
-const statusType = ref(false);
+const statusType = ref(true);
 const isFocus = ref(false);
 
 function toggleFocus(value:boolean) {

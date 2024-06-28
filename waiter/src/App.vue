@@ -17,6 +17,7 @@ onMounted(()=>{
     start();
   }
   loadRestaurant();
+  loadProfile();
 });
 
 watch(route, (newRoute, _)=>{
@@ -35,4 +36,5 @@ import LoadingModal from "./components/LoadingModal.vue";
 import {isLoading} from "./stores";
 import {loadRestaurant} from "./stores/restorantStore.ts";
 import {useRoute} from "vue-router";
+import {loadProfile} from "./stores/userStore.ts";
 </script>

@@ -29,8 +29,8 @@ export const showModal = ref<boolean>(false);
 
 export const waiter = ref<IWaiter | undefined>(undefined);
 
-export function loadWaiter() {
-    instance.get("/api/v1/user/table/waiter").then((res)=>{
+export async function loadOrder(id: number) {
+    await instance.get(`/api/v1/order/${id}/waiter/`).then((res)=>{
         waiter.value = res.data;
     });
 }
@@ -47,7 +47,7 @@ export const openWaiterCall = () => {
     //@ts-ignore
     waiterCallBottomSheet!.value!.open();
     callWaiter();
-    loadWaiter();
+    // loadWaiter();
 }
 
 

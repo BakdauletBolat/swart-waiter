@@ -13,14 +13,14 @@ const navigations = [
     title: 'Личные данные',
     icon: UserIcon,
     route: {
-      name: 'menu-view'
+      name: 'profile-info-view'
     }
   },
   {
     title: 'Сменить пароль',
     icon: ChangePassword,
     route: {
-      name: 'menu-view'
+      name: 'change-password-view'
     }
   },
   {

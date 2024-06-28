@@ -1,6 +1,7 @@
 import {computed, ref} from "vue";
 import {isLoading} from "./index.ts";
 import {instance} from "../api";
+import userStore from "./userStore.ts";
 
 
 type AddToCardType = {
@@ -11,6 +12,7 @@ type AddToCardType = {
 type ChangeQuantityType = {
     quantity: number;
     cart_id: number;
+    table_id?: number;
 }
 
 export interface ICardItem {
@@ -24,6 +26,9 @@ export interface ICardItem {
         price: number;
     };
     included: {
+        waiter?: {
+            id: number
+        }
         customer?: {
             id: number
             attributes: {
@@ -70,30 +75,25 @@ export const customerBasket = computed<ICardItem[]>(()=>{
     if (basket.value.data == undefined || basket.value.data!.length <= 0) {
         return [];
     }
-    return  [];
+    return basket.value.data.filter(item=>{
+        return item.included.waiter?.id == userStore.user?.id;
+    });
 });
 
-//
-// export const otherBaskets = computed<any | undefined>(()=>{
-//     if (basket.value.data == undefined || basket.value.data.length <= 0) {
-//         return [];
-//     }
-//     else {
-//         const waiterProducts = basket.value.data.filter((item)=>item.attributes.waiter_id != null);
-//         const customerProducts = basket.value.data.filter((item)=>item.attributes.customer_id != null);
-//         const cP = customerProducts.reduce((groups, item) => ({
-//             ...groups,
-//             //@ts-ignore
-//             [item.included.customer.attributes.uuid]: [...(groups[item.included.customer.attributes.uuid!] || []), item]
-//         }), {});
-//         const wP = waiterProducts.reduce((groups, item) => ({
-//             ...groups,
-//             //@ts-ignore
-//             [item.included.waiter.id]: [...(groups[item.included.waiter.id] || []), item]
-//         }), {});
-//         return {...cP, ...wP};
-//     }
-// });
+
+export const otherBaskets = computed<any | undefined>(()=>{
+    if (basket.value.data == undefined || basket.value.data.length <= 0) {
+        return [];
+    }
+    else {
+        const customerProducts = basket.value.data?.filter((item)=>item.attributes.customer_id != null);
+        return customerProducts.reduce((groups, item) => ({
+            ...groups,
+            //@ts-ignore
+            [item.included.customer.attributes.uuid]: [...(groups[item.included.customer.attributes.uuid!] || []), item]
+        }), {});
+    }
+});
 
 export const isHaveCart = computed(()=>basket.value != undefined && basket.value!.data!.length > 0);
 export const totalAmount = computed(()=>{
@@ -122,36 +122,36 @@ export const checkInBasket = (id: number) => {
 
 export const getFromBasket = (id: number) => {
     const index = basket.value.data?.findIndex(item=>item.included.product?.id == id);
-    return customerBasket.value![index!];
+    return basket.value.data![index!];
 }
 
 
 
 
 
-export function addOrCreate(data: AddToCardType) {
-    basket.value.addCardLoading = true;
-    isLoading.value = true;
-    instance.post('/api/v1/carts/waiter', {
-        table_id: basket.value.toCreateTableId!,
-        ...data
-    }).then((_)=>{
-        instance.get('/api/v1/carts/waiter?include=customer,product').then(res=>{
-            basket.value.data = res.data.data;
-        }).catch(e=>console.log(e,  'asdas'));
-    }).catch((e)=>console.log(e)).finally(()=>{
-        basket.value.addCardLoading=false;
-        isLoading.value = false;
+
+
+export function loadBasket() {
+    basket.value.isLoading = true;
+    instance.get(`/api/v1/carts/waiter/${basket.value.toCreateTableId}/table?include=customer,waiter,product`).then(res=>{
+        basket.value.data = res.data.data;
+    }).catch(e=>console.log(e,  'asdas')).finally(()=>{
+        basket.value.isLoading = false;
     });
 }
+
+
+
 
 export function removeFromBasket(pk: number) {
     basket.value.removeCardLoading = true;
     isLoading.value = true;
-    instance.delete(`/api/v1/carts/${pk}/customer`).then((_)=>{
-        instance.get('/api/v1/carts/customer?include=customer,product').then(res=>{
-            basket.value.data = res.data.data;
-        }).catch(e=>console.log(e,  'asdas'));
+    instance.delete(`/api/v1/carts/${pk}/user`, {
+        data: {
+            table_id: basket.value.toCreateTableId
+        }
+    }).then((_)=>{
+        loadBasket();
     }).catch((e)=>console.log(e)).finally(()=>
     {
         basket.value.removeCardLoading=false
@@ -162,23 +162,24 @@ export function removeFromBasket(pk: number) {
 
 export function changeQuantityFromBasket(data: ChangeQuantityType) {
     isLoading.value = true;
-    instance.put('/api/v1/carts/quantity/customer', data).then((_)=>{
-        instance.get('/api/v1/carts/customer?include=customer,product').then(res=>{
-            basket.value.data = res.data.data;
-        }).catch(e=>console.log(e,  'asdas'));
+    instance.put('/api/v1/carts/quantity/user', data).then((_)=>{
+        loadBasket();
     }).catch((e)=>console.log(e)).finally(()=>
     {
         isLoading.value = false
     });
 }
 
-
-
-export function loadBasket() {
-    basket.value.isLoading = true;
-    instance.get('/api/v1/carts/customer?include=customer,product').then(res=>{
-        basket.value.data = res.data.data;
-    }).catch(e=>console.log(e,  'asdas')).finally(()=>{
-        basket.value.isLoading = false;
+export function addOrCreate(data: AddToCardType) {
+    basket.value.addCardLoading = true;
+    isLoading.value = true;
+    instance.post('/api/v1/carts/waiter', {
+        table_id: basket.value.toCreateTableId!,
+        ...data
+    }).then((_)=>{
+        loadBasket();
+    }).catch((e)=>console.log(e)).finally(()=>{
+        basket.value.addCardLoading=false;
+        isLoading.value = false;
     });
 }

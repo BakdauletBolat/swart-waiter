@@ -8,7 +8,8 @@ defineProps<{
   showMenu: boolean;
   centered?: boolean;
   backRoute?: RouteParams;
-  notFixed?: boolean
+  notFixed?: boolean;
+  actions?: boolean;
 }>()
 </script>
 <template>
@@ -22,7 +23,9 @@ defineProps<{
       <ChevronLeftIcon class="h-6 w-6"></ChevronLeftIcon>
     </RouterLink>
     <h2 class="text-[22px] leading-[28px]">{{title}}</h2>
-    <div v-if="!centered" class="h-6 w-6"></div>
+    <div v-if="actions" class="actions">
+      <slot name="actions"></slot>
+    </div>
   </header>
 </template>
 <style></style>
