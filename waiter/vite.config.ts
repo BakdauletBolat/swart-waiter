@@ -5,7 +5,8 @@ import path from 'path';
 export default defineConfig({
   resolve: {
     alias: {
-      '@b_components': path.resolve(__dirname, '../shared/components'),
+      //@ts-ignore
+      '@': path.resolve(__dirname, 'src')
     },
   },
   plugins: [vue({

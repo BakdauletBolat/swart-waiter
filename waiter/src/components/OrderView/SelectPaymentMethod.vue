@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import {orderStore} from "../../stores/orderStore.ts";
+import {orderStore} from "@/stores/orderStore.ts";
 import {ref} from "vue";
-import {instance} from "../../api";
-import userInformationStore from "../../stores/userStore.ts";
+import {instance} from "@/api";
 import {useRouter} from "vue-router";
 import CashIcon from "../../assets/svg/CashIcon.vue";
 import WaiterCard from "../../assets/svg/WaiterCard.vue";
@@ -13,7 +12,8 @@ import {ChevronRightIcon} from "@heroicons/vue/24/outline";
 const isLoading = ref<boolean>(false);
 const activeIndex = ref<number>(1);
 const router = useRouter();
-const emit = defineEmits(['close'])
+const props = defineProps(['tableId']);
+const emit = defineEmits(['close']);
 
 function changeActiveIndex(index: number) {
   activeIndex.value = index;
@@ -24,18 +24,11 @@ function changeActiveIndex(index: number) {
 
 function putPaymentType() {
   isLoading.value = true;
-  instance.put('/api/v1/order/pay/customer', {
+  instance.put('/api/v1/order/pay/user', {
     pay: activeIndex.value,
-    customer_uuid: userInformationStore.store.value?.uuid
+    table_id: props.tableId
   }).then(_=>{
     emit('close');
-    router.push({
-      name: 'payment-view',
-      params: {
-        pay: activeIndex.value,
-        orderId: orderStore.order?.id
-      }
-    })
   }).catch(e=>console.log(e))
       .finally(()=>{
         isLoading.value = false;
@@ -86,27 +79,7 @@ function putPaymentType() {
       <div>{{orderStore.order?.attributes.computation.total}} ₸</div>
     </div>
     <div class="mt-4">
-      <Button :loading="isLoading" @click="putPaymentType"
-              :class="{
-                'justify-center': isLoading
-                }"
-              class="w-full flex !rounded-2xl !p-4">
-        <template #prepend>
-          <OrderIcon color="white" width="24" height="24"></OrderIcon>
-        </template>
-        <div class="flex gap-2 items-center">
-          <div>
-            {{orderStore.order?.attributes.computation.total}} ₸
-          </div>
-          <div class="h-6 w-[1px] bg-white"></div>
-          <div>
-            Продолжить
-          </div>
-        </div>
-        <template #append>
-          <ChevronRightIcon class="w-6 h-6 text-white"></ChevronRightIcon>
-        </template>
-      </Button>
+      <Button @click="putPaymentType" class="w-full" container-classes="!justify-center">Оплачено</Button>
     </div>
   </div>
 </template>

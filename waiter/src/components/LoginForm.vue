@@ -11,7 +11,6 @@
                 <p class="text-[#9999A1] mt-[8px] text-[14px] leading-[20px] mx-auto max-w-[300px] text-center">Введите логин и пароль</p>
                 <div class="w-full mt-[24px]" >
                     <Input v-model:error="phone.error" v-model="phone.rawValue" placeholder="Логин" ></Input>
-<!--                    <PhoneInput @onCompleted="(rawValue: string)=>phone.rawValue = rawValue" v-model:error="phone.error" v-model="phone.value" placeholder="Номер телефона" />-->
                     <Input class="mt-[24px]" type="password" v-model:error="password.error" v-model="password.value" placeholder="Пароль" ></Input>
                 </div>
             </div>
@@ -33,30 +32,27 @@ import {addToast} from "./ToastComponent/index.ts";
 
 const router = useRouter();
 
-
-
 const login = async () => {
-  try {
-    const data = await loginUser({
+    userStore.isLoading = true;
+    loginUser({
       login: phone.rawValue,
       password: password.value
-    });
-    console.log(data)
-    localStorage.setItem("access_token", data.token);
-    localStorage.setItem("refresh_token", data.refresh_token);
-    await loadProfile().then(()=>{
-      router.push({
-        name: 'main-view'
+    }).then(res=>{
+      localStorage.setItem("access_token", res.token);
+      localStorage.setItem("refresh_token", res.refresh_token);
+      loadProfile(router).then(()=>{
+        router.push({
+          name: 'menu-view'
+        })
+      });
+    }).finally(()=>{
+      userStore.isLoading=false;
+    }).catch(e=>{
+      addToast({
+        message: e.response.data.message,
+        timeout: 5000
       })
     });
-  }
-  catch (e: any) {
-    console.log(e);
-    addToast({
-      message: e.response.data.message,
-      timeout: 5000
-    })
-  }
 }
 
 const phone = reactive({

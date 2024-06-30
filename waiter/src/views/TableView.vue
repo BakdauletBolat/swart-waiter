@@ -49,7 +49,7 @@ watch(orderStore, (newV)=>{
 </script>
 
 <template>
-  <AppHeader title="Столы" :show-menu="false" :centered="true"></AppHeader>
+  <AppHeader title="Столы" :show-menu="false"></AppHeader>
   <div class="px-4">
     <Tabs @onChangeTab="onChangeTab" :active-tab-index="activeTabIndex" :tabs="tabsCollection"></Tabs>
     <div :class="{

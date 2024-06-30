@@ -38,7 +38,6 @@ const orderStatuses = [
     </div>
   </vue-bottom-sheet>
   <div>
-    <div class="w-full bg-[#E6E6E9] h-[1px] my-4"></div>
     <section class="flex flex-col gap-2">
       <OrderItem v-for="orderItem in waiterProducts"
                  :order-item="orderItem"

@@ -53,13 +53,20 @@ export async function getProfile() {
     return (await instance.get('/api/v1/user/profile')).data
 }
 
-export async function loadProfile() {
+export async function loadProfile(router: any) {
+    if (localStorage.getItem('access_token') == undefined) {
+        return;
+    }
     userStore.isLoading = true;
     getProfile().then((data)=>{
         userStore.user = data;
     }).finally(()=>{
         userStore.isLoading=false
-    });
+    }).catch((_: any)=>{
+        router!.push({
+            name: 'login-view'
+        })
+    })
 }
 
 export default userStore;

@@ -17,6 +17,7 @@ import ProfileIndexView from '../views/Profile/index.vue';
 import CreateOrderView from "../views/CreateOrderView.vue";
 import ChangePasswordView from "../views/Profile/ChangePasswordView.vue";
 import ProfileInfoView from "../views/Profile/ProfileInfoView.vue";
+import OrderPayView from "@/views/OrderPayView.vue";
 
 export const routes = [
 
@@ -39,6 +40,11 @@ export const routes = [
         path: '/create-order-view/:tableId',
         name: 'create-order-view',
         component: CreateOrderView
+    },
+    {
+        path: '/order-pay-view/:id',
+        name: 'order-pay-view',
+        component: OrderPayView
     },
     {
         path: '/basket/:tableId',

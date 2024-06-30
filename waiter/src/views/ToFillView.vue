@@ -34,7 +34,7 @@ const done = () => {
 
 <template>
 <div>
-  <AppHeader :show-menu="false" :centered="true" title="К подаче"></AppHeader>
+  <AppHeader :show-menu="false" title="К подаче"></AppHeader>
   <main class="px-4">
     <div class="flex flex-col gap-2">
       <ToFillItem :item="item" v-for="item in toFillData"></ToFillItem>

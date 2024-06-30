@@ -55,7 +55,7 @@ function openNotification(notification: UserNotification) {
         <Button  @click="openedNotificationRef!.close()" container-classes="!justify-center" class="mt-4 !rounded-2xl w-full text-center">Понятно</Button>
       </div>
   </vue-bottom-sheet>
-  <AppHeader :show-menu="false" title="Уведомления" :centered="true"></AppHeader>
+  <AppHeader :show-menu="false" title="Уведомления"></AppHeader>
   <div v-if="isLoading">
     <LoadingModal ></LoadingModal>
   </div>

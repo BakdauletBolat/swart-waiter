@@ -25,7 +25,6 @@ import image from '../../assets/images/ordertotal.png';
   <div class="w-full h-[25px] mt-[32px]">
     <div  class="w-full h-full background-order" :style="{ backgroundImage: 'url(' + image + ')' }"></div>
   </div>
-  <div class="mt-[150px]"></div>
 </section>
 </template>
 

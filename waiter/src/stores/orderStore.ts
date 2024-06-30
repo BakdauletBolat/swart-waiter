@@ -163,7 +163,6 @@ export const otherProducts = computed<any | undefined>(()=>{
             //@ts-ignore
             [item.included.customer.attributes.uuid]: [...(groups[item.included.customer.attributes.uuid!] || []), item]
         }), {});
-        console.log(otherWaiterProducts)
         const wP = otherWaiterProducts.reduce((groups, item) => ({
             ...groups,
             //@ts-ignore

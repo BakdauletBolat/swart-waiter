@@ -42,7 +42,7 @@ onMounted(()=>{
     console.log(e);
   });
   loadProducts();
-  loadProfile();
+  loadProfile(router);
   loadCategories();
   loadDiscounts();
 });
